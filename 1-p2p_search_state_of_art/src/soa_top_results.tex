@@ -11,7 +11,7 @@
 
 Al realizar una búsqueda, los usuarios prefieren calidad por sobre cantidad de
 resultados. Por ello, obtener solo los objetos más relevantes para la
-búsqueda hace mucho sentido. %[Oulasvirta et al. 2009].
+búsqueda hace mucho sentido~\citealt{oulasvirta2009more}. %[Oulasvirta et al. 2009].
 Para limitar la cantidad de resultados obtenidos y mejorar la calidad de éstos,
 existen propuestas para obtener sólo los $k$ resultados mejor evaluados.
 
@@ -34,13 +34,13 @@ Dentro de los algoritmos propuestos para lograr esto, se encuentran:
 %tacting nodes as long as the chance of them contributing to this top k remains high.
 %The top results stabilise after a few rounds.
 
-\paragraph{Top k results requesting} % [Cuenca-Acuna et al. 2003]
+\paragraph{Top k results requesting~\cite{cuenca2003planetp}} % [Cuenca-Acuna et al. 2003]
 Una forma simple de optimizar un sistema es haciendo que sólo se pidan los
 resultados ``top''. Sistemas que usan índices locales siempre aplican una forma
 variable para limitar los resultados al limitar la cantidad de saltos a realizar
 cuando se busca por \textit{flooding} o a través de un \textit{random walk} que
 termina. Sin embargo, ese número también puede ser explícitamente puesto en una
-constante por quien realiza la consulta, como lo hecho por % [Cuenca-Acuna et al. 2003]
+constante por quien realiza la consulta, como lo hecho por~\citealt{cuenca2003planetp} % [Cuenca-Acuna et al. 2003]
 para indices globalmente replicados. Ellos primero obtienen una lista de $k$
 resultados de búsqueda y continúan contactando nodos mientras que se mantenga una
 probabilidad alta de que éstos aporten a la lista de $k$ resultados ``top''. La lista de
@@ -80,16 +80,16 @@ los ``top'' $k$ resultados se estabiliza después de unos cuantas rondas.
 %k query processing can also be effective in peer-to-peer networks with aggregated
 %local indices.
 
-\paragraph{Top k query processing} % [Suel et al. 2003; Balke et al. 2005; Michel et al. 2005a; Zhang and Suel 2005]
+\paragraph{Top k query processing~\cite{suel2003odissea, balke2005progressive, michel2005klee, zhang2005efficient}} % [Suel et al. 2003; Balke et al. 2005; Michel et al. 2005a; Zhang and Suel 2005]
 Este método tiene sus inicios en la comunidad en torno a las bases de datos,
-particularmente en el trabajo de %[Fagin et al. 2001].
+particularmente en el trabajo de~\citealt{fagin2001optimal} %[Fagin et al. 2001].
 Múltiples variaciones existen, todas con la misma idea básica: es posible
 determinar los ``top'' $k$ documentos dadas muchas listas de entrada sin tener
 que examinarlas por completo y sin tener que affectar de forma negativa al
 rendimiento de la búsqueda. Esto es comunmente usado en presencia de índices
 globales distribuídos en casos donde listas con publicaciones deben ser intersectadas.
 Dentro de los algoritmos propuestos, el \textit{threshold algorithm} es el más
-popular %[Michel et al. 2005a; Suelet al. 2003]
+popular~\citealt{michel2005klee, suel2003odissea}. %[Michel et al. 2005a; Suelet al. 2003]
 Este algoritmo mantiene dos estructuras para la información: una cola con
 \textit{peers} para contactar y obtener resultados de búsquedas y una lista con
 los actuales ``top'' $k$ resultados. \textit{Peers} en la cola son procesados
@@ -116,13 +116,15 @@ ancho de banda y costos de cómputo sin afectar negativamente la calidad de los
 resultados.
 
 Un inconveniente de esto qes que al buscar por puntajes de documentos requiere
-de accesos aleatorios a las listas de resultados %[Suel et al. 2003].
+de accesos aleatorios a las listas de resultados~\citealt{suel2003odissea}. %[Suel et al. 2003].
 %[Zhang and Suel 2005]
+\citealt{zhang2005efficient}
 investigó más tarde la combinación de de búsquedas con procesamiento de los
 ``top'' $k$ resultados junto con diferentes optimizaciones, indicando
 conclusiones importantes sobre que optimizaciones pueden ser apropiadas para
 consultas de diferentes largos.
 %[Balke et al. 2005] 
+\citealt{balke2005progressive}
 muestra que el procesamiento de sólo los ``top'' $k$ resultados puede también
 ser efectiva en redes P2P con índices locales agregados.
 
@@ -135,12 +137,12 @@ ser efectiva en redes P2P con índices locales agregados.
 %matter since such documents would not rank high for queries for the other non-top
 %terms they contain anyway.
 
-\paragraph{Top k result storing} % [Tang et al. 2002; Tang and Dwarkadas 2004; Skobeltsyn and %Aberer 2006; Skobeltsyn et al. 2007; Skobeltsyn et al. 2009]
+\paragraph{Top k result storing~\cite{tang2004hybrid, skobeltsyn2006distributed, skobeltsyn2009query, skobeltsyn2007query}} % [Tang et al. 2002; Tang and Dwarkadas 2004; Skobeltsyn and %Aberer 2006; Skobeltsyn et al. 2007; Skobeltsyn et al. 2009]
 Una forma de adelantarse un paso adelante es sólo almacenar los ``top'' $k$
 resultados para una consulta (o término) dentro del índice.
-%[Skobeltsyn and Aberer 2006]
+\citealt{skobeltsyn2005distributed}%[Skobeltsyn and Aberer 2006]
 utiliza este método como medio para reducir aún más el tráfico consumido.
-Otro método similar es abordado por %[Tang and Dwarkadas 2004] 
+Otro método similar es abordado por~\citealt{tang2004hybrid} %[Tang and Dwarkadas 2004] 
 el cual almacena publicaciones sólo de los términos ``top'' de un documento.
 Ellos suponen que mientras la indexación de sólo los términos ``top'' puede
 degradar la calidad de los resultados de búsqueda, es más probable que esto no
