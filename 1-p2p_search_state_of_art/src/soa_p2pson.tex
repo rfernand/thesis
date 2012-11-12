@@ -1,0 +1,38 @@
+\input{src/intros/4-soap2pson}
+
+\section{Implementaciones de redes sociales Peer-to-Peer}
+\label{sec:implementaciones}
+
+En lo referente a sistemas enfocados principalmente a la mantención de redes
+sociales, no son muchos muchos los sistemas que se han implementado. A
+continuación veremos las características de redes sociales P2P u otros
+servicios con funcionalidades similares que actualmente han salido o se encuentran en desarrollo.
+
+\subsection{PeerSoN}
+PeerSoN~\footnote{http://www.peerson.net}~\cite{buchegger:peerson}~\cite{buchegger:2009:pps:1578002.1578010}  es un prototipo de estructura para redes sociales
+Peer-to-Peer que busca asegurar la privacidad de los usuarios y potenciar la
+comunicación directa entre cada usuario.
+
+Su arquitectura está basada en 2 capas, una para la búsqueda y otra para el almacenamiento de la
+información. Considera la asignación de identificadores únicos para cada
+usuario, procedimientos de entrada, envío y obtención de archivos y el manejo
+de mensajes asincrónicos.
+
+\paragraph{Almacenamiento}
+La capa de almacenamiento consiste en los peers en sí, los cuales, una vez
+encontrados por la capa de búsqueda, pasan a juntar y enviar la información
+directamente entre sí, distribuyendo réplicas de éstos
+en la red para aumentar la disponibilidad de los datos. 
+
+\paragraph{Seguridad}
+PeerSoN~\cite{buchegger:peerson} basa su seguridad en encriptación simétrica y asimétrica. La
+información primero es encriptada usando una llave simétrica, y luego esta
+llave es encriptada con las llaves públicas de los recipientes. Los
+identificadores de los usuarios son encriptados junto con las llaves
+simétricas, siendo todo enviado con la información encriptada.
+
+\paragraph{Búsqueda}
+ La capa de búsqueda almacena la información requerida para
+encontrar a los usuarios y a la información que éstos tienen, utilizando un
+DHT\ref{sec:p2p_estructured} para ello (OpenDHT~\cite{Rhea:2005:OPD:1080091.1080102}).
+

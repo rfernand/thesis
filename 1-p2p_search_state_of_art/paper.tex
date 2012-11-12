@@ -1,0 +1,137 @@
+%\documentclass[letter, 12pt]{report}
+\documentclass[conference]{IEEEtran}
+%\usepackage{usmtesis}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage{enumerate}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{color}
+\usepackage{fancyvrb}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{slashbox}
+
+\definecolor{red}{rgb}{1,0,0}
+\definecolor{green}{rgb}{0,1,0}
+\definecolor{blue}{rgb}{0,0,1}
+\newcommand{\blue}{\textcolor{blue}}
+\newcommand{\red}{\textcolor{red}}
+\newcommand{\green}{\textcolor{green}}
+\newtheorem{mydef}{Definición}
+
+\lhead{Estado del arte} %Parte superior izquierda
+\rhead{\br \it Búsquedas en redes P2P}
+\lfoot{} %Parte inferior izquierda.
+\cfoot{} %Parte inferior central
+\rfoot{\bf \thepage} %Parte inferior derecha
+\renewcommand{\footrulewidth}{0.4pt} %Linea de separacion inferior
+
+\lstset{ %
+language=Octave,                % the language of the code
+basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+numbers=left,                   % where to put the line-numbers
+numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+stepnumber=1,                   % the step between two line-numbers. If it's 1, each line 
+numbersep=5pt,                  % how far the line-numbers are from the code
+backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+frame=single,                   % adds a frame around the code
+tabsize=2,                      % sets default tabsize to 2 spaces
+captionpos=b,                   % sets the caption-position to bottom
+breaklines=true,                % sets automatic line breaking
+breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+title=\lstname,                 % show the filename of files included with \lstinputlisting; also try caption instead of title
+escapeinside={\%*}{*)},         % if you want to add a comment within your code
+morekeywords={*,...}            % if you want to add more keywords to the set
+}
+
+
+\title{Búsqueda en  redes P2P}
+
+\author{
+\IEEEauthorblockN{
+Rodrigo G. Fernández\IEEEauthorrefmark{1}
+}
+\IEEEauthorblockA{
+\IEEEauthorrefmark{1}Computer Systems Research Group~\cite{CSRG}, Universidad Técnica Federico Santa María, Av. ~España~1680, Valparaíso, Chile
+%\IEEEauthorrefmark{2}Centro de Robótica~\cite{CR}, Universidad Técnica Federico Santa María, Av. ~España~1680, Valparaíso, Chile
+}
+}
+
+\begin{document}
+
+%\draft
+%\nofront 
+
+%\profguia{Xavier Bonnaire}
+%\profcorr{Horst Von Brand}
+%\beforepreface
+
+%\titlep
+\pagestyle{empty}
+\maketitle\thispagestyle{empty}
+
+
+%\tableofcontents
+
+%\begin{dedication}
+%\center Al desinteresado de alma y al corazón que no conoce razón.
+%\end{dedication}
+%
+%\prefacesection{Agradecimientos}
+%A todos los que me conocieron:
+%Agradesco a todos los que me han acompañado durante mi estadía en esta
+%universidad, de verdad que me han significado mucho para mi, y gracias a
+%ustedes he logrado aprender muchas cosas que sólo nunca hubiera alcanzado.
+%
+%\prefacesection{Resumen}
+%\input{src/resumen.tex}
+%\newpage
+%
+%\prefacesection{Abstract}
+%\input{src/abstract.tex}
+%\newpage
+
+%\afterpreface
+
+
+%\renewcommand{\chaptername}{Capítulo}
+%\chapter{Introducción}
+\section{Introducción}
+\label{sec:intro}
+\input{src/intro}
+
+\section{Desafíos de un sistema de búsqueda P2P}
+\label{sec:challenges}
+\input{src/challenges}
+
+%\chapter{Estado del Arte: Sistemas de indexación}
+\section{Estado del Arte: Sistemas de indexación}
+\label{sec:soa_indexing}
+\input{src/soa_indexing}
+
+%\section{Estado del Arte: Rankeo de resultados}
+%\label{sec:soa_ranking}
+%\input{src/soa_ranking}
+
+\section{Estado del Arte: Selección de $k$ resultados}
+\label{sec:soa_top_results}
+\input{src/soa_top_results}
+
+
+%\chapter{Conclusiones y trabajo futuro}
+%\label{sec:conclusiones}
+%\input{src/conclusiones}
+
+\appendix
+
+%\renewcommand{\bibname}{Bibliografía}
+\bibliographystyle{plain}
+\bibliography{../bib/article,../bib/paper,../bib/url}
+\end{document}

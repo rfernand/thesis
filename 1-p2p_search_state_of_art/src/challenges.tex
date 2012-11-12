@@ -1,0 +1,47 @@
+El costo de pasar de un sistema centralizado a uno P2P son principalmente la
+utilización de algoritmos más complejos, problemas de seguridad y
+vulnerabilidades que permiten el abuso del sistema [Lua et al. 2005]
+
+%1- que es una red p2p
+  %Un nodo es un computador conectado a la red....
+
+\subsubsection{Arquitectura}
+
+Hay múltiples arquitecturas posibles para una red p2p. La elección de una de
+ellas afecta la forma en que pueden realizarse búsquedas sobre la red. Para ser
+capaces de buscar, se requiere un índice y una forma de calzar las consultas
+contra las entradas de éste índice. A pesar de las diferentes aplicaciones que
+se les pueda dar a las búsquedas en cada aplicación, los desafíos que se
+enfrentan son los mismos: mantener una baja latencia mientras  mantienen las
+propiedades benéficas de la red p2p, como la auto-organización y el balanceo de
+carga [Daswani et al. 2003].
+Basado en ésto, existen varias subtareas que afectan la latencia:
+
+\subsubsection{Indexación}
+  ¿Quién construye y actualiza el índice?
+  ¿Donde se almacena y cual es el costo de su mantención?
+
+  Los nodos involucrados en la estructuración de la información tienen una
+carga de procesamiento mas alta que los demás. Sólo puede exister un gran
+índice global, o cada nodo puede indexar su propio contenido.
+Nodos pueden especializarse en sólo proveer espacio de almacenamiento si sólo
+completan el índice, o pueden hacer ámbos. Donde el índice es almacenado
+también afecta el ruteo de la consulta.
+
+
+\subsubsection{Ruteo de la consulta}
+  ¿Por que camino la consulta se enviará desde un nodo a otro que sea capaz de
+  contestar la consulta?
+
+  Caminos largos son costosos  en términos de latencia, y links y/o
+computadoras lentas empeoran ésto. Por otro lado, la topología de la capa de red restringe los
+posibles caminos a tomar.
+
+
+\subsubsection{Procesamiento de la consulta}
+  ¿Que nodo ejecuta el actual procesamiento de la consulta? 
+    (generación de resultados por una específica consulta
+
+  El tener más nodos involucrados en el proceso de la información aumenta la
+latencia y hace la fusión de los resultados más compleja. Sin embargo, menos
+  nodos involucrados aumenta la probabilidad de que resultados importantes sean ignorados.

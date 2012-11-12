@@ -1,0 +1,128 @@
+%\input{src/intros/soa_indexing}
+
+\subsection{Almacenamiento de los índices.}
+\label{sec:index_storage}
+    
+
+    A la hora de indexar los documentos, dependiendo de la forma en
+    que ésto se realice serán los costos de red incurridos en la busqueda.
+    Si consideramos que los índices serán realizado por documento, repartiendo
+    los documentos entre los usuarios del sistema, cada uno mantendría un índice
+    invertido de forma local. Por ello, cada consulta debe ser distribuida
+    hacia todos los nodos del sistema generando una inundación innecesaria de paquetes en el sistema.
+    
+    Si en cambio se particionan los índices según las palabras claves que
+    aparecen en cada documento, un DHT puede ser usado para mapear una palabra
+    con el nodo responsable de éste.
+    El problema de ésto es que si no se ordena y limita los resultados de una búsqueda, una consulta de millones de resultados conllevaría a un enorme
+    costo de bando de ancha de la red. Además, una consulta por varias palabras
+    claves requeriría del envío sobre la red de los diferentes índices de parte
+    de cada nodo responsable, realizando posteriormente el cruze  de la
+    información resultante. En el caso de de pocos resultados, esto no es un
+    gran problema, pero cruzar índices de billones o millones de resultados entre
+    sí es complejo.
+
+    Si vemos las restricciones de almacenamiento de los índices en un DHT y lo
+    aplicamos al caso de Twitter, tenemos que, con
+    340 millones de tweets por día, en un año tenemos alrededor de 124 Billones de
+    documentos con un largo de hasta 140 carácteres cada uno. Si consideramos
+    un promedio de 15 palabras por tweet, un índice invertido de estos
+    contendría $124 * 10^9 * 15 = 1860 * 10^9$ identificadores, una cifra
+    considerable si pensamos que es similar en orden de magnitud al número de
+    índices manejados por google en el año 2003.
+    Ahora, en un DHT, un identificador, que es una llave con la cual puede
+    obtenerse el documento, es normalmente un hash de 20 bytes del contenido del
+    documento.
+    Si consideramos ese peso por cada índice a almancenar en el sistema,
+    tenemos en total alrededor de $4 * 10^{13}$  bytes (40 TB). Ahora, gracias
+    a la escalabilidad de este tipo de sistema, los índices pueden ser repartidos
+    entre todos los usuarios de la red. Considerando la cantidad de usuarios de
+    Twitter (140 millones de usuarios), tenemos que cada uno de ellos sólo
+    debería dedicar para la indexación de archivos  alrededor de 30 MB, lo cual
+    es un costo ínfimo considerando las capacidades de almacenamiento de hoy en
+    día.
+
+
+\subsection{Problemas encontrados}
+
+\begin{enumerate}
+    \item Falta de mecanismos eficientes para la realización de búsquedas complejas.
+\end{enumerate}
+
+  \subsubsection{Falta de mecanismos eficientes para la realización de búsquedas complejas}
+
+     Existen un gran rango de sistemas de indexación propuestos, los cuales pueden clasificarse en
+    dos tipos: las \textit{sobre DHTs} y las \textit{dependientes del sistema de red}.
+    Las primeras permiten una fácil implementación sobre cualquier DHT existente,
+    haciendo uso de las interfaces genéricas que éstos proveen, sin hacer modificación
+    alguna al sistema de red por sobre el cual está montado. Por el contrario, las
+    otras soluciones están estrechamente ligadas con el sistema de red en el cual
+    fueron implementados, normalmente haciendo uso de modificaciones a los otros
+    sistemas con los que interactúan de forma de hacer posible su funcionamiento
+    y/o optimizar el rendimiento de sus funcionalidades.
+    Dos puntos son críticos para el rendimiento de un sistema de
+    búsquedas sobre un DHT, la \textit{eficiencia de la consulta} y el
+    \textit{costo de mantención del índice}. En redes sociales, cada entrada y
+    salida de un nodo usualmente resultan en operaciones de inserción o borrado
+    en el sistema, a la vez que la cantidad de entradas y salidas dentro del
+    sistema ser tan alto como la cantidad de consultas que se realizan. Esto
+    significa que cada actualización en el sistema requiere de actualizaciones de
+    los índices de los datos, haciendo que el costo de la mantención del índice un
+    problema no menor. Por ello, se necesita que el sistema de indexación de datos
+    sea eficiente tanto con los tiempo de búsqueda como con el costo de mantención
+    del mismo. Sin embargo, muchos de los sistemas existentes se enfocan en bajos
+    tiempos de búsqueda a cambio de un mayor costo de mantención, manteniendo un costo prohibitivamente alto
+    que vuelve poco escalable al sistema P2P.  % dentro de estas soluciones, podemos mencionar a:
+
+    Dentro de los métodos de indexación que permitan realizar
+    búsquedas complejas (LIGHT~\cite{journals_tkde_TangZX10},
+    DRing~\cite{hidalgo2011dring}), también existen diversas propuestas para mejorar otros tipos de
+    búsquedas dentro de la red (~\cite{5345647}, ~\cite{Ng02peerclustering},
+    ~\cite{conf:infocom:SripanidkulchaiMZ03}).
+    %%Otros sistemas que proponen eficiencia por ambos lados, como 
+    
+    %\begin{itemize}
+        %\item LIGHT
+        %\item ...
+        %\item 1- DHT de búsquedas (LIGHT) + CORPS
+    %\end{itemize}
+    
+    
+    
+    %% TODO: Sacar bien el problema del paper de LIGHT
+    %% El problema está en que todavía los métodos de indexación siguen siendo muy
+    %% costosos para su implementación, creciendo exponencialmente su 
+    
+    %  En~\cite{5345647} se presenta un algoritmo de búsqueda Peer-to-Peer que utiliza el
+    %conocimiento de los intereses de los usuarios para agruparlos en grupos para
+    %encontrar contenidos de características similares. El algoritmo se ajusta
+    %dinámicamente a las diferentes entradas y salidas de los usuarios, dividiendo o
+    %juntando grupos a medida que los interés vallan cambiando. En comparación con
+    %otros algoritmos de búsqueda como el
+    %firework method~\cite{Ng02peerclustering}
+    %y interest-based shortcut method~\cite{conf:infocom:SripanidkulchaiMZ03}
+    % tiene una mayor robustez frente a una
+    %red con altas tasas de entrada y salida de usuarios.
+    
+    
+%    \subsubsection{Sistemas de subscripción/publicación}
+%    
+%    Una alternativa para la obtención del contenido de los usuarios entre sí sin
+%    tener que realizar una búsqueda específica por el nuevo contenido compartido,
+%    es la implementación de sistemas de subscripción, los cuales permites abstraer
+%    al que publica de los problemas de distribución del contenido hacia los
+%    subscriptores (o \textit{seguidores}) del mismo. Existen dos tipos de sistemas
+%    de subscripción; los basados en tópicos y los basados en el contenido. Los
+%    primeros, los generadores de contenido organizan la información publicada en tópicos a los cuales los otros
+%    usuarios se suscriben. En cambio, los basados en tópicos publican el contenido
+%    abiertamente a todos los suscriptores, siendo ellos los que pasan a filtrar el
+%    contenido, según ciertos tópicos definidos por cada uno de los receptores de la
+%    información.
+%    
+%    % TODO:
+%    % mencionar porque estos sistemas son importantes (sistema de notificaciones y
+%    % seguimiento de actualizaciones entre los usuarios)
+%    % y los problemas involucrados en una red social p2p
+%    
+%    %%\subsection{No existen una precondición de confianza entre los nodos}
+    

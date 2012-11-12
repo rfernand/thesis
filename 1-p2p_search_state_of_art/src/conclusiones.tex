@@ -1,0 +1,257 @@
+%# Intro
+%#SOA SN
+%# SOA P2P
+
+Las soluciones utilizadas por los sitios de redes sociales
+centralizados no es compatible con el esquema P2P, debido a las grandes
+diferencias de como se distribuye la información y se mantiene la arquitectura
+del sistema.
+
+Los sistemas P2P más conocidos son capaces de proveer una capa de red que no
+dependa de servidores centralizados, pero no suplen por si solos las
+funcionalidades necesarias para cubrir los requerimientos
+especializados de una red social P2P. Subsistemas con servicios especializados
+son requeridos para el manejo del almacenamiento, búsqueda de la información,
+manejo de permisos de usuario, seguridad contra ataques, etc., agregando una
+complejidad adicional al diseño de la arquitectura del sistema, junto con
+nuevos costos para la red que todavía no han sido investigados a cabalidad.
+
+%que surgen de la falta de la precondición de confianza entre todas las entidades que mantienen el sistema.
+
+%# SOA P2PSN
+Analizando las diferentes propuestas de redes sociales P2P actuales, nos
+encontramos que no se encuentran desarrolladas con la madurez  necesaria para hacer
+frente a todos los problemas identificados. 
+
+%#peerson
+En PeerSoN, el sistema de encriptación utilizado es muy básico, requiriendo para poder compartir
+un dato a grupo una cantidad de procesamiento proporcional a la
+cantidad de usuarios. Además, en caso de modificación del grupo, se requeriría
+la reencriptación de todos los archivos compartidos entre sí, con todos los
+costos que esto significaría. En el caso del sistema de búsqueda, al basarse en
+un DHT sin mecanismos adicionales, no permitiría búsquedas complejas o de más
+de una dimensión, dificultando el proceso de establecimiento conexiones entre
+la red.
+
+%# Safebook
+Safebook requiere de diferentes niveles de confianza entre un usuario y sus
+conexiones dentro de la red social, y almacena réplicas de los datos personales
+entre los amigos más cercanos, pudiendo haber problemas de disponibilidad de
+los datos en los momentos en que éstos no se encuentren en linea. Para la identificación requiere de un servicio 
+externo que pueda ser confiado para la asignación de ID únicas. La transmisión
+de mensajes a través de la red se realiza anonimizando al que envía y recibe el
+mensaje, aumentando el costo y tiempo de envío de cada dato por cada salto que
+de entre nodo y nodo.
+
+%#Diaspora
+%Diaspora, no siendo un servicio completamente descentralizado, posee el
+%problema de la mantención de los servidores públicos en donde se mantiene la
+%información, siendo pocos los que hasta el día de hoy se mantienen en linea, y
+%surgen dudas sobre el destino de los datos depositados en ellos. En la realidad
+%son muy pocos los que tienen el conocimiento y los recursos para levantar su
+%propio \textit{pod} para mantenerse en la red social. Estas son algunas de las
+%razones por la cual no vemos un gran crecimiento en la cantidad de usuarios en
+%la red social, y a menos que la situación cambie, se ve difícil una 
+%implementación exitosa basada en su arquitectura.
+
+
+%para la generación de X llaves unalmacenamiento
+%requerido por dato escala proporcionamente a la cantidad de usuarios con el
+%cual el dato se quiere compartir. permite compartir información a grupos
+%de usuarios
+
+%%%%%%%%%% PROBLEMATICAS MAS IMPORTANTES
+
+
+%%Dentro de los problemas que se encuentran sin una solución definitiva y
+%%abiertos a una mayor investigación, podemos nombrar:
+Analizando las problemáticas encontradas, podemos concluir que quedan varios
+desafíos complejos por resolver, entre los cuales se encuentran:
+%# Problems?
+
+\begin{enumerate}
+    %%\item Límite del espacio de almacenamiento que los usuarios están dispuestos a compartir.
+    \item Lograr incentivar a los usuarios a que compartan recursos con el sistema.
+
+    Para lograr que el sistema se mantenga auto-sustentable y escale de forma
+    adecuada frente a un crecimiento de la información almacenada, pero no de nodos
+    dentro de la misma, sumado a que cada usuario tiene la capacidad de elegir
+    que recursos comparte con el sistema, podría llegar a producirse una la falta de recursos de
+    almacenamiento en la red si se enfrentan una cantidad considerable de
+    usuarios egoístas en el sistema. Esto es un problema complejo de resolver
+    debido a que el sistema no cuenta con un control central que pueda penalizar el
+    comportamiento de un usuario, dejando a los mismos usuarios la decisión de
+    penalizar o no este tipo de comportamientos. 
+
+    %%\item Falta de mecanismos eficientes para la realización de búsquedas complejas.
+    \item Elaboración de un subsistema de búsqueda de datos almacenados en la
+    red social que sea eficiente tanto como en sus búsquedas como en la mantención
+    de los índices.
+
+    Como ya fue mencionado anteriormente, lograr ambas propiedades en redes
+    basadas en un DHT es complejo debido a la pérdida de localidad de la
+    información, y dependiendo de no sólo la cantidad de dimensiones que se
+    requieran consultar, si no también del orden que éstas se consulten, el costo
+    de búsqueda de la información crece en peores casos de forma exponencial.
+    Considerando la inmensa cantidad de datos a indexar y la frecuencia con que
+    son modificados, la mantención del índice de datos no es una tarea trivial,
+    y requiere de algoritmos inteligentes que minimicen la cantidad de recursos
+    utilizados para ello. El problema que esto conlleva, es que es difícil
+    tener búsquedas optimizadas manteniendo un índice simple de los archivos,
+    por lo que muchas veces el minimizar el costo de mantención aumenta el costo y
+    eficiencia de las búsquedas en el sistema.
+    %%\item No existen una precondición de confianza entre los nodos.
+    %%\item Falta de un sistema de control que asegure la integridad de las operaciones en la red
+    %\item Elaboración de un sistema de control que permita asegurar la integridad de las operaciones en la red
+    %%\item No se cuenta con sistemas de control para asegurar la privacidad de los datos compartidos en el sistema.
+    \item Elaboración de un subsistema de control para asegurar la privacidad de los datos compartidos en el sistema.
+    
+
+    Como vimos anteriormente, las soluciones normalmente utilizadas para asegurar
+    los datos almacenados dentro de una aplicación no son aplicables en un ambiente
+    distribuido P2P. Es por ello que normalmente se utilizan sistemas basados en la
+    encriptación para poder mantener segura la información en estos sistemas.
+    Ahora, viendo el caso específico de redes sociales, los esquemas de
+    encriptación tradicionales no cuentan con todas las funcionalidades deseables
+    para la mantención del sistema. 
+
+    Las soluciones tradicionales de utilizar encriptación y llaves compartidas
+    entre las partes involucradas no cumplen actualmente con todas las
+    funcionalidades requeridas para tratar de forma eficaz y permitir al mismo
+    tiempo funcionalidades requeridas en grupos conformados por varios usuarios de
+    la red social. El tema es complejo debido a que no existe un método de
+    encriptación que su costo constante frente a diversa cantidad de usuarios y
+    que permita el manejo fino de permisos para cada archivo compartido.
+    
+    % esto se saco, pero podría agregarse una seción como estado del arte
+   % %encriptacion
+   % Analizando los sistemas de encriptación disponibles en la actualidad, la combinación de criptografía simétrica y asimétrica no tiene
+   % la suficiente eficiencia y funcionalidad para una red social P2P. CP-ABE es
+   % inferior a BE ya que ninguno de los CP-ABE logran soportar múltiples tópicos o
+   % atributos, acceso oculto a las estructuras de acceso y bajo costo de
+   % almacenamiento y costo computacional al mismo tiempo. Es por eso, que la
+   % propuesta de usar BE para la red social P2P por sobre las demás es prometedora,
+   % ya que no posee las características negativas de las demás, a pesar de no
+   % soporta la funcionalidad de encriptar para un grupo del cual uno no pertenece y
+   % para ``amigos de amigos''. 
+   % %\begin{itemize}
+   %     %\item .
+    %\end{itemize}
+    %%Además, si consideramos el problema de manejo de 
+    %%%\item Manejo de los diferentes privilegios de acceso y lectura para usuarios y grupos de usuarios.
+    %%%\item Mantención de datos actualizados en las diferentes réplicas frente a frecuentes salidas y entradas de usuarios
+    %%\item Falta de un sistema que permita la interacción entre agentes externos y la red social
+    \item Elaboración de un subsistema que permita interactuar con agentes externos a la red social.
+
+    El tema es complejo debido a que requiere de la existencia de una interfaz
+    estable que pueda hacer accesible la red P2P sin ser un nodo dentro de
+    ella desde el internet. Debido al alto dinamismo de estas redes y la
+    descentralización de la misma, no es posible utilizar un sólo nodo como
+    puerta de acceso a la red social. Y aún así, aunque se pudiera utilizar un
+    nodo especializado para ello o un conjunto de nodos para que agentes
+    externos accedan a la red social, se crearía un cuello de botella para el
+    acceso a ella con un costo que los usuarios no querrán pagar.
+    Además, se necesita poder monitorear y controlar las acciones que los agentes
+    externos realizan en la red social, de tal forma de poder bloquear ataques
+    y prevenir abusos de éstos hacia los usuarios de la red P2P.
+
+    % esto se saco, pero podría agregarse una seción como estado del arte
+    %%integración con otras apps
+    %%\paragraph{Integración con otras aplicaciones}
+    %La integración con otras aplicaciones también requiere un mayor desarrollo para
+    %el establecimiento de confianza entre los usuarios y los entes que las
+    %mantienen. De la misma forma que OAuth requiere de una entidad confiable para
+    %la autorización de aplicaciones dentro de un esquema centralizado, en el
+    %esquema distribuido cada usuario debe hacerse cargo de la autorización, siendo
+    %posible bajo DIBBE, pero abriendo la posibilidad de nuevas vulnerabilidades a
+    %ataques que no han sido estudiadas todavía.
+
+\end{enumerate}
+
+
+%%%%%%%%%%%%%%%%% TRABAJO FUTURO?
+
+%# Solutions?
+
+%identificacion
+%Los sistemas centralizados (ejemplos?)
+%Los sistemas distribuidos (ejemplos?)...
+%# Solutions?
+
+%resistencia ataques
+%Las defensas utilizadas para defenderse diferentes ataques en un servidor
+%combencional también es muy diferente al de una implementación P2P. Mientras
+%que las primeras son elaboradas en un ambien
+
+Otros temas que no fueron vistos anteriormente debido a que no se encuentran
+asociados directamente con las funcionalidades de las redes sociales, sino que
+nacen de vulnerabilidades y comportamientos no esperados de parte de agentes
+maliciosos, requeriría de un análisis especializado una vez que se hallan
+definido el funcionamiento de los diferentes subsistemas que mantendrían las
+funcionalidades del sistema. De todas formas, vale la pena mencionar que para
+el manejo y control de ataques y nodos maliciosos dentro de la red social,
+existen propuestas para utilizar las relaciones de confianza y colaboración
+entre los usuarios, pero no existen estudios concretos para la solución de éste
+tipo de problemáticas.
+
+
+%# between SOA P2P and SOA P2PSN
+Finalmente, podemos concluir que utilizando como base a los sistemas P2P
+estructurados, estos sistemas podrían extenderse para soportar funcionalidades
+más avanzadas, sin tener que sacrificar las características deseables que
+poseen (escalabilidad, robustez e independencia de otros sistemas), pero
+primero se necesitará resolver las problemáticas existentes. Mientras algunas de
+ellas pueden ser resueltas poniendo en práctica ciertas investigaciones, otras
+requerirán de más trabajo para poder llegar a ser resueltas.
+Aún así, existe la esperanza de que investigaciones en proceso encuentren soluciones que puedan
+enfrentar parte de estos problemas y continuar con el desarrollo de una red
+social P2P completamente distribuida.
+%, y probablemente podramos encontrar formas
+%de implementar una solución deseada si es que se sigue manteniendo con una
+%tendencia positiva.
+
+%%%## almacenamiento
+%%%\paragraph{Almacenamiento}
+%%\begin{enumerate}
+%% \item Control de usuarios maliciosos o \textit{free riders} que se niegan compartir espacio de almacenamiento con otros usuarios.
+%% \item Mejorar la disponibilidad de datos dentro de la red, especialmente los
+%%    relacionados con el perfil y datos privados de los usuarios para el
+%%    establecimiento de relaciones entre ellos.\\
+%%    %### disponibilidad
+%%    Considerando las diferentes estrategias para aumentar la disponibilidad de los
+%%    datos en la red, éstas requerirán ajustarse para alcanzar un equilibrio entre
+%%    los costos y beneficios que ofrezca. Es importante no aumentar innecesariamente
+%%    la cantidad de almacenamiento necesario para mantener la disponibilidad alta de
+%%    los datos, teniendo en cuenta que el sistema no debe presentar riesgos para la
+%%    privacidad de los datos de las personas.
+%% \item Mejorar la velocidad de carga y distribución de los datos, junto con el
+%%    costo de ancho de banda asociado a ello.\\
+%%    %### banda ancha
+%%    Son pocas las soluciones que tratan el problema de los costos de ancho de
+%%    banda para la distribución de los archivos por la red, siendo un problema que
+%%    variará de intensidad dependiendo mayoritariamente de la arquitectura implementada por el
+%%    sistema, especialmente por las políticas de transferencia de datos a través
+%%    de los nodos que se encuentren bajo NAT y que requieran de nodos intermediarios
+%%    para ser alcanzados.
+%%%## busquedas
+%%%\paragraph{Búsqueda}
+%%%## seguridad
+%%%\paragraph{Seguridad}
+%% \item Sistema de identificación de usuarios que permita manejar ataques del tipo
+%%    robo de identidad y clonación de perfiles.
+%% \item Disminución de los costos de encriptación y desencriptación del sistema
+%%    de encriptación utilizado, idealmente llegando a un costo constante, sin
+%%    depender de la cantidad de usuarios para los cuales se encripte el dato.
+%% %\item Que la adición y remoción de nuevos usuarios de un grupo no dependa de la cantidad de objetos compartidos en éste.
+%% %\item Tamaño del encabezado de encriptación no debe depender de la cantidad destinatarios, de tal forma que el peso de los archivos sea escalable.
+%% \item Implementación de operaciones de unión e intersección entre usuarios pertenecientes a diferentes grupos.
+%% % no estoy tan seguro:
+%% %\item Que sólo los usuarios autorizados puedan acceder a la lista de acceso (de la cabecera de encriptación). 
+%%     %\item Habilidad de encriptar para grupos de los cuales uno no es miembro.
+%%     %\item Habilidad de encriptar para ``amigos de amigos''.
+%%     %\item Habilidad que permita no revelar las estructuras de acceso en la cabecera de los objetos encriptados.
+%% \item Sistema de recuperación de llaves de acceso y otro tipo de información
+%%    relevante para la identificación del usuario con la red social.
+%%\end{enumerate}
+
+

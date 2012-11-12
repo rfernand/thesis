@@ -1,0 +1,66 @@
+%% TODO:
+%% La introducción está mal organizada. Se trata de explicar lo siguiente:
+%% - Cúal es el problema?
+    En un sistema centralizado, todos los algoritmos de búsqueda son completos,
+    debido a que la información es indexada bajo bases de datos en donde la
+    realización de consultas complejas no son un problema. Como poseen el
+    conociento completo de los índices y documentos almacenados en el sistema,
+    se puede sin grandes dificultades
+    ordenar los resultados obtenidos y presentarlos de una forma adecuada. Ahora, el
+    almacenamiento debe ser manejado por el sistema, al igual que
+    los costos de ancho banda requerido para contestar todas las consultas
+    requeridas, incurriendo a costos proporcionales a la cantidad de recursos
+    utilizados. 
+
+    A diferencia de los sistemas centralizados, el tema es especialmente complejo en redes basadas en DHT, principalmente
+    porque las tablas de hash uniforme destruyen el todo orden para la
+    localización de la información, quedando esta distribuida en cada nodo de
+    la red sin existir una relación entre ellos y la información que almacenan.
+    Para poder realizar búsquedas de éste estilo, es necesaria la
+    implementación de índices sobre los datos almacenados en ellas.
+
+    Por otro lado, como la información se encuentra distribuida entre los
+    diferentes nodos que conforman la red, no es fácil implementar un sistema
+    que ordene los resultados de cada búsqueda y entregue, por ejemplo, los 20
+    más importantes. 
+    Normalmente, los sistemas de
+    indexación que se proponen para redes P2P no tratan el problema del manejo de
+    miles de resultados, dejando ese trabajo al nodo que realizó la consulta.
+
+    Otro punto importante es que sobre la calidad de los resultados que deben
+    obtenerse. En el caso de una consulta con miles de resultados, el sistema
+    debe saber discriminar cuales son los más relevantes para el usuario, ordenados
+    según criterios implícitos o explícitos para ello.
+
+    Además de las funcionalidades básicas esperadas para este tipo de
+    búsquedas, se deben considerar que su implementación sea posible según
+    las capacidades del sistema. Por ello, debe
+    considerarse el almacenamiento requerido para la mantención de los índices
+    y los gastos de red requeridos para la realización de la búsqueda
+    en sí.
+
+%% - Porque es un problema importante o actual?
+
+    La búsquedas de datos dentro de las redes sociales  son de vital importancia para la formación de la
+    red. A través de búsquedas es como los usuarios
+    pueden encontrar a nuevos contactos dentro de la red y encontrar contenido
+    específico según las diferentes necesidades de cada usuario.  Para ello, es
+    necesario contar con un sistema que permita realizar búsquedas complejas.
+    Esto considera poder buscar elementos que se encuentren dentro de un cierto
+    rando de valores y/o que calcen con cierto conjunto de palabras claves.
+
+
+%% - Cuál es el objetivo de la memoria?
+
+%% -Al final hay que presentar la estructura de la memoria con los capítulos
+%% posteriores.
+
+A continuación, se desarrollará el trabajo con la siguiente estructura:
+
+En la Sección~\ref{sec:soa_indexing}
+.......
+En la Sección~\ref{sec:soa_ranking} 
+......
+ concluyendo y viendo el trabajo futuro
+en la Sección~\ref{sec:conclusiones}.
+
