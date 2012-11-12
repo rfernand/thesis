@@ -1,0 +1,148 @@
+
+
+%4.2.3. Limiting the Number of Results to Process with Top k Approaches. Processing only a
+%subset of items during the search process can yield performance benefits: less data
+%processing and lower latency. Various algorithms, discussed shortly, can be used to
+%retrieve the top items for a particular query without having to calculate the scores for
+%all the items. Retrieving top items makes sense as it has been shown that users of
+%Web search engines prefer quality over quantity with respect to search results: more
+%precision and less recall [Oulasvirta et al. 2009]. Top k approaches have been applied
+%to various architectures and at various stages in peer-to-peer information retrieval:
+
+Al realizar una búsqueda, los usuarios prefieren calidad por sobre cantidad de
+resultados. Por ello, obtener solo los objetos más relevantes para la
+búsqueda hace mucho sentido. %[Oulasvirta et al. 2009].
+Para limitar la cantidad de resultados obtenidos y mejorar la calidad de éstos,
+existen propuestas para obtener sólo los $k$ resultados mejor evaluados.
+
+El procesar sólo un subconjunto de los objetos durante una busqueda mejora el
+rendimiento al reducir la cantidad de información que se debe manejar, otorgando
+una menor latencia para las búsquedas.
+
+Dentro de los algoritmos propuestos para lograr esto, se encuentran:
+
+
+
+%
+%— Top k results requesting [Cuenca-Acuna et al. 2003]
+%A simple way to optimise the system is to only request the top results. Approaches
+%that use local indices always apply a variable form of limited result requesting im-
+%plicitly by bounding the number of hops made when flooding or by performing a
+%random walk that terminates. However, that number can also be explicitly set to
+%a constant by the requester as is done for the globally replicated index used by
+%[Cuenca-Acuna et al. 2003]. They first obtain a list of k search results and keep con-
+%tacting nodes as long as the chance of them contributing to this top k remains high.
+%The top results stabilise after a few rounds.
+
+\paragraph{Top k results requesting} % [Cuenca-Acuna et al. 2003]
+Una forma simple de optimizar un sistema es haciendo que sólo se pidan los
+resultados ``top''. Sistemas que usan índices locales siempre aplican una forma
+variable para limitar los resultados al limitar la cantidad de saltos a realizar
+cuando se busca por \textit{flooding} o a través de un \textit{random walk} que
+termina. Sin embargo, ese número también puede ser explícitamente puesto en una
+constante por quien realiza la consulta, como lo hecho por % [Cuenca-Acuna et al. 2003]
+para indices globalmente replicados. Ellos primero obtienen una lista de $k$
+resultados de búsqueda y continúan contactando nodos mientras que se mantenga una
+probabilidad alta de que éstos aporten a la lista de $k$ resultados ``top''. La lista de
+los ``top'' $k$ resultados se estabiliza después de unos cuantas rondas.
+
+%
+%— Top k query processing [Suel et al. 2003; Balke et al. 2005; Michel et al. 2005a;
+%Zhang and Suel 2005]
+%This approach has its roots in the database community, particularly in the work of
+%[Fagin et al. 2001]. Several variations exist, all with the same basic idea: we can
+%determine the top k documents given several input lists without having to examine
+%these lists completely and while not adversely affecting performance. This is often
+%used in cases where a distributed global index is used and posting lists have to be
+%intersected. The threshold algorithm is the most popular [Michel et al. 2005a; Suel
+%et al. 2003]. This algorithm maintains two data structures: a queue with peers to
+%contact for obtaining search results and a list with the current top k results. Peers in
+%the queue are processed one by one, each returning a limited set of k search results
+%of the form (document, score) sorted by score in descending order. For a distributed
+%global index these are the top items in the posting list for a particular term. The
+%algorithm tracks two scores for each unique document: worst and best. The worst
+%score is the sum of the scores for a document d found in all result lists in which
+%d appeared. The best score is the worst score plus the lowest score (of some other
+%document) encountered in the result lists in which d did not appear. Since all the
+%result lists are truncated, this last score forms an upper bound of the best possible
+%score that would be achievable for document d. The current top k is formed by the
+%highest scoring documents seen so far based on their worst score. If the best score
+%of a document is lower than the threshold, which is the worst score of the docu-
+%ment at position k in the current top k results, it need not be considered for the
+%top k. The algorithm thus bases the final intersection on only the top k results from
+%each peer, which provably yields performance equivalent to ‘sequentially’ intersect-
+%ing the entire lists. This thus saves both bandwidth and computational costs without
+%negatively affecting result quality. A drawback is that looking up document scores
+%requires random access to the result lists [Suel et al. 2003]. [Zhang and Suel 2005]
+%later investigated the combination of top k query processing with several optimi-
+%sation techniques. They draw the important conclusion that different optimisations
+%may be appropriate for queries of different lengths. [Balke et al. 2005] show that top
+%k query processing can also be effective in peer-to-peer networks with aggregated
+%local indices.
+
+\paragraph{Top k query processing} % [Suel et al. 2003; Balke et al. 2005; Michel et al. 2005a; Zhang and Suel 2005]
+Este método tiene sus inicios en la comunidad en torno a las bases de datos,
+particularmente en el trabajo de %[Fagin et al. 2001].
+Múltiples variaciones existen, todas con la misma idea básica: es posible
+determinar los ``top'' $k$ documentos dadas muchas listas de entrada sin tener
+que examinarlas por completo y sin tener que affectar de forma negativa al
+rendimiento de la búsqueda. Esto es comunmente usado en presencia de índices
+globales distribuídos en casos donde listas con publicaciones deben ser intersectadas.
+Dentro de los algoritmos propuestos, el \textit{threshold algorithm} es el más
+popular %[Michel et al. 2005a; Suelet al. 2003]
+Este algoritmo mantiene dos estructuras para la información: una cola con
+\textit{peers} para contactar y obtener resultados de búsquedas y una lista con
+los actuales ``top'' $k$ resultados. \textit{Peers} en la cola son procesados
+de a uno, cada uno retornando un set limitado de $k$ resultados de búsqueda con
+la forma (documento, puntaje), ordenados según su puntaje en orden descendiente.
+Para un índice global distribuído estos son los objetos ``top'' de una lista de
+publicaciones para un término en particular. El algoritmo mantiene dos puntajes
+para cada documento único: el ``mejor'' y el ``peor''. El ``peor'' puntaje es la suma de
+los puntajes de un documento $d$ encontrado en todas las listas de resultados en
+donde $d$ aparece. El ``mejor'' puntaje es el peor puntaje más el menor puntaje
+(de algún otro documento) encontrado en la lista de resultados en donde $d$
+\textit{no} aparece. Como cada lista de resultados es cortada, este último
+puntaje forma una cota supeiror del mejor puntaje posible que puede ser obtenido
+por el documento $d$. El $k$ `top'' actual  es formado por los documentos con más altos
+puntajes vistos según el ``peor'' puntaje de cada uno. Si el ``mejor'' puntaje
+de un documento es menor que el umbral definido, siendo este umbral definido por el ``peor'' puntaje del
+documento en posición $k$ en la lista de $k$ ``top'' resultados, el documento no
+necesita ser considerado para la lista de ``top'' $k$ elementos.
+
+El algoritmo se basa en la intersección final de sólo los ``top'' $k$ resultados
+de cada \textit{peer}, lo cual probablemente entrega un rendimiento equivalente
+a intersectar secuencialmente las listas completas. De esta forma se ahorra
+ancho de banda y costos de cómputo sin afectar negativamente la calidad de los
+resultados.
+
+Un inconveniente de esto qes que al buscar por puntajes de documentos requiere
+de accesos aleatorios a las listas de resultados %[Suel et al. 2003].
+%[Zhang and Suel 2005]
+investigó más tarde la combinación de de búsquedas con procesamiento de los
+``top'' $k$ resultados junto con diferentes optimizaciones, indicando
+conclusiones importantes sobre que optimizaciones pueden ser apropiadas para
+consultas de diferentes largos.
+%[Balke et al. 2005] 
+muestra que el procesamiento de sólo los ``top'' $k$ resultados puede también
+ser efectiva en redes P2P con índices locales agregados.
+
+%— Top k result storing [Tang et al. 2002; Tang and Dwarkadas 2004; Skobeltsyn and
+%One step further is only storing the top k results for a query, or term, in the index.
+%[Skobeltsyn and Aberer 2006] take this approach as a means to further reduce traffic
+%consumption. Related to this is the approach of [Tang and Dwarkadas 2004] that
+%store postings only for the top terms in a document. They state that while indexing
+%only these top terms might degrade the quality of search results, it likely does not
+%matter since such documents would not rank high for queries for the other non-top
+%terms they contain anyway.
+
+\paragraph{Top k result storing} % [Tang et al. 2002; Tang and Dwarkadas 2004; Skobeltsyn and %Aberer 2006; Skobeltsyn et al. 2007; Skobeltsyn et al. 2009]
+Una forma de adelantarse un paso adelante es sólo almacenar los ``top'' $k$
+resultados para una consulta (o término) dentro del índice.
+%[Skobeltsyn and Aberer 2006]
+utiliza este método como medio para reducir aún más el tráfico consumido.
+Otro método similar es abordado por %[Tang and Dwarkadas 2004] 
+el cual almacena publicaciones sólo de los términos ``top'' de un documento.
+Ellos suponen que mientras la indexación de sólo los términos ``top'' puede
+degradar la calidad de los resultados de búsqueda, es más probable que esto no
+importe, ya que tales documentos de todas formas no quedarían dentro del ranking ``top''
+dentro de las consultas realizadas por los otros términos no ``top'' que continen.
