@@ -1,0 +1,87 @@
+% old stuff
+The subject of securely establishing stable identities in P2P
+systems has been previously studied, for instance by Aberer,
+Datta and Hauswirth [5]. The need for identities mainly arose
+from technical concerns, such as handling dynamic IP address
+assignment, or avoiding Sybil attacks [6]. Authentication of a
+node is done via a signature key, automatically generated and
+stored on the node.
+
+Traditionally, P2P networks identified the different nodes that compose the
+system, but not the user behind each one of them as a different being.
+As P2P systems grow in funciontalities, the need to identify users inside the
+network arose.
+
+
+P2P networks are conformed by nodes with unique identifiers that map to their
+own IP address. That way is easy to differenciate them between each others, but
+it is not enough to handle user identities. To let an user log in to the
+network using different nodes, a user identity \textit{proof} is needed. That
+is because all nodes the P2P networks shares the same functionalities, so
+anybode can identify as an user if it can prove it for the other peers. For
+this to work, the proof of identity need to be:
+\begin{description}
+  \item[Unique] The proof and identity has to be unique for each user in the network.
+
+    %Unique identifiers can be obtained 
+    % HASHES(username) maps to a trusted ring of nodes that determines if the
+    % username is taken or not
+  \item[Verificable for everyone]  Each node has to be able to verify the proof
+    handled by other node, making the relation with the corresponding user if it
+    exists.
+    % The information to verify the proof has to be in the p2p network. 
+    % Trusted ring of nodes that store the information and give it to the nodes
+    % that wants to verify the user.
+  \item[Impossible to guess or break] They way to obtain the proof should not
+    be guessed by other node or obtained without specific knowledge of the
+    corresponding user.
+    % this part is hard. It cannot be impossible, but it can be very very very
+    % hard to break without having the right private user knowledge.  Cryptographic proof.
+\end{description}
+
+
+
+
+As P2P systems began providing more complex functional-
+ity [2], [3], [4], [7], the need to authenticate users, rather than
+nodes, arose. It seems that often, authentication via a signature
+key has been carried over to this problem. While a solution
+of automatic identification of a node is preferable as long as
+users use a single device, equating a node with a user fails as
+users increasingly access services from multiple devices.
+Illustrative is the case of backup systems, where an impor-
+tant use case is to restore data on a different system from where
+it was backed up. Here, two different approaches to authen-
+tication have been taken. All approaches build on encrypting
+backed up content, and the approaches vary in whether the
+keys are randomly derived [7], or derived from a password [8].
+In the former case, a user must manually back the keys up,
+as these keys are required to restore the backup. The systems
+deriving a key from a password are related to our proposed
+protocol, and use some related techniques. However, to the
+best of our knowledge, they do not consider the additional
+protocols required surrounding password authentication, such
+as remembered logins, and recovering lost passwords.
+Some P2P storage systems also use techniques which are
+related to ours. For example, the DHT-based systems GNUnet
+and Freenet use keyword strings to derive a public-private key
+pair whose private key is used to sign data and the hash of
+the public key to identify the data in the storage. Both of
+these systems use a keyword string as a seed to a pseudo-
+random number generator that produces the key pair [9], [10].
+Knowing only the memorable keyword string the user can
+store and retrieve information.
+Related to forgotten passwords, recovery of information in a
+P2P scenario has been studied by Vu et al. [11] who proposed
+a combination of threshold-based secret sharing with delegate
+selection and encrypting shares with passwords.
+Frykholm and Juels [12] proposed a password-recovery
+mechanism based on security questions very similar to our
+protocol for the same task. They offer better, information-
+theoretic security properties, something not applicable to our
+scenario. We treat the subject of password change, which is not applicable to
+their scenario, although their proposal could be extended to support password
+change using our techniques.
+
+
+

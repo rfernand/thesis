@@ -1,0 +1,43 @@
+\documentclass[12pt]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+%\usepackage[dvips]{epsfig}
+\usepackage{graphics}
+\usepackage{url}
+\usepackage{ulem}
+\usepackage{beamerthemesplit}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usetheme{CambridgeUS}
+\setbeamercovered{transparent}
+
+\title{P2P user identification: username/password}
+\subtitle{}
+\author[R. Fernández]{Rodrigo Fernández \\ \small{\texttt{rfernand@inf.utfsm.cl}}}
+\institute[]{Universidad Técnica Federico Santa María}
+\titlegraphic{\includegraphics[height=1cm]{img/logo}}
+\date{\today}
+
+\begin{document}
+\bibliographystyle{plain}
+  \frame{\titlepage}
+  \frame{\tableofcontents}
+	\section{}
+  \input{src/1-intro}
+  \section{Estado del Arte}
+  \label{sec:soa}
+  \input{src/2-soa}
+  \section{Problemas en una Red Social P2P}
+  \label{sec:problemas_p2pson}
+  \input{src/3-problemas}
+  \section{Bibliografía}
+  \bibliography{src/url}
+\frame
+{
+	\vspace{2cm}
+	\begin{center}
+		\Large{EOF}
+	\end{center}
+}
+\end{document}

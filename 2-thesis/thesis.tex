@@ -1,0 +1,221 @@
+\documentclass[letter, 12pt]{report}
+\usepackage[spanish]{babel}
+\usepackage[centertags]{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{newlfont}
+\usepackage{charter}
+\usepackage{url}
+\usepackage{multirow}
+\usepackage{lscape}
+\usepackage[utf8]{inputenc}
+\usepackage{usmtesis}
+%\usepackage{xtocinc} %Include Table of Contents as the first entry in TOC
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage{color}
+\usepackage{fancyvrb}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{slashbox}
+
+\definecolor{red}{rgb}{1,0,0}
+\definecolor{green}{rgb}{0,1,0}
+\definecolor{blue}{rgb}{0,0,1}
+\newcommand{\blue}{\textcolor{blue}}
+\newcommand{\red}{\textcolor{red}}
+\newcommand{\green}{\textcolor{green}}
+\newtheorem{mydef}{Definition}
+
+\lhead{Thesis} %Parte superior izquierda
+\rhead{\br \it P2P user identification: username/password}
+\lfoot{} %Parte inferior izquierda.
+\cfoot{} %Parte inferior central
+\rfoot{\bf \thepage} %Parte inferior derecha
+\renewcommand{\footrulewidth}{0.4pt} %Linea de separacion inferior
+
+\lstset{ %
+language=Octave,                % the language of the code
+basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+numbers=left,                   % where to put the line-numbers
+numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+stepnumber=1,                   % the step between two line-numbers. If it's 1, each line 
+numbersep=5pt,                  % how far the line-numbers are from the code
+backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+frame=single,                   % adds a frame around the code
+tabsize=2,                      % sets default tabsize to 2 spaces
+captionpos=b,                   % sets the caption-position to bottom
+breaklines=true,                % sets automatic line breaking
+breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+title=\lstname,                 % show the filename of files included with \lstinputlisting; also try caption instead of title
+escapeinside={\%*}{*)},         % if you want to add a comment within your code
+morekeywords={*,...}            % if you want to add more keywords to the set
+}
+
+
+\title{P2P user identification: username/password}
+
+\author{Rodrigo German Fernández Gaete}
+
+\begin{document}
+
+\dedicate{
+...}
+
+%\draft
+%nofront 
+
+\profguia{Xavier Bonnaire}
+\profcorr{Horst von Brand}
+\beforepreface
+% NOT NEEDED
+%\titlep
+%\maketitle
+%\tableofcontents
+
+%\begin{dedication}
+%\center Al desinteresado de alma y al corazón que no conoce razón.
+%\end{dedication}
+
+\prefacesection{Thanks}
+%A todos los que me conocieron:
+%Agradesco a todos los que me han acompañado durante mi estadía en esta
+%universidad, de verdad que me han significado mucho para mi, y gracias a
+%ustedes he logrado aprender muchas cosas que sólo nunca hubiera alcanzado.
+%Un profesional no es alguien que va a
+%clases, aprueba asignaturas y obtener títulos, si no que es alguien que ha
+%aprendido a enfrentar y resolver los problemas de día a día, de tal forma de
+%aportar soluciones a la sociedad con las herramientas que posee de la mejor forma
+%posible.
+%Es por eso que agradezco de corazón a todos los que a lo largo de esta carrera permitieron que
+%mi formación no halla quedado en la pura teoría, si no que con su ejemplo y
+%dedicación me enseñaron lo que significa es un profesional integral.
+%
+%Entre todos los que me tocó conocer y compartir, me gustaría nombrar
+%especialmente a  mis compañeros
+%Cristián Maureira,
+%Cristian Fuentes,
+%Gabriel Zamora,
+%Pablo Espinoza,
+%Gabriela Martinez,
+%Álvaro Luzzi,
+%Rudyar Cortés,
+%Arturo Hoffstadt,
+%Renato Covarrubias,
+%Thomas Ernstorfer, 
+%Loreto Godoy,
+%Sergio Morales,
+%Kevin Dahl-skog,
+%Christopher Fernández,
+%Esteban Bombal,
+%Nicolás Galvez,
+%Nicol Rafalowski,
+%Diego Candel,
+%Patricia Trejo,
+%Marito,
+%Daniela López,
+%Sven von Brand,
+%Pamela Clunes,
+%Juan Manuel Zavala,
+%Claudio Salazar,
+%Katherine Rivera,
+%Ingancio Villacura,
+%Paolo Cabaleiro,
+%Yonathan Dossow,
+%Ximena Contreras,
+%Carlos Guajardo,
+%Matias Mora,
+%Mauricio Araya,
+%César Moltedo,
+%Arnaldo Garat,
+%Roberto Bonvallet,
+%Maximiliano Osorio,
+%Javier Olivares,
+%Paulina Silva,
+%Javiera Quiroz,
+%Miguel López,
+%Miguel Diaz,
+%Joao Fuentes,
+%Jonathan Antognini,
+%Jaime Oyarzún (mito),
+%Jaime Peldoza (nomito) y
+%Juan Pablo Podlech;
+%a mis profesores
+%Cecilia Reyes y
+%Horst von Brand;
+%a los funcionarios
+%Lidia Yañez,
+%Yanina Parra,
+%Miguel Varas y
+%Guardia Feliz;
+%y por último (pero no menos importante), una mención especial a mi familia, mis
+%padres y a mi
+%amada Verónica Rivera Vergara, que con paciencia y amor me han motivado durante
+%todos estos años. ¡Muchas gracias!
+
+%\prefacesection{}
+%\input{src/resumen.tex}
+%\newpage
+
+\prefacesection{Abstract}
+\input{src/abstract.tex}
+\newpage
+
+\afterpreface
+
+
+\renewcommand{\chaptername}{Chapter}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\chapter{Introduction}
+\label{sec:intro}
+\input{src/introduction}
+
+
+\chapter{P2P Networks}
+%label{sec:soa_p2p}
+%input{src/soa_p2p}
+
+\chapter{P2P Identification Schemes}
+%\label{sec:soa_p2p}
+%input{src/soa_p2p}
+
+%\chapter{Encriptación y seguridad de los datos en Redes P2P}
+
+%\chapter{Diseño de una red social P2P}
+%\label{sec:implementacion}
+%\input{src/6-implementacion}
+% p2p tradeoffs entre sistemas centralizados y distribuidos.
+% demostrar que sí vale la pena.
+% ventajas para el usuario y el proveedor.
+%\chapter{Experimentos y Resultados}
+%\label{sec:resultados}
+%\input{src/resultados}
+
+
+% desing
+
+% evaluation
+
+% conclusions
+
+
+\chapter{Conclusions}
+%\label{sec:conclusions}
+%\input{src/conclusions}
+
+\appendix
+
+\renewcommand{\bibname}{Bibliography}
+\bibliographystyle{plain}
+\bibliography{../bib/article,../bib/paper,../bib/url}
+\end{document}
