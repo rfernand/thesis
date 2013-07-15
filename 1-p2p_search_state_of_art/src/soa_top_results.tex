@@ -10,14 +10,13 @@
 %to various architectures and at various stages in peer-to-peer information retrieval:
 
 Al realizar una búsqueda, los usuarios prefieren calidad por sobre cantidad de
-resultados. Por ello, obtener solo los objetos más relevantes para la
-búsqueda hace mucho sentido~\citealt{oulasvirta2009more}. %[Oulasvirta et al. 2009].
+resultados. Por ello, en vez de entregar millones de resultados para una
+consulta, lo que se busca es obtener los objetos más relevantes para el usuario~\citealt{oulasvirta2009more}. %[Oulasvirta et al. 2009].
 Para limitar la cantidad de resultados obtenidos y mejorar la calidad de éstos,
 existen propuestas para obtener sólo los $k$ resultados mejor evaluados.
-
-El procesar sólo un subconjunto de los objetos durante una búsqueda mejora el
-rendimiento al reducir la cantidad de información que se debe manejar, otorgando
-una menor latencia para las búsquedas.
+Esto trae múltiples beneficios para el sistema. El procesar sólo un subconjunto
+de los objetos durante una búsqueda mejora el rendimiento al reducir la
+cantidad de información que se debe manejar, otorgando una menor latencia para las búsquedas.
 
 Dentro de los algoritmos propuestos para lograr esto, se encuentran:
 
@@ -37,14 +36,14 @@ Dentro de los algoritmos propuestos para lograr esto, se encuentran:
 \paragraph{Top k results requesting~\cite{cuenca2003planetp}} % [Cuenca-Acuna et al. 2003]
 Una forma simple de optimizar un sistema es haciendo que sólo se pidan los
 resultados ``top''. Sistemas que usan índices locales siempre aplican una forma
-variable para limitar los resultados al limitar la cantidad de saltos a realizar
-cuando se busca por \textit{flooding} o a través de un \textit{random walk} que
-termina. Sin embargo, ese número también puede ser explícitamente puesto en una
+variable para limitar los resultados. Por ejemplo, al limitar la cantidad de saltos a realizar
+cuando se busca por \textit{flooding} o a través de un \textit{random walk}.
+Sin embargo, ese número también puede ser explícitamente puesto en una
 constante por quien realiza la consulta, como lo hecho por~\citealt{cuenca2003planetp} % [Cuenca-Acuna et al. 2003]
 para índices globalmente replicados. Ellos primero obtienen una lista de $k$
 resultados de búsqueda y continúan contactando nodos mientras que se mantenga una
 probabilidad alta de que éstos aporten a la lista de $k$ resultados ``top''. La lista de
-los ``top'' $k$ resultados se estabiliza después de unos cuantas rondas.
+los ``top'' $k$ resultados se estabilizan después de unas cuantas rondas.
 
 %
 %— Top k query processing [Suel et al. 2003; Balke et al. 2005; Michel et al. 2005a;
@@ -84,7 +83,7 @@ los ``top'' $k$ resultados se estabiliza después de unos cuantas rondas.
 Este método tiene sus inicios en la comunidad en torno a las bases de datos,
 particularmente en el trabajo de~\citealt{fagin2001optimal} %[Fagin et al. 2001].
 Múltiples variaciones existen, todas con la misma idea básica: es posible
-determinar los ``top'' $k$ documentos dadas muchas listas de entrada sin tener
+determinar los ``top'' $k$ documentos dadas muchas listas de resultados sin tener
 que examinarlas por completo y sin tener que afectar de forma negativa al
 rendimiento de la búsqueda. Esto es comúnmente usado en presencia de índices
 globales distribuidos en casos donde listas con publicaciones deben ser intersectadas.
@@ -92,9 +91,9 @@ Dentro de los algoritmos propuestos, el \textit{threshold algorithm} es el más
 popular~\citealt{michel2005klee, suel2003odissea}. %[Michel et al. 2005a; Suelet al. 2003]
 Este algoritmo mantiene dos estructuras para la información: una cola con
 \textit{peers} para contactar y obtener resultados de búsquedas y una lista con
-los actuales ``top'' $k$ resultados. \textit{Peers} en la cola son procesados
-de a uno, cada uno retornando un set limitado de $k$ resultados de búsqueda con
-la forma (documento, puntaje), ordenados según su puntaje en orden descendiente.
+los actuales ``top'' $k$ resultados. Mientras los \textit{Peers} en la cola van
+siendo procesados, cada uno va retornando un set limitado de $k$ resultados de búsqueda con
+la forma (documento, puntaje), ordenados en orden descendiente según su puntaje.
 Para un índice global distribuido estos son los objetos ``top'' de una lista de
 publicaciones para un término en particular. El algoritmo mantiene dos puntajes
 para cada documento único: el ``mejor'' y el ``peor''. El ``peor'' puntaje es la suma de
