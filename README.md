@@ -1,4 +1,4 @@
 thesis
 ======
 
-magister thesis
+Personal repo for my magister thesis
