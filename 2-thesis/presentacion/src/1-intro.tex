@@ -1,3 +1,22 @@
+
+\begin{frame}
+\frametitle{Goals}
+%\framesubtitle{Characteristics}
+\begin{table}
+\begin{tabular}{p{7cm}p{3cm}}
+\begin{itemize}
+  \item Analize the security risks in using username/password identification in P2P networks. 
+  \item Check the different security schemes that can be used in a P2P network with malicious nodes.
+  \item Propose a P2P username/password identification system.
+\end{itemize}
+&
+\vspace{1.5cm}
+%\includegraphics[width=4cm]{img/p2p-unstructured}\\
+\end{tabular}
+\end{table}
+\end{frame}
+
+
 \begin{frame}
 \frametitle{P2P Networks}
 \framesubtitle{Characteristics}
@@ -107,6 +126,63 @@ Poor scaling, single point of failure, heavy administration overhead.
 
 \begin{frame}
 \frametitle{Trust in P2P networks}
+\begin{table}
+\begin{tabular}{p{7cm}p{3cm}}
+\begin{enumerate}
+    \item To deliver a valuable service in P2P applications, it
+is important to trust that the participants will act as requested.
+    \item We need to be sure that other peers will forward
+messages, and that the designated peers will indeed save the information
+correctly so that operations can be successful.
+\end{enumerate}
+&
+\vspace{1.5cm}
+\includegraphics[width=4cm]{img/malicious}\\
+\end{tabular}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Trust in P2P networks}
+\framesubtitle{Building Trust}
+%Consequently, the quality of service of applications may
+%be deteriorated due to message overhead or data loss.
+\begin{table}
+\begin{tabular}{p{7cm}p{3cm}}
+\begin{enumerate}
+    \item Complex since a P2P network includes untrusted nodes from an open environment.
+    \item Untrusted nodes may be faulty, malicious, and act together to attack the network.
+\end{enumerate}
+&
+\vspace{1.5cm}
+\includegraphics[width=4cm]{img/malicious}\\
+\end{tabular}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Trust in P2P networks}
+\framesubtitle{How to detect faulty nodes?}
+%Consequently, the quality of service of applications may
+%be deteriorated due to message overhead or data loss.
+\begin{table}
+\begin{tabular}{p{7cm}p{3cm}}
+\begin{description}
+    \item{Reputation systems:} Assess the past history of a
+peer by gathering feedback from nodes with previous interactions with this
+peer.
+    \item{Accountability:} Detects and exposes faulty nodes by
+creating non-repudiable records of every node’s actions.
+\end{description}
+&
+\vspace{1.5cm}
+\includegraphics[width=4cm]{img/malicious}\\
+\end{tabular}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Trust in P2P networks}
 \framesubtitle{Bizantine nodes}
 \begin{table}
 \begin{tabular}{p{7cm}p{3cm}}
@@ -124,6 +200,23 @@ Are all nodes that not behave as expected
 \end{tabular}
 \end{table}
 \end{frame}
+
+\begin{frame}
+\frametitle{Trust in P2P networks}
+\framesubtitle{Bizantine node tolerance}
+\begin{table}
+\begin{tabular}{p{7cm}p{3cm}}
+  P2P networks can achieve byzantine fault tolerance under $1/3$ byzantine
+  peers\\
+  A peer is honest only if the peers executes the protocol faithfully;
+  otherwise, the peer is faulty.
+&
+\vspace{1.5cm}
+\includegraphics[width=4cm]{img/bizantine_generals_problem}\\
+\end{tabular}
+\end{table}
+\end{frame}
+
 
 \begin{frame}
 \frametitle{Trust in P2P networks}
