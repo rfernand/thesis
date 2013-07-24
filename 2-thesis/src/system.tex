@@ -5,6 +5,84 @@
   manual backup of the keys
 \subsection{Keys derived from a password}
 
+\section{Resilience against malicious nodes}
+
+ \subsection{Reputation systems}
+Reputation systems mitigate the problem of malicious nodes in
+P2P networks, trying to build trust among the nodes. The key
+idea of a reputation system is to predict the future behaviour
+of nodes based on feedback about their past transactions [1]. A
+transaction is application dependent, for example forwarding a
+message in the network, buying an item in e-commerce services,
+share or store files, etc. After a transaction, the client node emits
+a recommendation that evaluates the behaviour of the other peer.
+The aggregation of these recommendations leads to a reputation
+value.
+A reputation system built on top of a DHT has the ability
+to compute a global reputation value for every node. Indeed
+all the recommendations about a single node can be handled
+consistently at a common location: either by a specific node
+or by a set of nodes. Among existing reputation systems for
+DHTs, we can cite: PeerTrust~\cite{peertrust}, WTR~\cite{wtr},
+Eigentrust~\cite{eigentrust},
+PowerTrust~\cite{powertrust} and CORPS~\cite{corps}
+
+Reputation systems have to deal with malicious nodes that:
+do not participate, collude with other malicious nodes and
+emit false recommendations. There are techniques to mitigate
+the impact of these attacks, such as the ones presented in
+TrustGuard~\cite{trustguard} and WTR~\cite{wtr}. Nevertheless, to our knowledge,
+none of the existing solutions to promote trust in P2P can be
+$100\%$ effective in detecting and blocking these attacks.
+
+It's assumed an $5\%$ error in the clasification of trusted nodes.
+
+
+\paragraph{CORPS trust model}
+They consider a probabilistic model of trust based on reputation.
+The reputation value $R(X)$ is the probability that node $X$ will
+be honest in the future. This reputation value is computed
+according to a list of recommendations emitted by nodes that
+have already carried out transactions with $X$.
+After each transaction, a node emits a recommendation
+about its peer. A node may lie: it may emit negative
+recommendations about a peer that behaves correctly, or
+positive recommendations about a malicious peer. Several nodes
+may collude to increase or decrease the reputation value of
+another node. These problems generate a deviation between
+the computed reputation of the node and its real behaviour. It is
+considered that this deviation depends on the function used to
+compute the reputation value and on the percentage of malicious
+nodes within the system.
+
+It assumes a reputation system in the overlay structure with the following properties:
+\begin{enumerate}
+  \item Every node $X$ has an associated reputation value $R(X)$
+  which represents the probability that $X$ is an honest node.
+  \item $R(X)$ is computed using the recommendations emitted
+  by nodes that have completed a transaction with $X$. Bad
+  recommendations have a stronger effect on $R(X)$ than
+  good ones. It should be more difficult for node to
+  increase its reputation value than to decrease it.
+  \item For every node $X$, $R(X)$ is highly available in the DHT.
+\end{enumerate}
+
+To avoid nodes that lie about a reputation value, it considers a reputation
+system that computes the reputation of nodes concurrently on different nodes.
+They decide individually if that node is reputable or not, using a voting
+scheme in case of disagreement. On the whole, assuming that there is a smaller
+percentage of malicious nodes in the network, the result avoids
+false statements about reputation.
+
+To maintain the same nomenclature used in CORPS, in all the following sections,
+we call a node $n_i \in TS$ a trusted node, even if there still remains a
+probability that this node's actual reputation is smaller than the threshold
+$\rho$.
+ 
+ 
+ 
+
+
 \section{Forgotten passwords}
 
 \section{Password-recovery mechanisms}
@@ -13,3 +91,4 @@
   shares with passwords
 
 \section{Password Change}
+
