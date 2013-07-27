@@ -80,7 +80,162 @@ probability that this node's actual reputation is smaller than the threshold
 $\rho$.
  
  
- 
+3.3 Self-Certification
+A trusted authority issues identity certificates in a
+centralized system. P. Dewan proposed a self-certification
+mechanism [12] that splits the trusted entity among the
+peers and enables them to generate their own identities in a
+decentralized reputation system. Certified Authority (CA)
+is run by each peer so as to issue an identity certificate(s)
+for itself. These self certified certificates are similar to
+SDSI certificates [9]. Each peer has its own reputation and
+the reputations of all peers collectively form the reputation
+of a CA.
+In Self-certification mechanism there is no need for
+centralized trusted entity which issues identities in a
+centralized system. There is no way to map the identity of
+a peer in the system to its real-life identity when they use
+self-certified identities. They remain pseudonymous in the
+system. The idea of making peers anonymous or
+pseudonymous is desirable in P2P networks, but it can also
+backfire sometimes.
+In Self-certification mechanism the anonymity of the peers
+is preserved by grouping of peers. The combination of self
+certification and anonymity limits the possibility of a Sybil
+attack. In contrast to the traditional CA-based approach,
+neither the group authority nor the transacting peers can
+establish the identity of the peer. In addition, certificate
+revocations are not needed in the group-based approach as
+the group authority only vouches for the real-life existence
+of the peer, unlike the traditional certificate-based
+approaches where various certificate attributes are attested
+by the authority and necessitate revocation if any of those
+attributes mutate in time. If a highly reputed identity is
+compromised, its misuse would be self-destructive as its
+reputation will go down if misused.
+
+\chapter{System Overview}
+
+In this section we describe the user idetification system. 
+This system provides a distributed and secure way to attain a user-password
+identification scheme like the ones commonly seen in centralized services.
+
+\section{Architectural principles}
+%The general view of the system consists in a multi-layered network based in trusted rings.
+The general view of the system consists in a double-layered network; a Trusted
+ring of nodes nested inside a normal DHT, with multiple routing policies
+depending in the protocol of differents services. The user registration,
+sign-in, logout and password change operations respectively allow a node to
+register an user identity, to identify himself with an existing user identity,
+to remove your user session and to change the password used to sign-in.
+
+The system needs to have a \textit{trusted ring} maintained by periodical
+checks of capacity of his members to remain in the trusted ring and a
+reputation system to evaluate this. Also, similar to the
+leafset concept in Pastry, each trusted node needs to maintain a
+\textit{trustset}, wich basically consist in D numerically closest trusted
+nodes with D/2 clockwise nodes, and D/2 counter-clockwise ones.
+
+The system used to build the trusted node infraestructure in the P2P networks
+needs to regularly asses the ability of the nodes to be part of the trusted
+ring.
+
+The figure shows a basic structure of the system. There are normal nodes and
+trusted nodes. Every trusted nodes maintains a \textit{trustsets}.
+The \textit{trustsets} are in charge of the storage of the user keys that are
+used to identify an user in the system.
+
+We now describe our protocols based on the system model. 
+%Figure 2 shows the information objects and
+%their storage locations, with arrows for the abstract flow of the
+%login procedure, Table I lists the terms used in the algorithms.
+%A. Account Registration
+
+\section{Account registration}
+\section{Sign-in}
+\section{Logout}
+\section{Password Change}
+
+\chapter{Evaluation}
+
+In this section we present a theoretical evaluation of
+the authentication system.
+%, as well as a set of simulations and performance
+%results.
+
+%%%Theoretical evaluation
+
+We suppose in the following that the underlying
+reputation system makes an error $\varepsilon$ when classifying a
+node $X$ with a reputation $R(x) \geq \rho$, where $\rho \in [ 0 \cdots 1 ]$,
+and $ \varepsilon = f ( \rho )$. In other words, classifying a node $X$ as
+honest because its reputation is greater than $\rho$ has a
+probability of error $\varepsilon$.
+Let $n$ be the size of the Trusted Ring. The probability
+to have $k$ misclassified nodes in the Trusted Ring, that
+is $k$ malicious nodes is:
+
+$$
+P_{k_{malicious}} = \left(\!
+                          \begin{array}{c}
+                            n\\
+                            k
+                          \end{array}
+                    \!\right)              
+                    \varepsilon^{n-k} ( 1 - \varepsilon )^k
+$$
+
+Then, the probability to have at most $k$ malicious
+nodes in a Trusted Ring of size $n$ is:
+
+$$
+P_{\leq k} = \sum^{k}_{i=1} \left(\!
+                                \begin{array}{c}
+                                    n\\
+                                    k
+                                  \end{array}
+                            \!\right)              
+                    \varepsilon^{n-i} ( 1 - \varepsilon )^i
+$$
+
+Therefore, the probability to have $k$ or more malicious
+nodes in a Trusted Ring of size $n$ is:
+
+$$
+P_{\leq k} = \sum^{n}_{i=k} \left(\!
+                                \begin{array}{c}
+                                    n\\
+                                    i
+                                  \end{array}
+                            \!\right)              
+                    \varepsilon^{n-i} ( 1 - \varepsilon )^i
+$$
+
+The user identification fails when:
+\begin{enumerate}
+  \item The user cannot retrieve his own PKI from the \textit{trustset}.
+  \item or when the public key of the user fails to be retrieved.
+\end{enumerate}
+
+These failures can happen when the \textit{trustsets} storing the PKI or the public
+key have more malicious nodes than normal nodes.
+
+The probability that a \textit{trustset} has half or more malicious nodes, assuming a maximum
+classification error for the underlying reputation system
+of $5\%$, is .% FILL HERE
+%Hence the probability for having a fully erroneous trustset is theoretically possible, but
+%practically infeasible.
+
+Considering a maximum error rate of $5\%$ is a typical
+value for a reputation system. In some cases it may be
+over-estimated (for more details, please refer the results
+obtained for the WTR reputation system\cite{wrt_reputation_system}). This
+error hardly depends on the total number of malicious
+nodes in the network, and decreases when the ratio
+of malicious node decreases. The less malicious nodes
+there are in the system, the easier it is to discriminate
+against them.
+
 
 
 \section{Forgotten passwords}
