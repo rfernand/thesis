@@ -142,8 +142,13 @@ ring.
 
 The figure shows a basic structure of the system. There are normal nodes and
 trusted nodes. Every trusted nodes maintains a \textit{trustsets}.
+
+A simple storage system is needed.
 The \textit{trustsets} are in charge of the storage of the user keys that are
-used to identify an user in the system.
+used to identify an user in the system. The system needs a PUT(key,
+file) operation that stores the file in the closest trusted node based in the
+routing algorithm and a GET(key) operation that retrieves the stored file.
+
 
 We now describe our protocols based on the system model. 
 %Figure 2 shows the information objects and
@@ -152,6 +157,57 @@ We now describe our protocols based on the system model.
 %A. Account Registration
 
 \section{Account registration}
+
+To register a new user account, the user first
+has to choose a \textit{username} and a \textit{password}.
+%The \textit{username} should be unique in the network.
+% The user checks if the username exists by sending a
+% REGISTER(username, identity_file: [[c(user_keys_file), salt]).
+% This operation use a accounted routing algorithm that uses only trusted
+% nodes. When the register operation reaches the closest node to the username,
+% it propagates a TRUSTSET_USERNAME_REGISTRATION operation. This operation sends a
+% call to each node in the trustset of the node, wich then pass to do a council
+% meeting. If the meeting results in favor, each of them sends a
+% OK_USERNAME_REGISTRATION(user_identity_file_name) to node doing the REGISTER operation.
+% 
+% DETAILS OF THE REGISTER OPERATION
+% DETAILS OF THE COUNCIL MEETING --> Explain before, in trusted node part 
+% 
+
+% key store file
+Considering a key-based authentication, the user creates a \textit{key store file}, containing all the
+keys used by the P2P application the user wants to log in to.
+The user generates a cryptographic key to authenticate the write operations
+that will be made in the file, and store this key along with the others in the
+\textit{key store file}.
+
+
+% encryption and store of the key store file
+The user then creates a \textit{symmetric key KKS} ,
+encrypts the file content with this key and puts the ciphertext
+into the storage, obtaining a \textit{file name fKS} . Now, the user
+creates a \textit{login information file} by creating a random
+byte string \textit{salt}, deriving a \textit{symmetric key KLI} from the user
+\textit{password} and the \textit{salt}.
+Using the new \textit{ symmetric key KLI}, the user encrypts the \textit{file name fKS},
+the \textit{symmetric key KKS} and the \textit{cryptographic key to
+authenticate the write operations KW}.
+ The salt and the three encrypted values are put
+into the storage, obtaining a file name fLI . The salt is stored
+in plaintext, so that the user later can derive the decryption
+key KLI by only providing the password. Finally, the user
+performs the write-once operation put on the DHT with
+uname as key and fLI as value.
+
+%unique username
+If the username was taken,
+the user is prompted for a new username.
+
+%finish
+Once all operations
+have succeeded, the user is registered in the system.
+
+
 \section{Sign-in}
 \section{Logout}
 \section{Password Change}
