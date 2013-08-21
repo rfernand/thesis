@@ -224,51 +224,45 @@ problem is not completelly fixed.
 
 \subsubsection{Pastry}
 \label{sec:pastry}
-Pastry es un protocolo para la implementación de una DHT. Éste solo define como
-distribuir las claves entre los nodos y como encontrar el nodo responsable de almacenar una clave.
+Pastry is a protocol for the DHT implementation. It defines how the node keys id
+are distributed and how to find the node responsible of the storage of a key.
 
-\paragraph{Almacenamiento de datos}
+\paragraph{Pastry Data Storage}
 
-El almacenamiento de datos en los sistemas estructurados tipo DHT, se realiza
-aplicando la misma función de hash utilizada para asignar identificadores de
-cada nodo (\textit{nodeID}), al nombre del archivo a ser almacenado. Esto resulta en una
-clave, la cual es mapeada por el sistema a un único nodo. En el caso de Pastry,
-este nodo posee el nodeID numéricamente más cercano a la clave del archivo.
-Dicho nodo, será el encargado de almacenar el archivo.
+The data storage is made applying the same hash function used to assign node
+identifiers (\textit{nodeID}) to the data filename. This results a key, wich is
+mapped to a single node. In Pastry, the file is stored in the node that has the closest nodeID to
+the to the data's key.
 
-Existen técnicas de replicación que permiten distribuir copias del archivo en
-la red, haciendo que los vecinos más cercanos al nodo también guarden el
-archivo. De esta forma, si el nodo que debe almacenar la información pierde
-conexión, el archivo aún puede rescatarse. Gracias al algoritmo de
-asignación de los nodeID, las réplicas cercanas en la red realmente se
-encuentran distribuidas lejos geográficamente, aumentando la disponibilidad de
-las mismas en el sistema.
+Exists many replication technices that manage and distribute copies of the file
+in the network. The distribution of the copies is made using the closest nodes
+to the chosen node. Using this, if the node in charge of the storage of thefile
+is missing, the file can still be recovered from his replicas. Also, thanks
+to the hash algorithm used, the replicas that are nearby inside the network are
+in reality distributed far geograficaly, improving the data availability
+in the system.
 
-%\begin{figure}
-%\center
-%\includegraphics[width=0.65\textwidth]{img/kademlia_dht_example}
-%\caption{Ejemplo de distribución del DHT en Kademlia}
-%\label{fig:p2p_estructured_kademlia}
-%\end{figure}
+\paragraph{Pastry Data Search}
 
-\paragraph{Búsqueda de la información}
+In Pastry, to have an efficient search, each node maintains three data sets:
+a routing table, a leafset and a neighbor set.
+The leafset is a the set with the closet nodes to the local node, in both
+directions of the circle. It serves to maintain the network consistency and
+shorten the searches.
 
+The neighbors set are the $m$ closest nodes by the metrics used in the network.
+While they are not used by the search algorithm, they helps to maintain the
+routing table.
 %La búsqueda de información depende del protocolo de red utilizado.
- En el caso de Pastry, para poder buscar archivos de forma eficiente, cada nodo mantiene un
-estado con tres conjuntos de información: una tabla de rutas, un conjunto
-leafset y un conjunto de vecinos.
-El leafset es el conjunto de nodos más próximos al nodo local en las dos
-direcciones del círculo, y sirven para mantener la coherencia de la red y acortar las
-búsquedas. Los nodos vecinos son los $m$ nodos más próximos según las
-métricas usadas en la red, que aunque no son usados por el algoritmo de
-enrutamiento, sirven para mantener la tabla de rutas.
+The routing table has a row for each assigned address block. The blocks are
+form dividing the nodeID of the local node in digits of $b$ bits. This
+generates a numeric system in base $2^b$. In that way, starting at the client,
+the nodes are grouped by their number of digits in common in a prefix of the
+local node's nodeId and the other node. The table stores in each row the
+address of the closest know node, fulfilling the prefix condition of that row.
 
-La tabla de enrutamiento contiene una fila por cada bloque de direcciones
-asignado. Los bloques se forman dividiendo el nodeID del nodo local en dígitos
-de $b$ bits cada uno, generando un sistema numérico en base $2^b$. De esta forma, respecto al cliente,
-agrupamos los nodos según el número de dígitos comunes en un prefijo del nodeID
-del nodo local y otro nodo. La tabla almacena en cada fila la dirección del nodo conocido más
-cercano y que cumple la condición del prefijo correspondiente a esa fila.
+The messages can be sent to any address in the key space, regardless of whether
+the node exists or not.
 
 Los mensajes pueden ser dirigidos a cualquier dirección en el espacio de
 claves, exista el nodo con esa ID o no. El contenido se va trasladando por al red hasta llegar al
