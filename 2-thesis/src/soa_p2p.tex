@@ -262,53 +262,30 @@ local node's nodeId and the other node. The table stores in each row the
 address of the closest know node, fulfilling the prefix condition of that row.
 
 The messages can be sent to any address in the key space, regardless of whether
-the node exists or not.
+the node exists or not. The content is sent through the network until it reaches the node with the given ID (or the closest one, if the exact one does not exist). When a node recieves or sends a message, it checks the leafset searching for a direct route. If it does not find one, it sends the message to the known node in the routing table that has  more prexifes in common with the objective. This makes sure that the message will shorten the distance at each step in the search, reaching always the node with the closest nodeID to the objective.
 
-Los mensajes pueden ser dirigidos a cualquier dirección en el espacio de
-claves, exista el nodo con esa ID o no. El contenido se va trasladando por al red hasta llegar al
-nodo con la ID dada o, si no existe, al más próximo. Cuando un nodo recibe un mensaje para
-reenviar o envía uno, consulta la tabla del leafset buscando una ruta directa. Si no la
-tiene, consulta la tabla de enrutamiento buscando el nodo conocido con el mayor prefijo en
-común con el objetivo, y le envía el mensaje. Esto asegura que el mensaje en cada paso vaya
-a un nodo con un nodeID más cercano al destino (o en el peor de los casos, igual de cercano)
-con lo que la operación converge.
-
-% En \ref{fig:p2p_estructured_routing_table} se puede
-%observar un ejemplo de la información que posee un nodo en Pastry.
-
-%\begin{figure}
-%\center
-%\includegraphics[width=0.4\textwidth]{img/pastry-routing-table}
-%\caption{Tabla de información de ruteo de un nodo en Pastry}
-%\label{fig:p2p_estructured_routing_table}
-%\end{figure}
-
- En \ref{fig:p2p_pastry_routing} se puede
-observar un ejemplo del algoritmo de enrutación de un mensaje en Pastry.
+In~\ref{fig:p2p_pastry_routing} we can see an example of the routing algorithm used in Pastry when sending a message.
 
 \begin{figure}
 \center
 \includegraphics[width=0.6\textwidth]{img/pastryrouting}
-\caption{Ruteo de un mensaje en Pastry}
+\caption{Pastry message routing}
 \label{fig:p2p_pastry_routing}
 \end{figure}
 
 
-La búsqueda se basa en la función
-\textit{lookup(key)}~\cite{BalakrishnanEtAl03}. Esta función, toma una
-clave (\textit{key}) y busca dentro de la red un nodo cuyo nodeID es
-numéricamente más cercano a la clave.  Si el dato existe en la red, la función
-lookup retorna el nodo que lo posee.  Una característica importante de las
-búsquedas en los DHT como Pastry, es que el costo en número de mensajes, se
-mantiene en el orden $O(log(N ))$, donde $N$ es el número total de nodos en el
-sistema. Además poseen la propiedad de \textit{decidibilidad}, lo cual significa
-que se puede asegurar que, si un dato existe en la red, éste puede ser
-encontrado en caso de ser solicitado por algún nodo. Otra característica es el
-balanceo de carga que posee el sistema. El ruteo asegura
-que la consulta pasará por un nodo del leafset antes de llegar al nodo raíz,
-permitiendo que el nodo del leafset pueda responder a la consulta, balanceando naturalmente las
-consultas entre los nodos pertenecientes al leafset del nodo raíz.
-
+The search is based in the \textit{lookup(key)}~\cite{BalakrishnanEtAl03} function.
+This function takes a \textit{key} and searchs inside of the network a node with
+the closest nodeID to the key. If the data exists in the network, the lookup
+function returns the node that has it. An important feature of searches in DHT
+like Pastry, is that the cost in number of messages is of order $O(log(N))$,
+where $N$ is the total number of nodes in the system. Also, it is
+\textit{decidable}, meaning that if the data exists in the network, this data
+can be found if requested. Other characteristic of the system is his natural
+load balancing. The routing algorithm ensures that the request will pass through
+a leafset node before reaching the root node, making available for the leafset
+node to respond to the request, balancing the load of the request in its
+leafset nodes.
 
 
 %
@@ -442,6 +419,10 @@ consultas entre los nodos pertenecientes al leafset del nodo raíz.
 
 
 \subsection{P2P Networks and User Identification systems}
+
+The work will be based in structured P2P networks, because unstructured
+systems does not have the desired properties for the implementation of a
+identification system. 
 
 Debido a las propiedades poco favorables de las redes P2P no-estructurados para la implementación de una red
 social, una red P2P estructurada como base sería lo más adecuado para su
