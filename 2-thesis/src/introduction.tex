@@ -12,6 +12,52 @@ system, but not the user behind each one of them as a different being.
 As P2P systems grow in funciontalities, the need to identify users inside the
 network arose.
 
+While a solution of automatic identification of a node is preferable as long as
+users use a single device, equating a node with a user fails as users
+increasingly access services from multiple devices.
+%example
+Illustrative is the case of backup systems, where an impor-
+tant use case is to restore data on a different system from where
+it was backed up. Here, two different approaches to authen-
+tication have been taken. All approaches build on encrypting
+backed up content, and the approaches vary in whether the
+keys are randomly derived [7], or derived from a password [8].
+In the former case, a user must manually back the keys up,
+as these keys are required to restore the backup. The systems
+deriving a key from a password are related to our proposed
+protocol, and use some related techniques. Also, approachs to handle
+remembered logins, and recovering lost passwords has been
+made~\cite{peerson-passwords}.
+
+% TODO: check this system
+Some P2P storage systems also use techniques which are
+related to ours. For example, the DHT-based systems GNUnet
+and Freenet use keyword strings to derive a public-private key
+pair whose private key is used to sign data and the hash of
+the public key to identify the data in the storage. Both of
+these systems use a keyword string as a seed to a pseudo-
+random number generator that produces the key pair [9], [10].
+Knowing only the memorable keyword string the user can
+store and retrieve information.
+
+%TODO: check vu et al. 11 and Frykholm and Juels
+Related to forgotten passwords, recovery of information in a
+P2P scenario has been studied by Vu et al. [11] who proposed
+a combination of threshold-based secret sharing with delegate
+selection and encrypting shares with passwords.
+Frykholm and Juels [12] proposed a password-recovery
+mechanism based on security questions very similar to our
+protocol for the same task. They offer better, information-
+theoretic security properties, something not applicable to our
+scenario. We treat the subject of password change, which is not applicable to
+their scenario, although their proposal could be extended to support password
+change using our techniques.
+
+The problem with existing solutions is that they don't take in consideration the
+precense of malicious nodes. A malicious or bizantine node is any node that does
+not behave as expected by the protocol of the system. The presence of this type
+of nodes can easily break the security and functioning of the whole system.
+
 
 P2P networks are conformed by nodes with unique identifiers that map to their
 own IP address. That way is easy to differenciate them between each others, but
@@ -42,43 +88,4 @@ this to work, the proof of identity need to be:
 
 
 
-As P2P systems began providing more complex functional-
-ity [2], [3], [4], [7], the need to authenticate users, rather than
-nodes, arose. It seems that often, authentication via a signature
-key has been carried over to this problem. While a solution
-of automatic identification of a node is preferable as long as
-users use a single device, equating a node with a user fails as
-users increasingly access services from multiple devices.
-Illustrative is the case of backup systems, where an impor-
-tant use case is to restore data on a different system from where
-it was backed up. Here, two different approaches to authen-
-tication have been taken. All approaches build on encrypting
-backed up content, and the approaches vary in whether the
-keys are randomly derived [7], or derived from a password [8].
-In the former case, a user must manually back the keys up,
-as these keys are required to restore the backup. The systems
-deriving a key from a password are related to our proposed
-protocol, and use some related techniques. However, to the
-best of our knowledge, they do not consider the additional
-protocols required surrounding password authentication, such
-as remembered logins, and recovering lost passwords.
-Some P2P storage systems also use techniques which are
-related to ours. For example, the DHT-based systems GNUnet
-and Freenet use keyword strings to derive a public-private key
-pair whose private key is used to sign data and the hash of
-the public key to identify the data in the storage. Both of
-these systems use a keyword string as a seed to a pseudo-
-random number generator that produces the key pair [9], [10].
-Knowing only the memorable keyword string the user can
-store and retrieve information.
-Related to forgotten passwords, recovery of information in a
-P2P scenario has been studied by Vu et al. [11] who proposed
-a combination of threshold-based secret sharing with delegate
-selection and encrypting shares with passwords.
-Frykholm and Juels [12] proposed a password-recovery
-mechanism based on security questions very similar to our
-protocol for the same task. They offer better, information-
-theoretic security properties, something not applicable to our
-scenario. We treat the subject of password change, which is not applicable to
-their scenario, although their proposal could be extended to support password
-change using our techniques.
+
