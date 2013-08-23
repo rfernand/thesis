@@ -1,0 +1,345 @@
+\documentclass[12pt,spanish]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{wasysym}
+\usepackage{boxedminipage}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{color}
+\usepackage{cite}
+%\usepackage{enumerate}
+\usepackage{enumitem}
+
+\newcommand{\pau}[1]{\textcolor{cyan}{{\bf Pau:} ``#1.''}}
+\renewcommand{\figurename}{Figura}
+% No space in the lists
+\setlist{noitemsep}
+\setlist{nolistsep}
+
+% Marks
+\newcommand{\todo}[1]{\textcolor{red}{{\bf To do:} ``#1.''}}
+\newcommand{\nbody}{$N-$cuerpos }
+
+% Page adjustement
+\pdfpagewidth 8.5in
+\pdfpageheight 11in
+\setlength{\textwidth}{15.5cm}
+\renewcommand{\familydefault}{\sfdefault}
+
+% Fancy Header and Footer
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0mm} %Para eliminar barra de header
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\arraystretch}{1.5}
+\headheight 30pt
+\lfoot{Proyecto de Tesis}
+\rfoot{\thepage}
+\cfoot{}
+\lhead{}
+\rhead{}
+% Header banner
+\chead{\setlength{\unitlength}{1mm}
+\begin{picture}(0,0)
+    \put(-60,0){\includegraphics[width=100mm]{logo.jpg}}
+\end{picture}}
+
+% Abreviations
+\newcommand{\bs}{\boldsymbol}
+\newcommand{\tnhl}{\tabularnewline\hline}
+\newcommand{\nl}{\newline}
+
+% Thesis information
+\newcommand{\thesis}{\emph{``A modular direct-summation $N$-body integrator
+                             based on GPU Computing''}}
+\newcommand{\name}{Rodrigo Germán Fernández Gaete}
+\newcommand{\tel}{+56 9 84193413}
+\newcommand{\email}{\texttt{rfernand@csrg.inf.utfsm.cl}}
+\newcommand{\idate}{Primer semestre de 2013}
+\newcommand{\prof}{Xavier Bonnaire}
+\newcommand{\degree}{Ingeniería Civil Informática,
+                     Universidad Técnica Federico Santa María, 2012}
+\newcommand{\pdate}{}
+\newcommand{\adate}{}
+\newcommand{\tdate}{}
+\newcommand{\comi}{Comite académico programa MII}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{PROYECTO DE TESIS}
+{\huge \Square} Doctorado en Ingeniería Informática
+\nl\nl\noindent
+{\huge \XBox} Magíster en Ciencias de la Ingeniería Informática
+
+\begin{center}
+\begin{tabular}{|r p{0.4\textwidth}|p{0.5\textwidth}|}
+\hline
+  1. & {\bf Título del Proyecto de Tesis    }  & \thesis  \tnhl
+  2. & {\bf Nombre del Alumno               }  & \name    \tnhl
+  3. & {\bf Número de Teléfono - Celular    }  & \tel     \tnhl
+  4. & {\bf Correo electrónico              }  & \email   \tnhl
+  5. & {\bf Fecha de Ingreso al Programa    }  & \idate   \tnhl
+  6. & {\bf Pregrado                        }  & \degree  \tnhl
+  7. & {\bf Profesor Guía de Tesis          }  & \prof    \tnhl
+  8. & {\bf Fecha Presentación Tema de Tesis}  & \pdate   \tnhl
+  9. & {\bf Fecha Aprobación Tema de Tesis  }  & \adate   \tnhl
+ 10. & {\bf Fecha Tentativa de Término      }  & \tdate   \tnhl
+ 11. & {\bf Comisión Interna de graduación  }  & \comi    \tnhl
+\end{tabular}
+\end{center}
+\vfill
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Resumen}
+%Debe ser suficientemente informativo, y contener una síntesis
+%del proyecto, sus objetivos, resultados esperados y palabras claves.
+
+\fbox{
+\begin{minipage}[t]{0.9\textwidth}
+\setlength{\parindent}{10mm}
+
+{\bf Palabras claves:} P2P, identificación de usuario, sistemas distribuidos.
+\end{minipage}
+}
+\vfill
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Abstract}
+\fbox{
+\begin{minipage}[b]{0.9\textwidth}
+\setlength{\parindent}{10mm}
+
+{\bf Keywords:} P2P, user identification, distributed systems.
+\end{minipage}
+}
+
+\vfill
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Formulación general de la problemática y propuesta de tesis}
+
+%Debe contener la exposición general del problema, identificando
+%claramente qué aspectos relacionados con la informática son los más
+%relevantes.  Además, deberá contener el marco teórico, la discusión
+%bibliográfica con sus referencias y, finalmente, su propuesta de
+%tesis.  (La extensión máxima de esta sección es de hasta 5 páginas.
+%En hojas adicionales incluya la lista de referencias bibliográficas
+%citadas)
+
+\subsection{Contexto y Motivación}
+
+
+\subsection{Planteamiento del Problema}
+
+
+\subsection{Propuesta de tesis}
+
+
+\subsubsection{Algoritmo}
+
+
+%\vfill
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\bibliographystyle{mn}            %
+%\bibliographystyle{mn2e}            %
+\bibliographystyle{ieeetr}            %
+\bibliography{../../bib/article,../../bib/paper,../../bib/url}    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Hipótesis de Trabajo}
+
+\fbox{
+\begin{minipage}[t]{0.9\textwidth}
+\setlength{\parindent}{10mm}
+
+% here goes the hipotesis
+
+\begin{itemize}
+    \item % more hipotesis/facts that the thesis is based
+\end{itemize}
+
+\vfill
+\end{minipage}
+}
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Objetivos}
+\subsection{Objetivos Generales}
+
+\fbox{
+\begin{minipage}[t]{0.9\textwidth}
+\setlength{\parindent}{10mm}
+
+% main objective
+
+\vspace{0.5cm}
+\noindent
+
+% in particular, the main goals are:
+
+\begin{enumerate}
+    \item % goal 1, 2, 3...
+\end{enumerate}
+\vspace{0.5cm}
+
+% all this is fundamental to the identification protocol to maintain his desirable properties.
+\end{minipage}
+}
+
+
+\subsection{Objetivos Específicos}
+
+\fbox{
+\begin{minipage}[t][70mm][t]{0.9\textwidth}
+\setlength{\parindent}{10mm}
+
+% Specifics objectives
+%El desarrollo del presente trabajo de tesis considera la realización de los
+%siguientes objetivos específicos:
+\vspace{0.5cm}
+\begin{itemize}
+    \item % goal 1, 2, 3 ...
+\end{itemize}
+\end{minipage}
+}
+
+\vfill
+\section*{Metodología y Plan de Trabajo}
+
+
+\fbox{
+\begin{minipage}[t]{0.9\textwidth}
+\setlength{\parindent}{10mm}
+%El plan de trabajo para el desarrollo del presente tema de tesis consta de tres
+%etapas.
+
+% here goes the planning!
+
+%\noindent {\bf Etapa I:} Definición del problema
+%\begin{enumerate}
+%    \item Nacimiento de la idea.
+%    \emph{(Mayo 2012)}
+%    \item Estudio del problema de los \nbody, diferentes métodos de
+%          integración, propiedades generales, etc.
+%          \emph{(Junio 2012 - Julio 2012)}
+%    \item Estudio de sistemas keplerianos, pruebas severas del integrador.
+%    \emph{(Agosto 2012)}
+%    \item Especificaciones del problema, hipótesis de trabajo y objetivos del
+%          proyecto. \emph{(Septiembre 2012)}
+%\end{enumerate}
+%
+%\noindent {\bf Etapa II:} Definición de la solución
+%\begin{enumerate}
+%    \item Estado del arte de esquemas de integración para el problema
+%          de los \nbody.
+%          \emph{(Octubre 2012)}
+%    \item Estado del arte de integradores de sistemas de \nbody.
+%          \emph{(Noviembre 2012)}
+%    \item Estado del arte de la computación basada en tarjetas gráficas (GPU).
+%          \emph{(Diciembre 2012)}
+%    \item Diseño del algoritmo de integración que considere la diferenciación
+%          en el cálculo de la fuerza sobre las estrellas.
+%          \emph{(Noviembre 2012 - Diciembre 2012)}
+%\end{enumerate}
+%
+%\noindent {\bf Etapa III:} Implementación de la solución
+%\begin{enumerate}
+%    \item Programación serial del algoritmo diseñado utilizando C/C++.
+%          \emph{(Noviembre 2012 - Diciembre 2012)}
+%    \item Programación paralela del algoritmo, basado en la implementación
+%          anterior, utilizando CUDA para acelerar el cálculo.
+%          \emph{(Enero 2013 - Febrero 2013)}
+%    \item Desarrollo de experimentos y comparaciones en el desempeño de
+%          ambos algoritmos.
+%          \emph{(Marzo 2013 - Abril 2013)}
+%    \item Desarrollo del informe final de la tesis.
+%          \emph{(Marzo 2013 - Mayo 2013)}
+%    \item Desarrollo de publicación.
+%          \emph{(Marzo 2013 - Mayo 2013)}
+%\end{enumerate}
+\end{minipage}
+}
+
+
+\vfill
+\section*{Resultados}
+\subsection{Aportes y Resultados Esperados}
+
+\fbox{
+%\begin{minipage}[t][70mm][t]{0.9\textwidth}
+\begin{minipage}[t]{0.9\textwidth}
+\setlength{\parindent}{10mm}
+
+%expected results
+%Los aportes y resultados esperados con la realización
+%del presente proyecto de tesis son:
+
+\begin{itemize}
+    \item Desarrollar una solución moderna,
+          tanto computacionalmente, como en términos de ingeniería para la
+          identificación de usuarios en sistemas P2P.
+    \item Generar el sistema base para futuros proyectos
+          basados en redes P2P.
+    \item Reafirmar que los sistemas distribuidos P2P poseen las capacidades
+          necesarias para ofrecer servicios complejos y de alto nivel.
+    \item Desarrollo de un artículo para ser enviado a una revista de computación distribuida.
+          Dicho trabajo presentará los resultados obtenidos por el
+          el sistema señalado en el presente proyecto.
+\end{itemize}
+
+
+
+\end{minipage}
+}
+
+\subsection{Formas de Validación}
+
+\fbox{
+%\begin{minipage}[t][70mm][t]{0.9\textwidth}
+\begin{minipage}[t]{0.9\textwidth}
+\setlength{\parindent}{10mm}
+
+% translate and change this
+Ya que los algoritmos existen desde
+hace más de cuarenta años, y que hay problemas teóricos cuya solución se conoce
+con bastante exactitud, se podrá generar un mecanismo de validación directa,
+verificando el comportamiento del algoritmo para una situación determinada.
+
+Por otro lado, es necesario además comparar los resultados de nuestro
+algoritmo con...
+
+Dentro de las pruebas para validar el sistema,
+las más importantes serán:
+\begin{itemize}
+    \item %blah blah
+\end{itemize}
+
+\end{minipage}
+}
+
+
+\vfill
+\section[]{Recursos}
+\subsection{Recursos Disponibles}
+
+\fbox{
+\begin{minipage}[t][50mm][t]{0.9\textwidth}
+\setlength{\parindent}{10mm}
+\begin{itemize}
+    \item Se hará uso de los libros que la \emph{Biblioteca UTFSM} posee
+          relacionado a sistemas distribuidos y redes P2P.
+\end{itemize}
+\end{minipage}
+}
+
+\subsection{Recursos Solicitados}
+
+\fbox{
+\begin{minipage}[t][50mm][t]{0.9\textwidth}
+\setlength{\parindent}{10mm}
+No se solicitan recursos extra.
+\end{minipage}
+}
+
+
+\end{document}
