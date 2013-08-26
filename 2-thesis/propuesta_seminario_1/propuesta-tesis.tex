@@ -198,62 +198,156 @@ Later,...
 \bibliographystyle{ieeetr}            %
 \bibliography{../../bib/article,../../bib/paper,../../bib/url}    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Hipótesis de Trabajo}
+\section{Hipothesis}
 
 \fbox{
 \begin{minipage}[t]{0.9\textwidth}
 \setlength{\parindent}{10mm}
 
 % here goes the hipotesis
-
+The next work is based in the following hipostesis, under the assumption that 
+P2P networks are capable of maintain highly secure services.
 \begin{itemize}
-    \item % more hipotesis/facts that the thesis is based
+    % more hipotesis/facts that the thesis is based
+    \item  It is assumed that is possible to develop a secure username/password
+based  user identification scheme in P2P networks. 
+    \item It is assumed that trust between nodes can be achieved in P2P
+networks.
+    \item It is assumed that that encryption schemes available today are
+    sufficient to secure user sensible information.
+
 \end{itemize}
 
 \vfill
 \end{minipage}
 }
+
+%\section{Hipótesis de Trabajo}
+%
+%\fbox{
+%\begin{minipage}[t]{0.9\textwidth}
+%\setlength{\parindent}{10mm}
+%
+%% here goes the hipotesis
+%The next work is based in the following hipostesis, under the assumption that 
+%P2P networks are capable of maintain highly secure services.
+%\begin{itemize}
+%    % more hipotesis/facts that the thesis is based
+%    \item  It is assumed that is possible to develop a secure username/password
+%based  user identification scheme in P2P networks. 
+%    \item It is assumed that trust between nodes can be achieved in P2P
+%networks.
+%    \item It is assumed that that encryption schemes available today are
+%    sufficient to secure user sensible information.
+%
+%\end{itemize}
+%
+%\vfill
+%\end{minipage}
+%}
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Objetivos}
-\subsection{Objetivos Generales}
+\section{Goals}
+\subsection{Main Goals}
 
 \fbox{
 \begin{minipage}[t]{0.9\textwidth}
 \setlength{\parindent}{10mm}
 
 % main objective
+The implementation of a secure username/password based user identification scheme in structured P2P
+networks using secure routing, building of trust between nodes and encryption
+techniques.
 
 \vspace{0.5cm}
 \noindent
 
-% in particular, the main goals are:
+In particular, the main goals are:
+
 
 \begin{enumerate}
-    \item % goal 1, 2, 3...
+    \item Have a minimal posibility of error in the identification process.
+    \item Use a layer developed scheme that can easily adapt to most commonly
+          used P2P networks.
 \end{enumerate}
 \vspace{0.5cm}
 
-% all this is fundamental to the identification protocol to maintain his desirable properties.
+All this is fundamental to the identification protocol to maintain his desirable properties.
 \end{minipage}
 }
 
+%\section{Objetivos}
+%\subsection{Objetivos Generales}
+%
+%\fbox{
+%\begin{minipage}[t]{0.9\textwidth}
+%\setlength{\parindent}{10mm}
+%
+%% main objective
+%The implementation of a secure username/password based user identification scheme in structured P2P
+%networks using secure routing, building of trust between nodes and encryption
+%techniques.
+%
+%\vspace{0.5cm}
+%\noindent
+%
+%In particular, the main goals are:
+%
+%
+%\begin{enumerate}
+%    \item Have a minimal posibility of error in the identification process.
+%    \item Use a layer developed scheme that can easily adapt to most commonly
+%          used P2P networks.
+%\end{enumerate}
+%\vspace{0.5cm}
+%
+%All this is fundamental to the identification protocol to maintain his desirable properties.
+%\end{minipage}
+%}
 
-\subsection{Objetivos Específicos}
+
+\subsection{Specifics Goals}
 
 \fbox{
 \begin{minipage}[t][70mm][t]{0.9\textwidth}
 \setlength{\parindent}{10mm}
 
-% Specifics objectives
-%El desarrollo del presente trabajo de tesis considera la realización de los
-%siguientes objetivos específicos:
+In the development of the present work the following specifics goals are taken in consideration:
 \vspace{0.5cm}
 \begin{itemize}
-    \item % goal 1, 2, 3 ...
+    \item Study the posibility of password recovery mechanisms in the proposed
+          identification scheme.
+    \item Study and use of development of trust between nodes to maintain a
+          trusted layer inside the P2P network.
+    \item Use bizantine tolerant algorithm to verify and maintian the
+          algorithms consistency in the presence of malicious nodes.
+    \item Study and use of secure routing, search and storage mechanisms a 
+          structured P2P network.
 \end{itemize}
 \end{minipage}
 }
+
+%\subsection{Objetivos Específicos}
+%
+%\fbox{
+%\begin{minipage}[t][70mm][t]{0.9\textwidth}
+%\setlength{\parindent}{10mm}
+%%El desarrollo del presente trabajo de tesis considera la realización de los
+%%siguientes objetivos específicos:
+%In the development of the present work the following specifics goals are taken in consideration:
+%\vspace{0.5cm}
+%\begin{itemize}
+%    \item Study the posibility of password recovery mechanisms in the proposed
+%          identification scheme.
+%    \item Study and use of development of trust between nodes to maintain a
+%          trusted layer inside the P2P network.
+%    \item Use bizantine tolerant algorithm to verify and maintian the
+%          algorithms consistency in the presence of malicious nodes.
+%    \item Study and use of secure routing, search and storage mechanisms a 
+%          structured P2P network.
+%\end{itemize}
+%\end{minipage}
+%}
 
 \vfill
 \section*{Metodología y Plan de Trabajo}
@@ -262,11 +356,57 @@ Later,...
 \fbox{
 \begin{minipage}[t]{0.9\textwidth}
 \setlength{\parindent}{10mm}
-%El plan de trabajo para el desarrollo del presente tema de tesis consta de tres
-%etapas.
+
+The working plan for the thesis development consists in three stages.
 
 % here goes the planning!
 
+\noindent {\bf Stage I:} Problem definition
+\begin{enumerate}
+    \item Study of P2P network systems and P2P search and storage mechanisms.
+          \emph{(September 2012)}
+    \item Study the P2P networks capabilities to implement complex systems as
+          seen in centralized systems.
+          \emph{(Octover 2012 - November 2012)}
+    \item Born of the idea.
+          \emph{(December 2013)}
+    \item Problem specification, hipothesis and project objectives.
+          \emph{(February 2013)}
+\end{enumerate}
+
+\noindent {\bf Stage II:} P2P Systems definition
+\begin{enumerate}
+    \item State of the art of P2P network systems and P2P search and storage mechanisms.
+          \emph{(May 2013)}
+    \item State of the art of building of trust between nodes in P2P networks.
+          \emph{(April 2013 - June 2013)}
+    \item State of the art of user identification schemes in P2P networks and
+          how to secure the different system protocols.
+          \emph{(July 2013)}
+\end{enumerate}
+
+\noindent {\bf Stage III:} Solution proposal
+\begin{enumerate}
+    \item User identification system design for structured P2P networks.
+          \emph{(August 2013 - September 2013)}
+    \item Teoric evaluation of the user identification proposal.
+          \emph{(October 2013)}
+    \item Final thesis report development.
+          \emph{(November 2013 - December 2013 2013)}
+    \item Paper development.
+          \emph{(January 2014)}
+\end{enumerate}
+\end{minipage}
+}
+
+%\section*{Metodología y Plan de Trabajo}
+%
+%
+%\fbox{
+%\begin{minipage}[t]{0.9\textwidth}
+%\setlength{\parindent}{10mm}
+%El plan de trabajo para el desarrollo del presente tema de tesis consta de tres
+%etapas.
 %\noindent {\bf Etapa I:} Definición del problema
 %\begin{enumerate}
 %    \item Nacimiento de la idea.
@@ -296,26 +436,24 @@ Later,...
 %
 %\noindent {\bf Etapa III:} Implementación de la solución
 %\begin{enumerate}
-%    \item Programación serial del algoritmo diseñado utilizando C/C++.
-%          \emph{(Noviembre 2012 - Diciembre 2012)}
-%    \item Programación paralela del algoritmo, basado en la implementación
-%          anterior, utilizando CUDA para acelerar el cálculo.
-%          \emph{(Enero 2013 - Febrero 2013)}
+%    \item Diseño del algoritmo de integración que considere la diferenciación
+%          en el cálculo de la fuerza sobre las estrellas.
+%          \emph{(August 2013 - September 2013)}
 %    \item Desarrollo de experimentos y comparaciones en el desempeño de
 %          ambos algoritmos.
-%          \emph{(Marzo 2013 - Abril 2013)}
+%          \emph{(October 2013 - November 2013)}
 %    \item Desarrollo del informe final de la tesis.
-%          \emph{(Marzo 2013 - Mayo 2013)}
+%          \emph{(December 2013 2013)}
 %    \item Desarrollo de publicación.
-%          \emph{(Marzo 2013 - Mayo 2013)}
+%          \emph{(January 2014)}
 %\end{enumerate}
-\end{minipage}
-}
+%\end{minipage}
+%}
 
 
 \vfill
-\section*{Resultados}
-\subsection{Aportes y Resultados Esperados}
+\section*{Results}
+\subsection{Contributions and Expected Results}
 
 \fbox{
 %\begin{minipage}[t][70mm][t]{0.9\textwidth}
@@ -327,24 +465,44 @@ Later,...
 %del presente proyecto de tesis son:
 
 \begin{itemize}
-    \item Desarrollar una solución moderna,
-          tanto computacionalmente, como en términos de ingeniería para la
-          identificación de usuarios en sistemas P2P.
-    \item Generar el sistema base para futuros proyectos
-          basados en redes P2P.
-    \item Reafirmar que los sistemas distribuidos P2P poseen las capacidades
-          necesarias para ofrecer servicios complejos y de alto nivel.
-    \item Desarrollo de un artículo para ser enviado a una revista de computación distribuida.
-          Dicho trabajo presentará los resultados obtenidos por el
-          el sistema señalado en el presente proyecto.
+    \item Design of a secure and modern user identification system for
+          structured P2P networks.
+    \item Generate a base system to develop complex projects in P2P networks.
+    \item Reassure that P2P distributed systems have the capabilities to offer
+          complex and high level services.
+    \item Development of an article to be sent to a distributer systems
+          publisher. The paper will show the results of the user identification system
+          designed in this project.
 \end{itemize}
-
-
 
 \end{minipage}
 }
 
-\subsection{Formas de Validación}
+%\vfill
+%\section*{Resultados}
+%\subsection{Aportes y Resultados Esperados}
+%
+%\fbox{
+%%\begin{minipage}[t][70mm][t]{0.9\textwidth}
+%\begin{minipage}[t]{0.9\textwidth}
+%\setlength{\parindent}{10mm}
+
+%\begin{itemize}
+%    \item Desarrollar una solución moderna,
+%          tanto computacionalmente, como en términos de ingeniería para la
+%          identificación de usuarios en sistemas P2P.
+%    \item Generar el sistema base para futuros proyectos
+%          basados en redes P2P.
+%    \item Reafirmar que los sistemas distribuidos P2P poseen las capacidades
+%          necesarias para ofrecer servicios complejos y de alto nivel.
+%    \item Desarrollo de un artículo para ser enviado a una revista de computación distribuida.
+%          Dicho trabajo presentará los resultados obtenidos por el
+%          el sistema señalado en el presente proyecto.
+%\end{itemize}
+%\end{minipage}
+%}
+
+\subsection{Validation procedures}
 
 \fbox{
 %\begin{minipage}[t][70mm][t]{0.9\textwidth}
@@ -352,46 +510,91 @@ Later,...
 \setlength{\parindent}{10mm}
 
 % translate and change this
-Ya que los algoritmos existen desde
-hace más de cuarenta años, y que hay problemas teóricos cuya solución se conoce
-con bastante exactitud, se podrá generar un mecanismo de validación directa,
-verificando el comportamiento del algoritmo para una situación determinada.
+P2P networks presents a big difficulty to be tested in a real enviroment
+because of the high number of nodes needed to try it out.
+Therefore, instead of going after an empiric validation of the proposed
+identification system, only a  theorical evaluation will be presented.
+The proposed system will be compared with the other systems available at
+the moment with a throughfully analisis of the security of the algorithm used.
 
-Por otro lado, es necesario además comparar los resultados de nuestro
-algoritmo con...
+Taking that in consideration, the theorical evaluation will be focused in:
 
-Dentro de las pruebas para validar el sistema,
-las más importantes serán:
 \begin{itemize}
-    \item %blah blah
+    \item Proving that the system will have a minimal probability of error.
+    \item Proving that the system will  maintain his consistency in networks with atmost 30\% of bizantine nodes. 
 \end{itemize}
 
 \end{minipage}
 }
+
+%\subsection{Formas de Validación}
+%
+%\fbox{
+%%\begin{minipage}[t][70mm][t]{0.9\textwidth}
+%\begin{minipage}[t]{0.9\textwidth}
+%\setlength{\parindent}{10mm}
+%
+%Ya que los algoritmos existen desde
+%hace más de cuarenta años, y que hay problemas teóricos cuya solución se conoce
+%con bastante exactitud, se podrá generar un mecanismo de validación directa,
+%verificando el comportamiento del algoritmo para una situación determinada.
+%
+%Por otro lado, es necesario además comparar los resultados de nuestro
+%algoritmo con...
+%
+%Dentro de las pruebas para validar el sistema,
+%las más importantes serán:
+%\begin{itemize}
+%    \item %blah blah
+%\end{itemize}
+%
+%\end{minipage}
+%}
 
 
 \vfill
-\section[]{Recursos}
-\subsection{Recursos Disponibles}
+\section[]{Resources}
+\subsection{Available Resources}
 
 \fbox{
 \begin{minipage}[t][50mm][t]{0.9\textwidth}
 \setlength{\parindent}{10mm}
 \begin{itemize}
-    \item Se hará uso de los libros que la \emph{Biblioteca UTFSM} posee
-          relacionado a sistemas distribuidos y redes P2P.
+    \item The books and publications related to distributed systems and P2P networks provided by the \emph{UTFSM Library} will be used.
 \end{itemize}
 \end{minipage}
 }
 
-\subsection{Recursos Solicitados}
+%\section[]{Recursos}
+%\subsection{Recursos Disponibles}
+%
+%\fbox{
+%\begin{minipage}[t][50mm][t]{0.9\textwidth}
+%\setlength{\parindent}{10mm}
+%\begin{itemize}
+%    \item Se hará uso de los libros que la \emph{Biblioteca UTFSM} posee
+%          relacionado a sistemas distribuidos y redes P2P.
+%\end{itemize}
+%\end{minipage}
+%}
+
+\subsection{Resources Required}
 
 \fbox{
 \begin{minipage}[t][50mm][t]{0.9\textwidth}
 \setlength{\parindent}{10mm}
-No se solicitan recursos extra.
+No more extra resources are needed.
 \end{minipage}
 }
+
+%\subsection{Recursos Solicitados}
+%
+%\fbox{
+%\begin{minipage}[t][50mm][t]{0.9\textwidth}
+%\setlength{\parindent}{10mm}
+%No se solicitan recursos extra.
+%\end{minipage}
+%}
 
 
 \end{document}
