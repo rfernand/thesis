@@ -111,12 +111,14 @@
 
 P2P services are robust, scalable and self-organized by nature, but have a
 complete different architecture with new problems and unique requirements.
-There are proposals to implement different user identification system, but does
-not have the capabilities that the users are accustom to have today in commonly
-view services; user identification based in username and password. While an
-early approach exist to solve the problem, it does not contemplate the existence
-of malicious nodes, lacking the mechanism to secure the identification
-process.
+ Traditionally, P2P networks identified the different nodes that compose the
+system, but not the user behind each one of them as a different being.
+The increase of number of devices the people have and use to join the network
+today makes the per node identification obsolete when trying to identify the
+unique user behind them.
+Also, users today are accustom to have user identification based in username and password.
+While an early approach of username/password identification system exist, it does not contemplate the existence
+of malicious nodes, lacking the capability to be secure when working in real P2P networks.
 
  We thoroughly investigate the requirements and features of a secure
 identification scheme, along with the challenges facing a P2P implementation.
@@ -194,8 +196,9 @@ Knowing only the memorable keyword string the user can
 store and retrieve information.
 
 %TODO: check vu et al. 11 and Frykholm and Juels AND CHANGE THIS
-Related to forgotten passwords functionalities for the system, recovery of
-information in a P2P scenario has been studied by Vu et al.~\cite{5380695} who proposed
+While the identification system can function without the need of forgotten
+passwords functionalities, they can also be implemented in the system.
+Related to that, recovery of information in a P2P scenario has been studied by Vu et al.~\cite{5380695} who proposed
 a combination of threshold-based secret sharing with delegate
 selection and encrypting shares with passwords.
 Frykholm and Juels~\cite{Frykholm:2001:EPR:501983.501985} proposed a password-recovery
@@ -206,9 +209,10 @@ scenario. We treat the subject of password change, which is not applicable to
 their scenario, although their proposal could be extended to support password
 change using our techniques.
 % passwords in p2p networks
-Also, approach's to handle
-remembered logins, and recovering lost passwords has been
-made~\cite{kreitz2012passwords}.
+At last, an initial proposal for passwords in P2P networks has been presented,
+designed to handle to handle remembered logins, and recovering lost passwords
+in an idealized network~\cite{kreitz2012passwords}, and has not been proved to
+work in a real environment.
 
 \subsection{Problem statement}
 
