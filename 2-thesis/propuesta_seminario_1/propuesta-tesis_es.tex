@@ -112,26 +112,54 @@
 P2P services are robust, scalable and self-organized by nature, but have a
 complete different architecture with new problems and unique requirements.
 There are proposals to implement different user identification system, but does
-not have the capabilities that the users are accustom to have today in commonly
+not have the capabilite that the users are accustom to have today in commonly
 view services; user identification based in username and password. While an
-early approach exist to solve the problem, it does not contemplate the existence
+early approach exist to solve the problem, it does not contemplate the existance
 of malicious nodes, lacking the mechanism to secure the identification
-process.
+proccess.
 
  We thoroughly investigate the requirements and features of a secure
 identification scheme, along with the challenges facing a P2P implementation.
 
-The main goal of this work is to
-develop a secure user identification system based in username/password keywords in
-structured P2P systems, using reputation systems and groups of trusted nodes
-to defend from malicious nodes and implement secure protocols for the system.
+The main goal of this work is to...
+develop a secure user identification system based in username/password in
+structured P2P systems.
 
-Theoretic analysis of the system will be done to ensure that the protocols are
-secure and do not present security risks in a real environments.
+Later,...
 
-The architecture to develop the system will be based in on Distributed Hash
-Tables (DHT) structured P2P networks.\\
+... The final goal...
 
+ %The main features discussed are (a)
+%the users login, (b) users posts, (c) users contacts list, (d) groups and organizations
+%among users, (e) privacy settings and (f) integration with other services and
+%applications.
+
+
+%With more than 1,5 billion active users, social networks are one of the most
+%popular Internet services.
+%The  problem is that social networks services of today are not scalable, 
+%having very high maintenance costs.
+%On the other hand, P2P services are robust, scalable and self-organized by nature, but have a
+%complete different architecture with new problems and unique requirements. 
+% Therefore, this document focus on finding the existing problems in the
+%implementation of a P2P social networking service.
+% We thoroughly investigate the requirements and features of social networks, along with the
+%challenges facing a P2P implementation. The main features discussed are (a)
+%the users login, (b) users posts, (c) users contacts list, (d) groups and organizations
+%among users, (e) privacy settings and (f) integration with other services and
+%applications.
+%After the analyzis of these features with their current solutions,
+%we discuss the problems that hinder the satisfaction of the system requirements, ending with the identification of today's main challenges.
+%Among the problems identified are (1) deficiencies in the
+%implementation of complex search, which do not allow real-time
+%feedback and need to improve the quality and accuracy of the results obtained,
+%(2) lack of proposals for enhanced security system for these systems,
+%especially related to selfish users control and encryption systems,
+%and (3) vulnerabilities in the entry mechanisms of the system and (4) management of
+%selfish users.\\
+
+
+%\textbf{Keywords:}
 {\bf Keywords:} P2P, user identification, distributed systems.
 
 \end{minipage}
@@ -141,16 +169,25 @@ Tables (DHT) structured P2P networks.\\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{General formulation of the problem and thesis proposal}
 
+%Debe contener la exposición general del problema, identificando
+%claramente qué aspectos relacionados con la informática son los más
+%relevantes.  Además, deberá contener el marco teórico, la discusión
+%bibliográfica con sus referencias y, finalmente, su propuesta de
+%tesis.  (La extensión máxima de esta sección es de hasta 5 páginas.
+%En hojas adicionales incluya la lista de referencias bibliográficas
+%citadas)
+
+
 \subsection{Context and Motivation}
 
-A Peer-to-Peer network (from now onward called \textit{P2P}) is a distributed system of big scale. His participants
+A Peer-to-Peer network (onwards called \textit{P2P}) is a distributed system of big scale. His participants
 are called \textit{nodes} and they directly share resources and data, acting
 like clients and servers. They are called big scale because they are made to
 contain millions of nodes through the Internet. P2P systems are scalable,
 decentralized, robust and self-organized.
 
 P2P systems are characterized by do not having a central coordination. Each
-peer is independent and has a local view of the system. The global behavior
+peer is independient and has a local view of the system. The global behavior
 emerges from the local interaction of its members~\cite{Aberer:2001:PIS:503271.503268}.
 P2P networks natural properties make non-profitable services capable of running
 with the help of the same users that use it. 
@@ -158,7 +195,7 @@ with the help of the same users that use it.
 The most basic P2P systems only provide the structure to anyone in the network
 to store and retrieve data in it. To provide more complex functionalities,
 additional logic has to be implemented to them.
-As P2P systems grow in functionalities, the need to identify users inside the
+As P2P systems grow in funciontalities, the need to identify users inside the
 network arose.
 
 The subject of securely establishing stable identities in P2P
@@ -181,7 +218,7 @@ To store the data safely all approaches build on encrypting backed up content.
 The schemes to identify the user are basically two: the ones that
 use keys randomly derived~\cite{Lillibridge:2003:CIB:1247340.1247343} and the schemes that derive
 keys from a user defined password~\cite{Cox:2002:PMB:844128.844155}. While
-approaches that derive randomly the keys does not have the risk of someone
+approachs that derive randomly the keys does not have the risk of someone
 guessing the user keys, they require that the user manually back up the
 keys. 
 % TODO: check this system
@@ -206,14 +243,14 @@ scenario. We treat the subject of password change, which is not applicable to
 their scenario, although their proposal could be extended to support password
 change using our techniques.
 % passwords in p2p networks
-Also, approach's to handle
+Also, approachs to handle
 remembered logins, and recovering lost passwords has been
 made~\cite{kreitz2012passwords}.
 
 \subsection{Problem statement}
 
 Most of existing systems for the user identification in P2P networks only consider the
-use of preshared keys to identify the user in the network. While that can
+use of preshared keys to identificate the user in the network. While that can
 be easily implemented, does not provide to the users the flexibility that a
 username-password based identification provides when using different devices to
 log in in the system. As the user needs to transfer manually his keys from one
@@ -221,22 +258,22 @@ device to another, there are many security issues when they are handled without
 care or the devices (like a cellphone) are lost. 
 
 The use of a username and a password means that the user keys needs to be secured inside the identification system.
-To handle the user keys without compromising the users identity, additional
+To handle the user keys without compromising the users identity, aditional
 security layers needs to be placed inside the P2P network.
 
 While a solution based in username and password has been proposed
 before~\cite{kreitz2012passwords}, it does not take in consideration the
-presence of malicious nodes. A malicious or bizantine node is any node that does
+precense of malicious nodes. A malicious or bizantine node is any node that does
 not behave as expected by the protocol of the system. The presence of this type
 of nodes can easily break the security and functioning of the whole system.
 
 
 \subsection{Thesis proposal}
 
-Before developing an P2P system with the desired functionalities, an adequate
-system architecture is needed. We will thoroughly evaluate a new user
-identification system that can work in the presence of bizantine nodes, with
-the hopes to reach the desirable functionalities with a minimum probability of
+Before developing an P2P system with the desired functionalities, an adecuate
+system architecture is needed. We will throughfully evaluate a new user
+identification system that can work in the precense of bizantine nodes, with
+the hopes to reach the desirable functionalities with a minimun probability of
 failure to make the system secure in real scenarios.
 
 \subsubsection{System architecture}
@@ -274,7 +311,7 @@ peers.
 To secure the stored keys, the proposed system uses encryption, indirection and
 rings of trust inside the network. The system goal is to offer a secure mean to
 identify an user using only his username/password knowledge taking in
-consideration the presence of bizantine nodes.
+consideration the precense of bizantine nodes.
 
 \subsubsection{Protocols}
 For the user identification system, the following protocols will be used as a
@@ -309,7 +346,7 @@ into the storage, obtaining a file name $f_{LI}$ . The salt is stored
 in plaintext, so that the user later can derive the decryption
 key $K_{LI}$ by only providing the password. Finally, the user
 performs the write-once operation put on the DHT with
-username as key and $f_{LI}$ as value.
+uname as key and $f_{LI}$ as value.
 
 %unique username
 If the username was taken,
@@ -326,7 +363,7 @@ The user uses his username to find and retrieve his \textit{login information
 file}. Then, using his \textit{password} and the \textit{salt} included in the
 \textit{login information file}, obtains the \textit{file name $f_{KS}$} used to
 route back to where the \textit{key store file} is stored.  Lastly, uses the
-\textit{symmetric key $K_{KS}$} to decrypt the \textit{key store file} and recover
+\textit{symmectric key $K_{KS}$} to dencrypt the \textit{key store file} and recover
 his user keys.
 
 \paragraph{Logout}
@@ -358,8 +395,29 @@ the application using our P2P protocol.
 
 
 
+%\section{Formulación general de la problemática y propuesta de tesis}
+%
+%%Debe contener la exposición general del problema, identificando
+%%claramente qué aspectos relacionados con la informática son los más
+%%relevantes.  Además, deberá contener el marco teórico, la discusión
+%%bibliográfica con sus referencias y, finalmente, su propuesta de
+%%tesis.  (La extensión máxima de esta sección es de hasta 5 páginas.
+%%En hojas adicionales incluya la lista de referencias bibliográficas
+%%citadas)
+%
+%
+%\subsection{Contexto y Motivación}
+%
+%
+%\subsection{Planteamiento del Problema}
+%
+%
+%\subsection{Propuesta de tesis}
+%
+%
 
-\vfill
+
+%\vfill
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\bibliographystyle{mn}            %
@@ -379,19 +437,11 @@ P2P networks are capable of maintain highly secure services.
 \begin{itemize}
     % more hypotesis/facts that the thesis is based
     \item  It is assumed that is possible to develop a secure username/password
-      based  user identification scheme in P2P networks. 
+based  user identification scheme in P2P networks. 
     \item It is assumed that a certain amount of trust between nodes can be achieved in P2P
-      networks.
+networks.
     \item It is assumed that that encryption schemes available today are
-      sufficient to secure user sensible information.
-
-    \item As we require the storage system of the P2P network to support some
-      minimalistic access control, we assumed that each stored file has an
-      owner, which is the user who created the file, so that only the owner can
-      perform the write operation.
-
-    \item To authenticate ownership of files, we assume that a public-key
-      cryptographic system is used.
+    sufficient to secure user sensible information.
 
 \end{itemize}
 
@@ -399,6 +449,27 @@ P2P networks are capable of maintain highly secure services.
 \end{minipage}
 }
 
+%\section{Hipótesis de Trabajo}
+%
+%\fbox{
+%\begin{minipage}[t]{0.9\textwidth}
+%\setlength{\parindent}{10mm}
+%
+%The next work is based in the following hipostesis, under the assumption that 
+%P2P networks are capable of maintain highly secure services.
+%\begin{itemize}
+%    \item  It is assumed that is possible to develop a secure username/password
+%based  user identification scheme in P2P networks. 
+%    \item It is assumed that trust between nodes can be achieved in P2P
+%networks.
+%    \item It is assumed that that encryption schemes available today are
+%    sufficient to secure user sensible information.
+%
+%\end{itemize}
+%
+%\vfill
+%\end{minipage}
+%}
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Goals}
@@ -420,7 +491,7 @@ In particular, the main goals are:
 
 
 \begin{enumerate}
-    \item Have a minimal possibility of error in the identification process.
+    \item Have a minimal posibility of error in the identification process.
     \item Use a layer developed scheme that can easily adapt to most commonly
           used P2P networks.
 \end{enumerate}
@@ -429,6 +500,35 @@ In particular, the main goals are:
 All this is fundamental to the identification protocol to maintain his desirable properties.
 \end{minipage}
 }
+
+%\section{Objetivos}
+%\subsection{Objetivos Generales}
+%
+%\fbox{
+%\begin{minipage}[t]{0.9\textwidth}
+%\setlength{\parindent}{10mm}
+%
+%% main objective
+%The implementation of a secure username/password based user identification scheme in structured P2P
+%networks using secure routing, building of trust between nodes and encryption
+%techniques.
+%
+%\vspace{0.5cm}
+%\noindent
+%
+%In particular, the main goals are:
+%
+%
+%\begin{enumerate}
+%    \item Have a minimal posibility of error in the identification process.
+%    \item Use a layer developed scheme that can easily adapt to most commonly
+%          used P2P networks.
+%\end{enumerate}
+%\vspace{0.5cm}
+%
+%All this is fundamental to the identification protocol to maintain his desirable properties.
+%\end{minipage}
+%}
 
 
 \subsection{Specifics Goals}
@@ -440,11 +540,11 @@ All this is fundamental to the identification protocol to maintain his desirable
 In the development of the present work the following specifics goals are taken in consideration:
 \vspace{0.5cm}
 \begin{itemize}
-    \item Study the possibility of password recovery mechanisms in the proposed
+    \item Study the posibility of password recovery mechanisms in the proposed
           identification scheme.
     \item Study and use of development of trust between nodes to maintain a
           trusted layer inside the P2P network.
-    \item Use bizantine tolerant algorithm to verify and maintain the
+    \item Use bizantine tolerant algorithm to verify and maintian the
           algorithms consistency in the presence of malicious nodes.
     \item Study and use of secure routing, search and storage mechanisms a 
           structured P2P network.
@@ -452,8 +552,30 @@ In the development of the present work the following specifics goals are taken i
 \end{minipage}
 }
 
+%\subsection{Objetivos Específicos}
+%
+%\fbox{
+%\begin{minipage}[t][70mm][t]{0.9\textwidth}
+%\setlength{\parindent}{10mm}
+%%El desarrollo del presente trabajo de tesis considera la realización de los
+%%siguientes objetivos específicos:
+%In the development of the present work the following specifics goals are taken in consideration:
+%\vspace{0.5cm}
+%\begin{itemize}
+%    \item Study the posibility of password recovery mechanisms in the proposed
+%          identification scheme.
+%    \item Study and use of development of trust between nodes to maintain a
+%          trusted layer inside the P2P network.
+%    \item Use bizantine tolerant algorithm to verify and maintian the
+%          algorithms consistency in the presence of malicious nodes.
+%    \item Study and use of secure routing, search and storage mechanisms a 
+%          structured P2P network.
+%\end{itemize}
+%\end{minipage}
+%}
+
 \vfill
-\section*{Methodology and Working plan}
+\section*{Metodología y Plan de Trabajo}
 
 
 \fbox{
@@ -470,10 +592,10 @@ The working plan for the thesis development consists in three stages.
           \emph{(September 2012)}
     \item Study the P2P networks capabilities to implement complex systems as
           seen in centralized systems.
-          \emph{(October 2012 - November 2012)}
+          \emph{(Octover 2012 - November 2012)}
     \item Born of the idea.
           \emph{(December 2013)}
-    \item Problem specification, hypothesis and project objectives.
+    \item Problem specification, hipothesis and project objectives.
           \emph{(February 2013)}
 \end{enumerate}
 
@@ -492,7 +614,7 @@ The working plan for the thesis development consists in three stages.
 \begin{enumerate}
     \item User identification system design for structured P2P networks.
           \emph{(August 2013 - September 2013)}
-    \item Theoretic evaluation of the user identification proposal.
+    \item Teoric evaluation of the user identification proposal.
           \emph{(October 2013)}
     \item Final thesis report development.
           \emph{(November 2013 - December 2013 2013)}
@@ -501,6 +623,58 @@ The working plan for the thesis development consists in three stages.
 \end{enumerate}
 \end{minipage}
 }
+
+%\section*{Metodología y Plan de Trabajo}
+%
+%
+%\fbox{
+%\begin{minipage}[t]{0.9\textwidth}
+%\setlength{\parindent}{10mm}
+%El plan de trabajo para el desarrollo del presente tema de tesis consta de tres
+%etapas.
+%\noindent {\bf Etapa I:} Definición del problema
+%\begin{enumerate}
+%    \item Nacimiento de la idea.
+%    \emph{(Mayo 2012)}
+%    \item Estudio del problema de los \nbody, diferentes métodos de
+%          integración, propiedades generales, etc.
+%          \emph{(Junio 2012 - Julio 2012)}
+%    \item Estudio de sistemas keplerianos, pruebas severas del integrador.
+%    \emph{(Agosto 2012)}
+%    \item Especificaciones del problema, hipótesis de trabajo y objetivos del
+%          proyecto. \emph{(Septiembre 2012)}
+%\end{enumerate}
+%
+%\noindent {\bf Etapa II:} Definición de la solución
+%\begin{enumerate}
+%    \item Estado del arte de esquemas de integración para el problema
+%          de los \nbody.
+%          \emph{(Octubre 2012)}
+%    \item Estado del arte de integradores de sistemas de \nbody.
+%          \emph{(Noviembre 2012)}
+%    \item Estado del arte de la computación basada en tarjetas gráficas (GPU).
+%          \emph{(Diciembre 2012)}
+%    \item Diseño del algoritmo de integración que considere la diferenciación
+%          en el cálculo de la fuerza sobre las estrellas.
+%          \emph{(Noviembre 2012 - Diciembre 2012)}
+%\end{enumerate}
+%
+%\noindent {\bf Etapa III:} Implementación de la solución
+%\begin{enumerate}
+%    \item Diseño del algoritmo de integración que considere la diferenciación
+%          en el cálculo de la fuerza sobre las estrellas.
+%          \emph{(August 2013 - September 2013)}
+%    \item Desarrollo de experimentos y comparaciones en el desempeño de
+%          ambos algoritmos.
+%          \emph{(October 2013 - November 2013)}
+%    \item Desarrollo del informe final de la tesis.
+%          \emph{(December 2013 2013)}
+%    \item Desarrollo de publicación.
+%          \emph{(January 2014)}
+%\end{enumerate}
+%\end{minipage}
+%}
+
 
 \vfill
 \section*{Results}
@@ -521,13 +695,37 @@ The working plan for the thesis development consists in three stages.
     \item Generate a base system to develop complex projects in P2P networks.
     \item Reassure that P2P distributed systems have the capabilities to offer
           complex and high level services.
-    \item Development of an article to be sent to a distributed systems
+    \item Development of an article to be sent to a distributer systems
           publisher. The paper will show the results of the user identification system
           designed in this project.
 \end{itemize}
 
 \end{minipage}
 }
+
+%\vfill
+%\section*{Resultados}
+%\subsection{Aportes y Resultados Esperados}
+%
+%\fbox{
+%%\begin{minipage}[t][70mm][t]{0.9\textwidth}
+%\begin{minipage}[t]{0.9\textwidth}
+%\setlength{\parindent}{10mm}
+
+%\begin{itemize}
+%    \item Desarrollar una solución moderna,
+%          tanto computacionalmente, como en términos de ingeniería para la
+%          identificación de usuarios en sistemas P2P.
+%    \item Generar el sistema base para futuros proyectos
+%          basados en redes P2P.
+%    \item Reafirmar que los sistemas distribuidos P2P poseen las capacidades
+%          necesarias para ofrecer servicios complejos y de alto nivel.
+%    \item Desarrollo de un artículo para ser enviado a una revista de computación distribuida.
+%          Dicho trabajo presentará los resultados obtenidos por el
+%          el sistema señalado en el presente proyecto.
+%\end{itemize}
+%\end{minipage}
+%}
 
 \subsection{Validation procedures}
 
@@ -537,22 +735,46 @@ The working plan for the thesis development consists in three stages.
 \setlength{\parindent}{10mm}
 
 % translate and change this
-P2P networks presents a big difficulty to be tested in a real environment
+P2P networks presents a big difficulty to be tested in a real enviroment
 because of the high number of nodes needed to try it out.
 Therefore, instead of going after an empiric validation of the proposed
-identification system, only a  theoretical evaluation will be presented.
+identification system, only a  theorical evaluation will be presented.
 The proposed system will be compared with the other systems available at
-the moment with a thoroughly analysis of the security of the algorithm used.
+the moment with a throughfully analisis of the security of the algorithm used.
 
-Taking that in consideration, the theoretical evaluation will be focused in:
+Taking that in consideration, the theorical evaluation will be focused in:
 
 \begin{itemize}
     \item Proving that the system will have a minimal probability of error.
-    \item Proving that the system will  maintain his consistency in networks with at most 30\% of bizantine nodes. 
+    \item Proving that the system will  maintain his consistency in networks with atmost 30\% of bizantine nodes. 
 \end{itemize}
 
 \end{minipage}
 }
+
+%\subsection{Formas de Validación}
+%
+%\fbox{
+%%\begin{minipage}[t][70mm][t]{0.9\textwidth}
+%\begin{minipage}[t]{0.9\textwidth}
+%\setlength{\parindent}{10mm}
+%
+%Ya que los algoritmos existen desde
+%hace más de cuarenta años, y que hay problemas teóricos cuya solución se conoce
+%con bastante exactitud, se podrá generar un mecanismo de validación directa,
+%verificando el comportamiento del algoritmo para una situación determinada.
+%
+%Por otro lado, es necesario además comparar los resultados de nuestro
+%algoritmo con...
+%
+%Dentro de las pruebas para validar el sistema,
+%las más importantes serán:
+%\begin{itemize}
+%    \item %blah blah
+%\end{itemize}
+%
+%\end{minipage}
+%}
 
 
 \vfill
@@ -568,6 +790,19 @@ Taking that in consideration, the theoretical evaluation will be focused in:
 \end{minipage}
 }
 
+%\section[]{Recursos}
+%\subsection{Recursos Disponibles}
+%
+%\fbox{
+%\begin{minipage}[t][50mm][t]{0.9\textwidth}
+%\setlength{\parindent}{10mm}
+%\begin{itemize}
+%    \item Se hará uso de los libros que la \emph{Biblioteca UTFSM} posee
+%          relacionado a sistemas distribuidos y redes P2P.
+%\end{itemize}
+%\end{minipage}
+%}
+
 \subsection{Resources Required}
 
 \fbox{
@@ -576,5 +811,15 @@ Taking that in consideration, the theoretical evaluation will be focused in:
 No more extra resources are needed.
 \end{minipage}
 }
+
+%\subsection{Recursos Solicitados}
+%
+%\fbox{
+%\begin{minipage}[t][50mm][t]{0.9\textwidth}
+%\setlength{\parindent}{10mm}
+%No se solicitan recursos extra.
+%\end{minipage}
+%}
+
 
 \end{document}
