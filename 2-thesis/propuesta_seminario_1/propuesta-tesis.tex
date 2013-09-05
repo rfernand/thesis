@@ -111,27 +111,27 @@
 
 P2P services are robust, scalable and self-organized by nature, but have a
 complete different architecture with new problems and unique requirements.
- Traditionally, P2P networks identified the different nodes that compose the
+ Traditionally, P2P networks used to identify the different nodes that compose the
 system, but not the user behind each one of them as a different being.
-The increase of number of devices the people have and use to join the network
-today makes the per node identification obsolete when trying to identify the
+Today, the people use multiple devices to join the network. This change of
+behavior makes the per node identification obsolete when trying to identify the
 unique user behind them.
-Also, users today are accustom to have user identification based in username and password.
-While an early approach of username/password identification system exist, it does not contemplate the existence
+Also, today the users are accustom to a username and password identification scheme.
+While an early approach of username/password identification system exists, it does not contemplate the existence
 of malicious nodes, lacking the capability to be secure when working in real P2P networks.
 
  We thoroughly investigate the requirements and features of a secure
 identification scheme, along with the challenges facing a P2P implementation.
 
 The main goal of this work is to
-develop a secure user identification system based in username/password keywords in
-structured P2P systems, using reputation systems and groups of trusted nodes
+develop a secure user identification system based on username/password keywords in
+structured P2P systems, using reputation systems and trusted nodes management
 to defend from malicious nodes and implement secure protocols for the system.
 
 Theoretic analysis of the system will be done to ensure that the protocols are
-secure and do not present security risks in a real environments.
+secure and do not present security risks in real environments.
 
-The architecture to develop the system will be based in on Distributed Hash
+The architecture to develop the system will be based on Distributed Hash
 Tables (DHT) structured P2P networks.\\
 
 {\bf Keywords:} P2P, user identification, distributed systems.
@@ -210,14 +210,14 @@ their scenario, although their proposal could be extended to support password
 change using our techniques.
 % passwords in p2p networks
 At last, an initial proposal for passwords in P2P networks has been presented,
-designed to handle to handle remembered logins, and recovering lost passwords
+designed to handle remembered logins, and recovering lost passwords
 in an idealized network~\cite{kreitz2012passwords}, and has not been proved to
 work in a real environment.
 
 \subsection{Problem statement}
 
 Most of existing systems for the user identification in P2P networks only consider the
-use of preshared keys to identify the user in the network. While that can
+use of pre-shared keys to identify the user in the network. While that can
 be easily implemented, does not provide to the users the flexibility that a
 username-password based identification provides when using different devices to
 log in in the system. As the user needs to transfer manually his keys from one
@@ -232,7 +232,7 @@ While a solution based in username and password has been proposed
 before~\cite{kreitz2012passwords}, it does not take in consideration the
 presence of malicious nodes. A malicious or bizantine node is any node that does
 not behave as expected by the protocol of the system. The presence of this type
-of nodes can easily break the security and functioning of the whole system.
+of nodes can easily break the security and functionalities of the whole system.
 
 
 \subsection{Thesis proposal}
@@ -241,7 +241,7 @@ Before developing an P2P system with the desired functionalities, an adequate
 system architecture is needed. We will thoroughly evaluate a new user
 identification system that can work in the presence of bizantine nodes, with
 the hopes to reach the desirable functionalities with a minimum probability of
-failure to make the system secure in real scenarios.
+failure, to ensure the security of the system in real life scenarios.
 
 \subsubsection{System architecture}
 
@@ -353,7 +353,7 @@ fetched and decrypted (with the old key). A new key $K_{KSnew}$ is generated and
 used for encrypting the key-store content again before it is saved to the
 storage system, obtaining a new filename $f_{KSnew}$.
 Finally, the login information file
-is updated: $f_{KSnew}$, $K_{KSnew}$, the write credential KW as well as a new empty
+is updated: $f_{KSnew}$, $K_{KSnew}$, the write credential $K_W$ as well as a new empty
 device mapping devmapnew are encrypted with the new key $K_{LInew}$.
   Together with the new salt, this ciphertext is written to the distributed
 storage, using the reference $f_{LI}$ and the credential $K_W$, to authenticate the
@@ -382,20 +382,27 @@ The next work is based in the following hypothesis, under the assumption that
 P2P networks are capable of maintain highly secure services.
 \begin{itemize}
     % more hypotesis/facts that the thesis is based
-    \item  It is assumed that is possible to develop a secure username/password
-      based  user identification scheme in P2P networks. 
-    \item It is assumed that a certain amount of trust between nodes can be achieved in P2P
-      networks.
-    \item It is assumed that that encryption schemes available today are
-      sufficient to secure user sensible information.
+    %El uso de un sistema de reputación
+    %y una gestión de nodos de confianza permitirá mitigar el efecto de los nodos
+    %maliciosos en término
+    %de usurpación de identidad".
+    \item It is assumed that the use of a reputation system and trusted nodes
+      management mitigates the efectivity of malicious nodes on identity
+      usurpation attacks.
+    %\item It is assumed that a certain amount of trust between nodes can be achieved in P2P
+      %networks.
+    \item It is assumed that encryption schemes available today are
+      sufficient to secure the user's private data in the P2P networks.
+    %\item  It is assumed that is possible to develop a secure username/password
+    %  based  user identification scheme in P2P networks. 
 
-    \item As we require the storage system of the P2P network to support some
-      minimalistic access control, we assumed that each stored file has an
-      owner, which is the user who created the file, so that only the owner can
-      perform the write operation.
+    %\item As we require the storage system of the P2P network to support some
+    %  minimalistic access control, we assumed that each stored file has an
+    %  owner, which is the user who created the file, so that only the owner can
+    %  perform the write operation.
 
-    \item To authenticate ownership of files, we assume that a public-key
-      cryptographic system is used.
+    %\item To authenticate ownership of files, we assume that a public-key
+    %  cryptographic system is used.
 
 \end{itemize}
 
@@ -471,10 +478,10 @@ The working plan for the thesis development consists in three stages.
 \noindent {\bf Stage I:} Problem definition
 \begin{enumerate}
     \item Study of P2P network systems and P2P search and storage mechanisms.
-          \emph{(September 2012)}
+          \emph{(August 2012)}
     \item Study the P2P networks capabilities to implement complex systems as
           seen in centralized systems.
-          \emph{(October 2012 - November 2012)}
+          \emph{(September 2012 - November 2012)}
     \item Born of the idea.
           \emph{(December 2013)}
     \item Problem specification, hypothesis and project objectives.
@@ -499,9 +506,9 @@ The working plan for the thesis development consists in three stages.
     \item Theoretic evaluation of the user identification proposal.
           \emph{(October 2013)}
     \item Final thesis report development.
-          \emph{(November 2013 - December 2013 2013)}
+          \emph{(November 2013 - January 2013 2013)}
     \item Paper development.
-          \emph{(January 2014)}
+          \emph{(February 2014)}
 \end{enumerate}
 \end{minipage}
 }
@@ -551,7 +558,11 @@ the moment with a thoroughly analysis of the security of the algorithm used.
 Taking that in consideration, the theoretical evaluation will be focused in:
 
 \begin{itemize}
-    \item Proving that the system will have a minimal probability of error.
+    \item Proving that the system will have a minimal probability of error,
+      taking in consideration that there are two different types: false positives and
+      false negatives. The first is when the system identifies an user as ``foo''
+      and he is not, and the last is when the system says that the user is not
+      ``bar'' when he really is it.
     \item Proving that the system will  maintain his consistency in networks with at most 30\% of bizantine nodes. 
 \end{itemize}
 
