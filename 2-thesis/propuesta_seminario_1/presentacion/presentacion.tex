@@ -60,19 +60,53 @@
   \end{tabular}
   \end{table}
   \end{frame}
-  
+
   \begin{frame}
   \frametitle{P2P Networks}
-  \framesubtitle{Overlay structure}
+  \framesubtitle{Unstructured networks}
   \begin{table}
   \begin{tabular}{p{7cm}p{3cm}}
   \begin{itemize}
-      \item Images of structured/unstructures networks
-      \item Differences
+      \item Usually organized as a hiearchical/plain graph.
+      \item Search is costly and can result in false negatives.
+      \item Can achieve certain grade of node anonymity. 
   \end{itemize}
   &
   \vspace{1.5cm}
-  \includegraphics[width=4cm]{../../presentacion/img/example}\\
+  \includegraphics[width=4cm]{../../presentacion/img/p2p-unstructured}\\
+  \end{tabular}
+  \end{table}
+  \end{frame}
+
+  \begin{frame}
+  \frametitle{P2P Networks}
+  \framesubtitle{Structured networks}
+  \begin{table}
+  \begin{tabular}{p{7cm}p{3cm}}
+  \begin{itemize}
+      \item Strong topology structure, usually ring or mesh based.
+      \item More efficient search, with no false negatives.
+      %\item Specific routing algorithm
+  \end{itemize}
+  &
+  \vspace{1.5cm}
+  \includegraphics[width=4cm]{../../presentacion/img/p2p-structured}\\
+  \end{tabular}
+  \end{table}
+  \end{frame}
+
+  \begin{frame}
+  \frametitle{P2P Networks}
+  \framesubtitle{Structured network example: CHORD}
+  \begin{table}
+  \begin{tabular}{p{3cm}p{7cm}}
+  \begin{itemize}
+      \item Routing algorithm based on SHA-1
+      \item Data search reaches O(log(N)) nodes
+  \end{itemize}
+  &
+  \vspace{0.5cm}
+  \includegraphics[width=8cm]{../../presentacion/img/chord-search}\\
   \end{tabular}
   \end{table}
   \end{frame}
