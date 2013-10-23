@@ -195,19 +195,15 @@ random number generator that produces the key pair ~\cite{clarke2010private},~\c
 Knowing only the memorable keyword string the user can
 store and retrieve information.
 
-%TODO: check vu et al. 11 and Frykholm and Juels AND CHANGE THIS
 While the identification system can function without the need of forgotten
 passwords functionalities, they can also be implemented in the system.
 Related to that, recovery of information in a P2P scenario has been studied by Vu et al.~\cite{5380695} who proposed
 a combination of threshold-based secret sharing with delegate
 selection and encrypting shares with passwords.
 Frykholm and Juels~\cite{Frykholm:2001:EPR:501983.501985} proposed a password-recovery
-mechanism based on security questions very similar to our
-protocol for the same task. They offer better, information-
-theoretic security properties, something not applicable to our
-scenario. We treat the subject of password change, which is not applicable to
-their scenario, although their proposal could be extended to support password
-change using our techniques.
+mechanism based on security questions very similar to the one seen
+in~\cite{kreitz2012passwords}. 
+
 % passwords in p2p networks
 At last, an initial proposal for passwords in P2P networks has been presented,
 designed to handle remembered logins, and recovering lost passwords
@@ -343,7 +339,7 @@ process.
 To change the password, the user has to rewrite his \textit{login information
 file}.
 
-Before the user can change the password, she must log in using her password to
+Before the user can change the password, he must log in using his password to
 obtain $K_{LI}$ . With this information, the password change can be accomplished:
 the user is asked for a new password and a new salt is
 generated. The key-derivation function is used to generate a new key
@@ -353,12 +349,12 @@ fetched and decrypted (with the old key). A new key $K_{KSnew}$ is generated and
 used for encrypting the key-store content again before it is saved to the
 storage system, obtaining a new filename $f_{KSnew}$.
 Finally, the login information file
-is updated: $f_{KSnew}$, $K_{KSnew}$, the write credential $K_W$ as well as a new empty
-device mapping devmapnew are encrypted with the new key $K_{LInew}$.
+is updated: $f_{KSnew}$, $K_{KSnew}$, the write credential $K_W$ % as well as a new empty device mapping devmapnew are
+is encrypted with the new key $K_{LInew}$.
   Together with the new salt, this ciphertext is written to the distributed
 storage, using the reference $f_{LI}$ and the credential $K_W$, to authenticate the
 write operation. Lastly, the keys stored in the key store should be updated by
-the application using our P2P protocol.
+the application using the P2P protocol.
 
 
 
