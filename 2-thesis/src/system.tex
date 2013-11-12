@@ -8,7 +8,14 @@ log in in the system. As the user needs to transfer manually his keys from one
 device to another, there are many security issues when they are handled without
 care or the devices (like a cellphone) are lost. 
 
-The use of a username and a password means that the user keys needs to be secured inside the identification system.
+The use of a username and a password means that the user keys needs to: a) be
+secured inside the identification system or b) be derived from information
+stored in the identification system. Between  the two options, the first one
+needs a trusted storing scheme with additional use of encryption to secure the
+private keys. In the other hand deriving the user private keys let us build the
+identification system with the same desired properties without adding
+additional complexity.
+
 To handle the user keys without compromising the users identity, aditional
 security layers needs to be placed inside the P2P network.
 
@@ -17,47 +24,192 @@ rings of trust inside the network. The system goal is to offer a secure mean to
 identify an user using only his username/password knowledge taking in
 consideration the precense of bizantine nodes.
 
+As shown in \cite{the_sybil_attack}, it is impossible to get a 100\% reliable
+system over a DHT where malicious nodes are present. The goal of our approach
+is to reduce drastically the probability of a malicious node to impersonate
+another user using the identification system.
+%While the probability can always exist, it should be highly unlikely to happen.
+
 In this chapter we will describe the different parts of the system and how the
 identification algorithms will work.
 %In this section we describe the user identification system. 
 %This system provides a distributed and secure way to attain a user-password
 %identification scheme like the ones commonly seen in centralized services.
 
+
+\section{Building blocks and notation}
+
+For simplicity, we assume in the following that the underlyng DHT is
+Pastry~\cite{pastry} seen in the section~\ref{sec:pastry}. We suppose that
+every node in the DHT self-generates its own pair of public and privates keys
+($X^{pub}$, $X^{priv}$) to be used with an asymmetrical encryption
+algorithm~\cite{asymmetrical_encryption_algorithm}. The size of the keys used
+in the whole system is both fixed and large enough to make it computationally
+infeasible to decrypt an information without knowing the corresponging private
+keys. We will assume that an User is identified by the criptographic proof of
+his private key. 
+
+SHA stands for the Secure Hash Algorithm One (SHA-1 - 160 bits hash). We also
+assume that all communications among nodes are made using the TCP protocol, and
+that all transmissions errors are handled at the transport level.
+
+A simple storage system is needed.
+%% TODO:
+%The \textit{trustsets} are in charge of the storage of the user keys that are
+%used to identify an user in the system. The system needs a PUT(key,
+%file) operation that stores the file in the closest trusted node based in the
+%routing algorithm and a GET(key) operation that retrieves the stored file.
+
+
+%%The identification system needs to use 
+
+
+%% -- THIS IS NOT NECESSARY FOR THE IDENTIFICATION SYSTEM YET IT CAN BE USEFULL --
+% Our final assumption is that the underlying operating system of every node which
+%participates to the DHT is running the Network Time Protocol. Thus, we consider
+%that every node has a good global time, wiuth a small deviation from the
+%Coordinated Universal Time (UTC)
+
 %\section{Securing  P2P networks}
-\section{Securing storage in P2P networks}
-P2P networks like gnutella,
+
+\section{A Quasi-Identification Service}
+
+% definition of a node and a service that is going to identify with it
+
+Let A be a node of the DHT, and $S = \{S_1, S_2, \cdots, S_n\}$ a set of $n$
+nodes that cooperate to provide a service. Let $NameofS$ be the name of service
+$S$; every node that needs to use the service knows $NameofS$. $K_s =
+SHA(NameofS)$ is the key that identifies $S$ in DHT, and $S_{root}$ is the node
+closest to $K_s$ in the DHT. It follows that $S = \{S_1, S-2, \cdots, S_n\}$ is
+composed of node $S_{root}$ and of all the nodes in its leafset. Let $I$ be a
+identification service such that $I = \{ I_1, I_2, \cdots, I_n\}$ is a group of
+$n$ nodes belonging to the DHT. 
+
+% interaction between A, S & I, Figure and such
+
+We suppose that the number of nodes that compose a service $S$ is fixed and does
+not change over time. We also suppose that the same stands for any
+quasi-identification service $I$.
+
+
 
 % normal p2p networks provide storage for the peers inside but does not ensure
 % control of capabilities, deletion nor modification of the files.
 
 \section{Architectural principles}
-%The general view of the system consists in a multi-layered network based in trusted rings.
-The general view of the system consists in a double-layered network; a Trusted
-ring of nodes nested inside a normal DHT, with multiple routing policies
-depending in the protocol of differents services. The user registration,
-sign-in, logout and password change operations respectively allow a node to
-register an user identity, to identify himself with an existing user identity,
-to remove your user session and to change the password used to sign-in.
 
-The system needs to have a \textit{trusted ring} maintained by periodical
-checks of capacity of his members to remain in the trusted ring and a
-reputation system to evaluate this. Also, similar to the
-leafset concept in Pastry, each trusted node needs to maintain a
-\textit{trustset}, wich basically consist in D numerically closest trusted
-nodes with D/2 clockwise nodes, and D/2 counter-clockwise ones.
+\subsection{Securing the nodes of a leafset}
 
-The system used to build the trusted node infraestructure in the P2P networks
-needs to regularly asses the ability of the nodes to be part of the trusted
-ring.
+%% Refering to the section in the paper "A Scalable Architecture for Highly Reliable Certification"
+The first step to requesting a service is to acquire the set of nodes that
+compose the leafset for a giben root key $K$. Supposing that $K$ is associated
+with node $K_{ROOT}$, there remains a probability for $K_{ROOT}$ to be
+malicious. $K_{ROOT}$ might lie and provide references to other malicious nodes
+in order to collude against the requester, or it might deny any service by
+remaining silet. Therefore, a simple request to $K_{ROOT}$ will not suffice to
+acquire a reliable leafset associated with $K$.
 
-The figure shows a basic structure of the system. There are normal nodes and
-trusted nodes. Every trusted nodes maintains a \textit{trustsets}.
+Our solution for mitigating this issue is to use the DiversityTrustedRoute
+algorithm~\cite{diversity_trusted_route}. DiversityTrustedRoute uses different
+nodes as starting points in order to reach the same root node $K_{ROOT}$. The
+diversity of the routing tables on each node guarantees a very high probability
+of reaching root node $K_{ROOT}$ using different paths, and therefore of
+entering the leafset of $K_{ROOT}$ via different nodes. This makes for a more
+secure way of acquiring the leafset associated with a key $K$.
 
-A simple storage system is needed.
-The \textit{trustsets} are in charge of the storage of the user keys that are
-used to identify an user in the system. The system needs a PUT(key,
-file) operation that stores the file in the closest trusted node based in the
-routing algorithm and a GET(key) operation that retrieves the stored file.
+\subsection{Normal service request}
+
+To find the nodes associated with a given service, node $A$ computes the hash
+of the service name: $K_s = SHA(ServiceName)$. Let $S_{root} $ be the node that
+is closest to $K_s$ in the DHT. $A$ uses DiversityTrustedRoute to acquire the
+leafset of $S_{root}$. $A$ thus obtains access to the set $S$ of nodes that
+process requests for service $ServiceName$. Let L be the number of nodes in a
+leafset: $card(S) = L + 1$.
+
+Once $A$ has acquired $S$, it proceeds to the inception of its service request
+by sending a $RequestInit$ message to every node in $S$. A $RequestInit$
+message contains a public key $A^{pub}$ of client $A$. In reply to such a
+message, every node $S_i$ sends its own public key $S^{pub}_i$. In order to
+avoid man-in-the-middle attack, all the ensuing communications between $A$ and
+nodes that belong to $S$ will use a public/private key encryption scheme to
+ensure that no other node can read the content of the messages.
+% later the node will use his user private key & public key in this exchange
+
+If $A$ recieves at least $\frac{L}{2} + 1$ answers from the nodes in $S$, then
+$A$ considers that the transaction will proceed. Since $S$ is composed of
+common nodes from the DHT, it is possible for some of these nodes to be
+malicious. However, as explained in our evaluation of the quasi identification
+protocol~\ref{sec:evaluation}, a situation where $S$ contains more than
+$\frac{L}{2}$ malicious nodes is highly improbable.
+
+A combination of network failures and/or malicious nodes that choose to remain
+silent may prevent $A$ from receiving at least $\frac{L}{2} + 1$ answers. Since
+$S$ retains the properties of Pastry's leafset, the numerical closeness of its
+nodes in the DHT implies that they will very likely be geographically far on
+the Internet. Therefore, the probability of $\frac{L}{2} + 1 $ simultaneous IP
+routing failures or node failures, that is the probability for more than
+$\frac{L}{2}$ answers to not reach $A$, is very close to zero. To account for
+this type of situation, $A$ aborts the transaction if it has not received a
+sufficient amount of identical answers after a timeout $\delta t$. this is a
+very rare and highly improbable case, as shown by our evaluation
+in~\ref{sec:evaluation}.
+
+\subsection{User identified service request}
+
+Before carrying out a transaction for a client $A$, $S$ proceeds to
+verify the identity of the client from another set $I$ of nodes. At the end of
+the intentification process, the objective is to return a session key to $A$
+and to store the created session on the nodes that belong $C$.
+
+Each node in $S$ generates a random secret $S^{secret}_i$ wich is sent to the
+client $A$. Then, client $A$ responds each request with the corresponding secret
+encrypted with his user private key $U^{priv}$, generating
+$E^{secret_i}_{U^{priv}}$. 
+%The service $S$ send a $EncryptedSecretRequest$ to the client $A$, wich is
+%responded with the 
+% The service requires a encrypted secret from the client A. The node A
+encrypts the secret using his private key obtained through
+\ref{sec:private_key_recovery}.
+
+Upon reception of the $E^{secret_i}_{U^{priv}}$ message from the client $A$, every node in $S$
+starts looking for the set $I$ of nodes that will constitute the quasi
+identification authority. To determine wich nodes belong to $I$, $S$ computes
+its key $K$ such that $K = SHA(SHA(Username))$. $I_{root}$ is the node closest
+to $K$ in the DHT, and the quasi identification authority $I = \{ I_1, I_2,
+\cdots, I_{L+1}\}$ for the identification of $A$ is composed of $I_{root}$
+and its leafset secured through DiversityTrustedRoute.
+
+Then each node in $S$ sends a request to every node $I_i$ in $I$ asking for the Username public key $U^{pub}$. When a node
+$S_i$ of $S$ recieves at least $\frac{L}{2} + 1$ identical answers from
+$I$ regarding the $U^{pub}$, then $S_i$ assumes that the public key recieved
+actually corresponds to the Username being identified. Each node $S_i$ in $S$
+uses the $U^{pub}$ to decrypt $E^{secret_i}_{U^{priv}}$. If the result matches
+the shared random secret $S^{secret}_i$, $S_i$ recognizes the node $A$ as the
+user $Username$.
+
+
+%%%%%%% ---- OLD, NOT APPLICABLE TODAY ----
+%%%The general view of the system consists in a multi-layered network based in trusted rings.
+%%The general view of the system consists in a double-layered network; a Trusted
+%%ring of nodes nested inside a normal DHT, with multiple routing policies
+%%depending in the protocol of differents services. The user registration,
+%%sign-in, logout and password change operations respectively allow a node to
+%%register an user identity, to identify himself with an existing user identity,
+%%to remove your user session and to change the password used to sign-in.
+%%
+%%The system needs to have a \textit{trusted ring} maintained by periodical
+%%checks of capacity of his members to remain in the trusted ring and a
+%%reputation system to evaluate this. Also, similar to the
+%%leafset concept in Pastry, each trusted node needs to maintain a
+%%\textit{trustset}, wich basically consist in D numerically closest trusted
+%%nodes with D/2 clockwise nodes, and D/2 counter-clockwise ones.
+%%
+%%The system used to build the trusted node infraestructure in the P2P networks
+%%needs to regularly asses the ability of the nodes to be part of the trusted
+%%ring.
+%%
+%%The figure shows a basic structure of the system. There are normal nodes and
+%%trusted nodes. Every trusted nodes maintains a \textit{trustsets}.
 
 
 We now describe our protocols based on the system model. 
