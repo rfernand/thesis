@@ -1,8 +1,110 @@
+\section{P2P Identification Schemes}
+%\subsection{P2P Networks and User Identification systems}
+%
+%The work will be based in structured P2P networks, because unstructured
+%systems does not have the desired properties for the implementation of a
+%identification system. 
+%
+%
+%\paragraph{PeerSoN}
+%PeerSoN presenta un prototipo de estructura para redes sociales
+%Peer-to-Peer, buscando asegurar la privacidad de los usuarios y potenciar la
+%comunicación directa entre cada usuario.
+%Su arquitectura está basada en 2 capas, una para la búsqueda y otra para el almacenamiento de la
+%información. Considera la asignación de identificadores únicos para cada
+%usuario, procedimientos de entrada, envío y obtención de archivos y el manejo
+%de mensajes asincrónicos.
+%
+%La capa de almacenamiento consiste en los peers en sí, los cuales, una vez
+%encontrados por la capa de búsqueda, pasan a juntar y enviar la información
+%directamente entre sí, distribuyendo réplicas de éstos
+%en la red para aumentar la disponibilidad de los datos. 
+%PeerSoN~\cite{buchegger:peerson} basa su seguridad en cifrado simétrico y asimétrico. La
+%información primero es cifrada usando una llave simétrica, y luego esta
+%llave es cifrada con las llaves públicas de los recipientes. Los
+%identificadores de los usuarios son cifrados junto con las llaves
+%simétricas, siendo todo enviado con la información cifrada.
+%
+% Por último, para la capa de búsqueda usan las capacidades de almacenamiento,
+%ruteo y recuperación de información de
+%OpenDHT~\cite{Rhea:2005:OPD:1080091.1080102}.
+%
+%%#peerson
+%Dentro de sus debilidades se encuentran un sistema de seguridad y de búsquedas
+%muy básicos, sin abordar las problemáticas que pueda tener en una
+%implementación real del sistema. Su sistema de cifrado requiriere para poder compartir
+%un dato a grupo una cantidad de procesamiento proporcional a la
+%cantidad de usuarios. Además, en caso de modificación del grupo, se requeriría
+%el recifrado de todos los archivos compartidos entre sí, con todos los
+%costos que esto significaría. En el caso del sistema de búsqueda, al basarse en
+%un DHT sin mecanismos adicionales, no permitiría búsquedas complejas o de más
+%de una dimensión, dificultando el proceso de establecimiento conexiones entre
+%la red.
+%
+%\paragraph{Safebook}
+%Safebook~\cite{conf_wowmom_CutilloMO11} es un propuesta la formación para una
+%red social que utiliza dos principios de diseño: descentralización y uso de la
+%confianza con los usuarios de la vida real. Su arquitectura la organiza
+%separándola  en 3 niveles: red social (\textit{social network}, SN), aplicación
+%(\textit{application services}, AS) y transporte y comunicación
+%(\textit{communication and transport}, CT). El primer nivel es provisto por la
+%representación digital de los miembros y sus relaciones, la capa da aplicación
+%corresponde a la infraestructura de la red social y por último la capa de
+%comunicación que corresponde al Internet. 
+%De ésta forma, un usuario es representado como un \textit{host node} en la
+%Internet, un \textit{peer node} en la capa P2P, y un miembro o usuario en la
+%red social.
+%Uno de sus objetivos es ser resistente a gran parte de los posibles ataques a
+%redes sociales~\ref{sec:ataques}.
+%
+% Confía en matryoshkas que proveen el almacenamiento de la información, perfiles de la obtención de la información
+%y ofuscación de la comunicación. Una matryoshka consiste en un set de nodos
+%agrupados en varios anillos concéntricos, los cuales se organizan acorde al nivel de confianza que el
+%nodo, asociado con la matryoshka, tiene hacia los nodos de cada anillo. El
+%anillo más interior es el más confiado y estaría formado por los ``amigos'' del
+%nodo. Este sería el responsable  de almacenar la información replicada del nodo
+%asociado con la matryoshka. Las capas más cercanas almacenan la información
+%publicada de forma encriptada y no-encriptada, pero la información privada es
+%almacenada por el mismo dueño y no es replicada hacia los anillos. 
+%
+%Para la autenticación del usuario, utiliza un servicio de identificación
+%confiable para proveer a cada nodo identificadores únicos: un \textit{identificador del
+%nodo} y un \textit{seudónimo}.
+%Acuerdo a~\cite{springerlink_10.1007_978-3-642-14282-6_7}, un esquema simple de encriptación grupal es usada para la
+%encriptación, y usuarios obtienen llaves oportunamente para desencriptar la
+%información publicada. El dueño debe explícitamente autorizar y volver a publicar al
+%anillo interior cada mensaje escrito por otros usuarios.
+%La anonimidad en Safebook es obtenida usando un ruteo de múltiples saltos. Una
+%tabla de hash distribuida mantiene punteros a los nodos pertenecientes al
+%anillo más lejano de la matryoshka. Las peticiones entrantes son ruteadas desde
+%el anillo más lejano hacia el centro de la matryoshka. Los mensajes son
+%encriptados en cada salto usando criptografía asimétrica.
+%
+%La búsqueda de información se realiza a través de consultas recursivas en el
+%sistema P2P a través del DHT. Para ello, el nodo realiza una consulta
+%por la información del usuario objetivo, requiriendo el conocimiento previo de
+%los identificadores de éste. De ésta forma, consulta al nodo responsable del
+%identificador de ese usuario por la lista de nodos de entrada de la
+%capa más lejana de la matryoshka del usuario objetivo. Por último, la consulta
+%prosigue reenviandose a través de los nodos de cada capa de la matryoshka, hasta
+%llegar al centro de la misma. La información requerida llega de vuelta a través
+%invirtiendo el camino de llegada de la consulta.
+%No contempla un sistema de búsqueda adicional al provisto por el DHT.
+%
+%Los problemas principales detectados de este sistema se encuentran en la
+%disponibilidad de la información, problemas de escalabilidad al depender de
+%sistemas externos para el ingreso de nuevos usuarios a la red y carencias en
+%los métodos de búsqueda y recuperación de la información.
+%Esto es debido a que el almacenar réplicas de los datos personales entre los amigos más cercanos
+%puede generar problemas de disponibilidad de los datos en los momentos en que
+%éstos no se encuentren en linea. Para la identificación requiere de un servicio
+%externo centralizado  que pueda ser confiado para la asignación de ID únicas.
+%Por último, la transmisión de mensajes a través de la red se realiza
+%anonimizando al que envía y recibe el mensaje, aumentando el costo y tiempo de
+%envío de cada dato por cada salto que de entre nodo y nodo.
 
 %% introduction of identification schemes. Par 2: proposed username/password identification schemes. Part 3: securing the network protocols. Part 4: Pending issues.
 
-
-\section{Encrypting content}
 
 \section{Keys generation}
 \subsection{Randomly derived}

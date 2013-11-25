@@ -1,5 +1,3 @@
-\chapter{Design of a username-password based identification system in structured P2P networks}
-
 Existing systems for the user identification in P2P networks only consider the
 use of preshared keys to identificate the user in the network. While that can
 be easily implemented, does not provide to the users the flexibility that a
@@ -154,40 +152,6 @@ sufficient amount of identical answers after a timeout $\delta t$. this is a
 very rare and highly improbable case, as shown by our evaluation
 in~\ref{sec:evaluation}.
 
-\subsection{User identified service request}
-
-Before carrying out a transaction for a client $A$, $S$ proceeds to
-verify the identity of the client from another set $I$ of nodes. At the end of
-the intentification process, the objective is to return a session key to $A$
-and to store the created session on the nodes that belong $C$.
-
-Each node in $S$ generates a random secret $S^{secret}_i$ wich is sent to the
-client $A$. Then, client $A$ responds each request with the corresponding secret
-encrypted with his user private key $U^{priv}$, generating
-$E^{secret_i}_{U^{priv}}$. 
-%The service $S$ send a $EncryptedSecretRequest$ to the client $A$, wich is
-%responded with the 
-% The service requires a encrypted secret from the client A. The node A
-encrypts the secret using his private key obtained through
-\ref{sec:private_key_recovery}.
-
-Upon reception of the $E^{secret_i}_{U^{priv}}$ message from the client $A$, every node in $S$
-starts looking for the set $I$ of nodes that will constitute the quasi
-identification authority. To determine wich nodes belong to $I$, $S$ computes
-its key $K$ such that $K = SHA(SHA(Username))$. $I_{root}$ is the node closest
-to $K$ in the DHT, and the quasi identification authority $I = \{ I_1, I_2,
-\cdots, I_{L+1}\}$ for the identification of $A$ is composed of $I_{root}$
-and its leafset secured through DiversityTrustedRoute.
-
-Then each node in $S$ sends a request to every node $I_i$ in $I$ asking for the Username public key $U^{pub}$. When a node
-$S_i$ of $S$ recieves at least $\frac{L}{2} + 1$ identical answers from
-$I$ regarding the $U^{pub}$, then $S_i$ assumes that the public key recieved
-actually corresponds to the Username being identified. Each node $S_i$ in $S$
-uses the $U^{pub}$ to decrypt $E^{secret_i}_{U^{priv}}$. If the result matches
-the shared random secret $S^{secret}_i$, $S_i$ recognizes the node $A$ as the
-user $Username$.
-
-
 %%%%%%% ---- OLD, NOT APPLICABLE TODAY ----
 %%%The general view of the system consists in a multi-layered network based in trusted rings.
 %%The general view of the system consists in a double-layered network; a Trusted
@@ -219,9 +183,9 @@ We now describe our protocols based on the system model.
 %A. Account Registration
 
 \section{Account registration}
-\includegraphics[width=14cm]{../img/user_registration}\\
+\includegraphics[width=14cm]{../img/registration_protocol_mockup.png}\\
 
-To register a new user account, the user first
+To register a new user account ($U$), the node first
 has to choose a \textit{username} and a \textit{password}.
 %The \textit{username} should be unique in the network.
 % The user checks if the username exists by sending a
@@ -238,107 +202,137 @@ has to choose a \textit{username} and a \textit{password}.
 % 
 
 % key store file
-Considering a key-based authentication, the user creates a \textit{key store file}, containing all the
-keys used by the P2P application the user wants to log in to.
-The user generates a cryptographic key to authenticate the write operations
-that will be made in the file, and store this key along with the others in the
-\textit{key store file}.
+Then, a key derivation process is issued to generate the user Private and
+Public Keys. The
+key derivation utilices a Salt ($U^{salt}$) and a Password ($U^{password}$) to
+obtain the user's private and public Keys
+($U^{priv}$ and $U^{pub}$).
+The node  looks for the set $I$ set of nodes that will constitute the
+identification service for the user $U$. To obtain the list of nodes that provides the user identification service for
+the username $U^{username}$, the node $A$ computes its key $K$ such that $K =
+SHA(U^{username})$. 
 
-
-% encryption and store of the key store file
-The user then creates a \textit{symmetric key KKS} ,
-encrypts the file content with this key and puts the ciphertext
-into the storage, obtaining a \textit{file name fKS} . Now, the user
-creates a \textit{login information file} by creating a random
-byte string \textit{salt}, deriving a \textit{symmetric key KLI} from the user
-\textit{password} and the \textit{salt}.
-Using the new \textit{ symmetric key KLI}, the user encrypts the \textit{file name fKS},
-the \textit{symmetric key KKS} and the \textit{cryptographic key to
-authenticate the write operations KW}.
- The salt and the three encrypted values are put
-into the storage, obtaining a file name fLI . The salt is stored
-in plaintext, so that the user later can derive the decryption
-key KLI by only providing the password. Finally, the user
-performs the write-once operation put on the DHT with
-uname as key and fLI as value.
+Then the node $A$ sends a request to every node $I_i$ in $I$ to register the
+$U^{salt}$ and $U^{Pub}$ under the chosen  username  $U^{username}$. When the node
+$A$ recieves at least $\frac{L}{2} + 1$ identical affirmative answers from
+$I$ regarding the user registration, then $A$ assumes that the user was
+actually registered.
 
 %unique username
-If the username was taken,
-the user is prompted for a new username.
-
-%finish
-Once all operations
-have succeeded, the user is registered in the system.
+In case that the username was taken,
+the node $A$ is prompted for a new username.
 
 
 \section{Sign-in}
-The user uses his username to find and retrieve his \textit{login information
-file}. Then, using his \textit{password} and the \textit{salt} included in the
-\textit{login information file}, obtains the \textit{file name fKS} used to
-route back to where the \textit{key store file} is stored.  Lastly, uses the
-\textit{symmectric key KKS} to dencrypt the \textit{key store file} and recover
-his user keys.
+
+\subsection{User private key recovery}
+\label{sec:private_key_recovery}
+\includegraphics[width=14cm]{../img/login_protocol_mockup}\\
+
+First, the node $A$ looks for the set $I$ set of nodes that will constitute the
+identification service for the user $U$.
+To obtain the list of nodes $I$ that provides the user identification service for
+the username $U^{username}$, the node $A$ computes its key $K$ such that $K =
+SHA(U^{username})$. 
+Then the node $A$ sends a request to every node $I_i$ in $I$ to obtain the user
+salt $U^{salt}$ needed to derive the user private key $U^{priv}$.
+ When the node $A$ recieves at least $\frac{L}{2} + 1$ identical affirmative answers from
+$I$ regarding the user salt, then $A$ assumes that the salt retrieved
+corresponds to the one registered previously by the user ($U^{salt}$). Finally,
+the node proccedes to derive the user private key $U^{priv}$ using his user password $U^{password}$.
+
+\subsection{User identified service request}
+\includegraphics[width=14cm]{../img/session_creation_protocol_mockup}\\
+
+Before carrying out a transaction for a client $A$, $S$ proceeds to
+verify the identity of the client from another set $I$ of nodes. At the end of
+the intentification process, the objective is to return a session key to $A$
+and to store the created session on the nodes that belong $C$.
+
+% CHALLENGE, TODO: FIND A BETTER ONE
+Each node in $S$ generates a random secret $S^{secret}_i$ wich is sent to the
+client $A$. Then, client $A$ responds each request with the corresponding secret
+encrypted with his user private key $U^{priv}$, generating
+$E^{secret_i}_{U^{priv}}$. 
+%The service $S$ send a $EncryptedSecretRequest$ to the client $A$, wich is
+%responded with the 
+% The service requires a encrypted secret from the client A. The node A
+encrypts the secret using his private key obtained through
+\ref{sec:private_key_recovery}.
+
+Upon reception of the $E^{secret_i}_{U^{priv}}$ message from the client $A$, every node in $S$
+starts looking for the set $I$ of nodes that will constitute the quasi
+identification authority. To determine wich nodes belong to $I$, $S$ computes
+its key $K$ such that $K = SHA(U^{username})$. $I_{root}$ is the node closest
+to $K$ in the DHT, and the quasi identification authority $I = \{ I_1, I_2,
+\cdots, I_{L+1}\}$ for the identification of $A$ is composed of $I_{root}$
+and its leafset secured through DiversityTrustedRoute.
+
+Then each node in $S$ sends a request to every node $I_i$ in $I$ asking for the Username public key $U^{pub}$. When a node
+$S_i$ of $S$ recieves at least $\frac{L}{2} + 1$ identical answers from
+$I$ regarding the $U^{pub}$, then $S_i$ assumes that the public key recieved
+actually corresponds to the Username being identified. Each node $S_i$ in $S$
+uses the $U^{pub}$ to decrypt $E^{secret_i}_{U^{priv}}$. If the result matches
+the shared random secret $S^{secret}_i$, $S_i$ recognizes the node $A$ as the
+user $U$.
+
 
 \section{Logout}
-The system does not have something like a "session" to maintain; the only way
-to identify an user is by his keys that are obtained by the identification
-process.
-
-%%%%%%%%%%%%%%% REWRITE THISSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
- To log out from the system, the user does not have to interact
-with the DHT or the storage system. Simply wiping her local
-cache from application data and all key material restores the
-pre-login state. If the user chose to remember the login on a
-device, the corresponding device login information file FDL
-can also be deleted from the storage.
- A problem related to logging out is revoking remembered
-credentials on another device, e. g., a user’s stolen phone. To
-accomplish this, we first run the password change operation,
-which locks out all devices with remembered logins, because
-he key store key KKS changed (as well as the filename fKS ).
-Next, we use the device mapping devmap to inform all devices
-about the new key (and filename), except the device that is to
-be revoked. To inform a device about the change, we update
-the corresponding values in the device’s login information file
- FDL which can be accessed from the device by using the
-locally stored credentials.
- Algorithm 4 describes this necessary extension. After run- the password change
-operation, all devices that not ning shouldbe revoked and that have remembered
-logins (and therefore are devmap) referenced in the device mapping are
-processed. The device login information filename fDL and its key KDL are read,
-and the new key store key KKS new and filename fKS new are written to the
-device login information file FDL, encrypted under the device key KDL.
-Finally, the modified devmap is saved back to the login information file FLI.
-%%%%%%%%%%%%%%% REWRITE THISSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+%% OUTDATED
+%%The system does not have something like a "session" to maintain; the only way
+%%to identify an user is by his keys that are obtained by the identification
+%%process.
+%%
+%%%%%%%%%%%%%   Peerson Passwords in P2P networks %%%%%%%%%%%%%
+%% To log out from the system, the user does not have to interact
+%%with the DHT or the storage system. Simply wiping her local
+%%cache from application data and all key material restores the
+%%pre-login state. If the user chose to remember the login on a
+%%device, the corresponding device login information file FDL
+%%can also be deleted from the storage.
+%% A problem related to logging out is revoking remembered
+%%credentials on another device, e. g., a user’s stolen phone. To
+%%accomplish this, we first run the password change operation,
+%%which locks out all devices with remembered logins, because
+%%he key store key KKS changed (as well as the filename fKS ).
+%%Next, we use the device mapping devmap to inform all devices
+%%about the new key (and filename), except the device that is to
+%%be revoked. To inform a device about the change, we update
+%%the corresponding values in the device’s login information file
+%% FDL which can be accessed from the device by using the
+%%locally stored credentials.
+%% Algorithm 4 describes this necessary extension. After run- the password change
+%%operation, all devices that not ning shouldbe revoked and that have remembered
+%%logins (and therefore are devmap) referenced in the device mapping are
+%%processed. The device login information filename fDL and its key KDL are read,
+%%and the new key store key KKS new and filename fKS new are written to the
+%%device login information file FDL, encrypted under the device key KDL.
+%%Finally, the modified devmap is saved back to the login information file FLI.
+%%%%%%%%%%%%%   Peerson Passwords in P2P networks %%%%%%%%%%%%%
  
 
-
-
 \section{Password Change}
-To change the password, the user has to rewrite his \textit{login information
-file}.
 
 
-%%%%%%%%%%%%%%% REWRITE THISSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
-Before the user can change the password, she must log in using her password to
-obtain KLI . With this information, the password change can be accomplished
-(see Algorithm 3): the user is asked for a new password and a new salt is
-generated. The key-derivation function is used to generate a new key KLI new
-for the login information file. Then, the content of the key-store file is
-fetched and decrypted (with the old key). A new key KKS new is generated and
-used for encrypting the key-store content again before it is saved to the
-storage system, obtaining a new filename fKS new.
-Finally, the login information file
-is updated: fKS new, KKS new, the write credential KW as well as a new empty
-device mapping devmapnew are encrypted with the new key KLI new.
-  Together with the new salt, this ciphertext is written to the distributed
-storage, using the reference fLI and the credential KW, to authenticate the
-write operation. Lastly, the keys stored in the key store should be updated by
-the application using our P2P protocol.  See Section VI-E for a discussion. At
-this point, old device login information files can also be deleted from the
-storage to reclaim space.
-%%%%%%%%%%%%%%% REWRITE THISSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
-
+%%%%%%%%%%%%%   Peerson Passwords in P2P networks %%%%%%%%%%%%%
+%%Before the user can change the password, she must log in using her password to
+%%obtain KLI . With this information, the password change can be accomplished
+%%(see Algorithm 3): the user is asked for a new password and a new salt is
+%%generated. The key-derivation function is used to generate a new key KLI new
+%%for the login information file. Then, the content of the key-store file is
+%%fetched and decrypted (with the old key). A new key KKS new is generated and
+%%used for encrypting the key-store content again before it is saved to the
+%%storage system, obtaining a new filename fKS new.
+%%Finally, the login information file
+%%is updated: fKS new, KKS new, the write credential KW as well as a new empty
+%%device mapping devmapnew are encrypted with the new key KLI new.
+%%  Together with the new salt, this ciphertext is written to the distributed
+%%storage, using the reference fLI and the credential KW, to authenticate the
+%%write operation. Lastly, the keys stored in the key store should be updated by
+%%the application using our P2P protocol.  See Section VI-E for a discussion. At
+%%this point, old device login information files can also be deleted from the
+%%storage to reclaim space.
+%%%%%%%%%%%%%   Peerson Passwords in P2P networks %%%%%%%%%%%%%
 
 \chapter{Evaluation}
 
@@ -425,13 +419,14 @@ against them.
 \section{Forgotten passwords}
 
 \section{Password-recovery mechanisms}
+  - HUGE danger
   - Security questions
   - threshold-based secret sharing with delegate selection and encrypting
   shares with passwords
 
 
-%%%%%%%%%%%%%%% REWRITE THISSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 
+%%%%%%%%%%%%%   Peerson Passwords in P2P networks %%%%%%%%%%%%%
 An important part of password-based logins is the possi-
  bility for users to recover their accounts if they forget their
  passwords. We refer to this as a password recovery mechanism.
@@ -496,9 +491,7 @@ time, memorable, and definite [22]. Rabkin [23] underlines
 the importance to choose good questions especially in the era
 of social networks. Frykholm and Juels [12] discuss a related
 technique that is similar to our adaption of this scheme.
-
-%%%%%%%%%%%%%%% REWRITE THISSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
-
+%%%%%%%%%%%%%   Peerson Passwords in P2P networks %%%%%%%%%%%%%
  
 
 \section{Password Change}
