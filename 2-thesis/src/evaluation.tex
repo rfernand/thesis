@@ -1,0 +1,390 @@
+In this section we present a probability assessment of
+the algorithms used in our quasi identification system, and show that it is highly
+improbable to fail.
+
+In this section, $p$ represents the probability that a single node is
+malicious, and $N$ the total noumber of nodes in the DHT. We conduct every
+assessment with two different values for $p$, being $p = 0.3$ and $p = 0.05$.
+The former corresponds to the limit above wich our relaxed version of the
+byzantine agreement collapses. The latter corresponds to the value most
+commonly found in the literature about malicious attacks in P2P
+systems~\cite{p2p_certification}.
+%, as well as a set of simulations and performance
+%results.
+
+%%%Theoretical evaluation
+
+\section{Securing the nodes of a Leafset}
+\label{sec:eval_leafset}
+  
+  \begin{enumerate}
+    \item{\textit{Probability of failure:}}
+  
+  \begin{table}
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|c|c|}
+      \cline{2-3}
+      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
+      \hline
+      \textbf{Size of Trusted Set (L)} & \textbf{p = 0,3} & \textbf{p = 0,05} \\
+      \hline \hline
+      8 &  $0.0081$              & $6.25 \times 10^{-6}$  \\
+      \hline
+      16 & $6.56 \times 10^{-5}$ & $ 3.9 \times 10^{-11}$ \\
+      \hline
+      32 & $4.3 \times 10^{-9}$  & $ 1.52 \times 10^{-21} $  \\
+      \hline
+    \end{tabular}
+    \caption{Probability of failure when securing a leafset}
+    \label{tab:p_leafset}
+  \end{table}
+  
+  Table~\eqref{tab:p_leafset} shows the probability of failure when securing the
+  nodes of a leafset. The algorithm fails to get the leafset of a given node
+  $K_{root}$ if $\frac{L}{2}$ consecutive nodes are malicious in a leafset. This
+  probability is given by
+  
+  \begin{equation} \label{eq:p_leafset}
+    P= p^{\frac{L}{2}}
+  \end{equation}
+  
+    \item{\textit{Message complexity:}}
+
+      %As seen in~\cite{p2p_certification}
+      According to the equation~\eqref{eq:p_leafset}, the probability of having
+more than 4 consecutive malicious nodes when using the Diversity Trusted
+Routing is around $6.25 \times 10^{-6}$. We can thus consider it highly
+improbable that more than 4 routing attempts will be necessary  to secure a
+leafset of a node near $K_{root}$. An upper bound of the cost to get the
+leafset of $K_{root}$ is given by
+      
+      \begin{align} \label{eq:p_leafset}
+        n &= \underbrace{O(log_{2b}(N)) + 4 \times O(log_{2b}(N))}_\text{First
+and Diversity Routing} + \underbrace{Q+4}_\text{Direct IP} \\
+        n &= 5 \times O(log_{2b}(N)) +  Q+4 
+      \end{align}
+      
+      where $Q$ is the maximum number of tries to get a leafset from a node
+that belongs to the leafset of $K_{root}$. The probability of not being able to
+retrieve a leafset from a node that belongs to the leafset of $K_{root}$ after
+$Q = 16$ tries for a leafset size $ L = 16$ is $1.52 \times 10^{-21} $. This is
+highly improbable, so we can consider that $L/2 = 8$ is a reasonable upper
+bound for $Q$. 
+      In the best case, the cost is reduced to $n = O(log(N))$ when the root
+node $K_{root}$ is honest. Thus, the message complexity of the chosen leafset
+securing algorithm~\cite{p2p_certification} easily scales when the size of the
+DHT increases.
+
+
+  \end{enumerate}
+
+%\input{src/eval_transaction_service}
+
+\section{Account registration}
+\label{sec:eval_account_registration}
+  \begin{table}
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|c|c|}
+      \cline{2-3}
+      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
+      \hline
+      \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
+      \hline \hline
+      8 &  $0.188$ & $6.64 \times 10^{-5}$ \\
+      \hline
+      16 & $0.079$ & $6.57 \times 10^{-8}$  \\
+      \hline
+      32 & $0.016$ & $8.24 \times 19^{-14}$  \\
+      \hline
+    \end{tabular}
+    \caption{Probability of failure when registering a new user account}
+    \label{tab:p_account_registration}
+  \end{table}
+  
+  \begin{enumerate}
+    \item{\textit{Probability of failure:}}
+    The user registration between a node $A$ and $I$ can fail (a) if $I$does
+not respond to $A$ during the registration request or during the registration
+progress, or (b) if $I$ does not send the ACKs to $A$ to terminate the user
+registration. In both cases, this corresponds to the probability that more than
+$L/2$ nodes of $I$ are malicious. The probability of encountering exactly $k$
+malicious nodes among $L +1$ is given by the binomial distribution
+
+    \begin{equation}
+      P_{K malicious} = \begin{pmatrix} L+1 \\ k\end{pmatrix} p^k (1-p)^{L+1-k}
+    \end{equation}
+
+    where $p$ is the probability that a single node is malicious. Hence the
+probability of facing at most k malicious nodes is 
+
+    \begin{equation}
+      P_{\leq k} = \sum_{i=1}^{k} \begin{pmatrix} L+1 \\ k\end{pmatrix} p^i (1-p)^{L+1-i}
+    \end{equation}
+
+    Therefore, the probability of facing more than $k$ malicious nodes among
+$n$ is given by
+
+    \begin{equation}
+      P_{\ge k} = P_{\leq n} - P_{\leq k}
+    \end{equation}
+
+    and the probability that $S$ will not respond is
+
+    \begin{align}
+      P_{\ge L/2} &= P_{\leq L+1} - P_{\leq L/2} \\
+      &= \sum_{i=1}^{L+1} \begin{pmatrix} L+1 \\ i\end{pmatrix} p^i (1-p)^{L+1-i}
+      - \sum_{i=1}^{L/2} \begin{pmatrix} L+1 \\ i\end{pmatrix} p^i (1-p)^{L+1-i}
+    \end{align}
+
+    %% TODO: figure with the likeliness of dealing with an increains gnumber k of malicious nodes among a leafset comprising 32 nodes.
+
+    Then the probability that $I$ will not respond to the user registration
+request or to not send the final ACKs is
+
+    \begin{align}
+      P_{AI} &= (1- P_{\ge L/2}) P_{\ge L/2} +  P_{\ge L/2} \\
+      P_{AI} &= 2P_{\ge L/2}) + P^2_{\ge L/2}
+    \end{align}
+
+
+    Table~\eqref{tab:p_account_registration} shows the probability of failure
+between $A$ and $I$, for a leafset size of $L = \{8,16,32\}$.
+
+    
+    \item{\textit{Message complexity:}}
+    First, $A$ must get the leafset of $I$. The associated cost is $n = 5
+\times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
+    The number $n$ of message inherent to the transaction itself is given by
+
+    \begin{align}
+      n &= \underbrace{2(L+1)}_\text{Init} \underbrace{L+1}_\text{Data} \underbrace{L+1}_\text{ACKs}\\
+      n &= 3(L+1)
+    \end{align}
+     The total cost is then
+
+    $$
+      n_{total} = 5 \times O(log_{2b}(N)) + Q + 4 + 3(L+1)
+    $$    
+    The total cost only depends on the size $L$ of the leafset, which is a
+constant, and $O(log(N))$. In the best case, 
+
+    $$
+      n_{total} = O(log_{2b}(N)) + 3(L+1)
+    $$
+    Therefore, the cost of a transaction between $A$ and service $I$ remains
+scalable when the size $N$ of the DHT increases.
+
+  \end{enumerate}
+
+
+\section{Sign-in}
+\label{sec:eval_sign_in}
+
+  \subsection{User private key recovery}
+  \label{sec:eval_private_key_recovery}
+  \begin{table}
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|c|c|}
+      \cline{2-3}
+      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
+      \hline
+      \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
+      \hline \hline
+      8 &  &  \\
+      \hline
+      16 &  &  \\
+      \hline
+      32 &  &  \\
+      \hline
+    \end{tabular}
+    \caption{Probability of failure when recovering user private key}
+    \label{tab:p_private_key_recovery}
+  \end{table}
+
+  \begin{enumerate}
+    \item{\textit{Probability of failure:}}
+    \item{\textit{Message complexity:}}
+  \end{enumerate}
+
+
+  \subsection{User identified service request}
+  \label{sec:eval_identified_service_request}
+  \begin{table}
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|c|c|}
+      \cline{2-3}
+      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
+      \hline
+      \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
+      \hline \hline
+      8 &  &  \\
+      \hline
+      16 &  &  \\
+      \hline
+      32 &  &  \\
+      \hline
+    \end{tabular}
+    \caption{Probability of failure in identified service request}
+    \label{tab:p_identified_service_request}
+  \end{table}
+  
+  \begin{enumerate}
+    \item{\textit{Probability of failure:}}
+    \item{\textit{Message complexity:}}
+  \end{enumerate}
+
+\section{Logout}
+  \label{sec:eval_logout}
+  \begin{table}
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|c|c|}
+      \cline{2-3}
+      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
+      \hline
+      \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
+      \hline \hline
+      8 &  &  \\
+      \hline
+      16 &  &  \\
+      \hline
+      32 &  &  \\
+      \hline
+    \end{tabular}
+    \caption{Probability of failure in user logout}
+    \label{tab:p_logout}
+  \end{table}
+  
+  \begin{enumerate}
+    \item{\textit{Probability of failure:}}
+    \item{\textit{Message complexity:}}
+  \end{enumerate}
+
+\section{Password Change}
+  \label{sec:eval_password_change}
+  \begin{table}
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|c|c|}
+      \cline{2-3}
+      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
+      \hline
+      \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
+      \hline \hline
+      8 &  &  \\
+      \hline
+      16 &  &  \\
+      \hline
+      32 &  &  \\
+      \hline
+    \end{tabular}
+    \caption{Probability of failure when changing the user password}
+    \label{tab:p_password_change}
+  \end{table}
+  
+  \begin{enumerate}
+    \item{\textit{Probability of failure:}}
+    \item{\textit{Message complexity:}}
+  \end{enumerate}
+
+\section{Lazy User's Information Store Maintenance}
+\label{sec:eval_lazy_maintenance}
+  \begin{table}
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|c|c|}
+      \cline{2-3}
+      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
+      \hline
+      \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
+      \hline \hline
+      8 &  &  \\
+      \hline
+      16 &  &  \\
+      \hline
+      32 &  &  \\
+      \hline
+    \end{tabular}
+    \caption{Probability of failure when performing the user's information store maintenance}
+    \label{tab:p_lazy_maintenance}
+  \end{table}
+  
+  \begin{enumerate}
+    \item{\textit{Probability of failure:}}
+    \item{\textit{Message complexity:}}
+  \end{enumerate}
+
+%We suppose in the following that the underlying
+%reputation system makes an error $\varepsilon$ when classifying a
+%node $X$ with a reputation $R(x) \geq \rho$, where $\rho \in [ 0 \cdots 1 ]$,
+%and $ \varepsilon = f ( \rho )$. In other words, classifying a node $X$ as
+%honest because its reputation is greater than $\rho$ has a
+%probability of error $\varepsilon$.
+%Let $n$ be the size of the Trusted Ring. The probability
+%to have $k$ misclassified nodes in the Trusted Ring, that
+%is $k$ malicious nodes is:
+%
+%$$
+%P_{k_{malicious}} = \left(\!
+%                          \begin{array}{c}
+%                            n\\
+%                            k
+%                          \end{array}
+%                    \!\right)              
+%                    \varepsilon^{n-k} ( 1 - \varepsilon )^k
+%$$
+%
+%Then, the probability to have at most $k$ malicious
+%nodes in a Trusted Ring of size $n$ is:
+%
+%$$
+%P_{\leq k} = \sum^{k}_{i=1} \left(\!
+%                                \begin{array}{c}
+%                                    n\\
+%                                    k
+%                                  \end{array}
+%                            \!\right)              
+%                    \varepsilon^{n-i} ( 1 - \varepsilon )^i
+%$$
+%
+%Therefore, the probability to have $k$ or more malicious
+%nodes in a Trusted Ring of size $n$ is:
+%
+%$$
+%P_{\leq k} = \sum^{n}_{i=k} \left(\!
+%                                \begin{array}{c}
+%                                    n\\
+%                                    i
+%                                  \end{array}
+%                            \!\right)              
+%                    \varepsilon^{n-i} ( 1 - \varepsilon )^i
+%$$
+%
+%The user identification fails when:
+%\begin{enumerate}
+%  \item The user cannot retrieve his own PKI from the \textit{trustset}.
+%  \item or when the public key of the user fails to be retrieved.
+%\end{enumerate}
+%
+%These failures can happen when the \textit{trustsets} storing the PKI or the public
+%key have more malicious nodes than normal nodes.
+%
+%The probability that a \textit{trustset} has half or more malicious nodes, assuming a maximum
+%classification error for the underlying reputation system
+%of $5\%$, is .% FILL HERE
+%%Hence the probability for having a fully erroneous trustset is theoretically possible, but
+%%practically infeasible.
+%
+%Considering a maximum error rate of $5\%$ is a typical
+%value for a reputation system. In some cases it may be
+%over-estimated (for more details, please refer the results
+%obtained for the WTR reputation system\cite{wrt_reputation_system}). This
+%error hardly depends on the total number of malicious
+%nodes in the network, and decreases when the ratio
+%of malicious node decreases. The less malicious nodes
+%there are in the system, the easier it is to discriminate
+%against them.

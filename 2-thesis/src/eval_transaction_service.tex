@@ -1,0 +1,97 @@
+\section{Normal service request}
+\label{sec:eval_service_request}
+  \begin{table}
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|c|c|}
+      \cline{2-3}
+      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
+      \hline
+      \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
+      \hline \hline
+      8 &  $0.188$ & $6.64 \times 10^{-5}$ \\
+      \hline
+      16 & $0.079$ & $6.57 \times 10^{-8}$  \\
+      \hline
+      32 & $0.016$ & $8.24 \times 19^{-14}$  \\
+      \hline
+    \end{tabular}
+    \caption{Probability of failure when doing a normal service request}
+    \label{tab:p_service_request}
+  \end{table}
+  
+  \begin{enumerate}
+    \item{\textit{Probability of failure:}}
+    The user registration between a node $A$ and $S$ can fail (a) if $S$does
+not respond to $A$ during the registration request or during the registration
+progress, or (b) if $S$ does not send the ACKs to $A$ to terminate the user
+registration. In both cases, this corresponds to the probability that more than
+$L/2$ nodes of $S$ are malicious. The probability of encountering exactly $k$
+malicious nodes among $L +1$ is given by the binomial distribution
+
+    \begin{equation}
+      P_{K malicious} = \begin{pmatrix} L+1 \\ k\end{pmatrix} p^k (1-p)^{L+1-k}
+    \end{equation}
+
+    where $p$ is the probability that a single node is malicious. Hence the
+probability of facing at most k malicious nodes is 
+
+    \begin{equation}
+      P_{\leq k} = \sum_{i=1}^{k} \begin{pmatrix} L+1 \\ k\end{pmatrix} p^i (1-p)^{L+1-i}
+    \end{equation}
+
+    Therefore, the probability of facing more than $k$ malicious nodes among
+$n$ is given by
+
+    \begin{equation}
+      P_{\ge k} = P_{\leq n} - P_{\leq k}
+    \end{equation}
+
+    and the probability that $S$ will not respond is
+
+    \begin{align}
+      P_{\ge L/2} &= P_{\leq L+1} - P_{\leq L/2} \\
+      &= \sum_{i=1}^{L+1} \begin{pmatrix} L+1 \\ i\end{pmatrix} p^i (1-p)^{L+1-i}
+      - \sum_{i=1}^{L/2} \begin{pmatrix} L+1 \\ i\end{pmatrix} p^i (1-p)^{L+1-i}
+    \end{align}
+
+    %% TODO: figure with the likeliness of dealing with an increains gnumber k of malicious nodes among a leafset comprising 32 nodes.
+
+    Then the probability that $S$ will not respond to the user registration
+request or to not send the final ACKs is
+
+    \begin{align}
+      P_{AS} &= (1- P_{\ge L/2}) P_{\ge L/2} +  P_{\ge L/2} \\
+      P_{AS} &= 2P_{\ge L/2}) + P^2_{\ge L/2}
+    \end{align}
+
+
+    Table~\eqref{tab:p_account_registration} shows the probability of failure
+between $A$ and $S$, for a leafset size of $L = \{8,16,32\}$.
+
+    
+    \item{\textit{Message complexity:}}
+    First, $A$ must get the leafset of $S$. The associated cost is $n = 5
+\times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
+    The number $n$ of message inherent to the transaction itself is given by
+
+    \begin{align}
+      n &= \underbrace{2(L+1)}_\text{Init} \underbrace{r(L+1)}_\text{Data} \underbrace{L+1}_\text{ACKs}\\
+      n &= (r+3)(L+1)
+    \end{align}
+    where $r$ corresponds to the number of data messages sent by $A$ to $S$,
+and fully depends on the transaction. The total cost is then
+
+    $$
+      n_{total} = 5 \times O(log_{2b}(N)) + Q + 4 + (r+3)(L+1)
+    $$    
+    The total cost only depends on the size $L$ of the leafset, which is a
+constant, and $O(log(N))$. In the best case, 
+
+    $$
+      n_{total} = O(log_{2b}(N)) + (r+3)(L+1)
+    $$
+    Therefore, the cost of a transaction between $A$ and service $S$ remains
+scalable when the size $N$ of the DHT increases.
+
+  \end{enumerate}

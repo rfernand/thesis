@@ -117,7 +117,8 @@ secure way of acquiring the leafset associated with a key $K$.
 
 \subsection{Normal service request}
 
-To find the nodes associated with a given service, node $A$ computes the hash
+Based on the services seen on~\cite{p2p_certification}, to find the nodes associated with a given
+service, node $A$ computes the hash
 of the service name: $K_s = SHA(ServiceName)$. Let $S_{root} $ be the node that
 is closest to $K_s$ in the DHT. $A$ uses DiversityTrustedRoute to acquire the
 leafset of $S_{root}$. $A$ thus obtains access to the set $S$ of nodes that
@@ -278,18 +279,13 @@ user $U$.
 
 
 \section{Logout}
-%% OUTDATED
-%%The system does not have something like a "session" to maintain; the only way
-%%to identify an user is by his keys that are obtained by the identification
-%%process.
-%%
+The session are maintained by each service the user identified with. To close a
+session, the node identified as the user $U$ sends a session close request to
+the service $S$ using the session keys for the transaction. Also, the sessions
+keys are issued for a certain time. After that time is passed, the node needs
+to ask for a new session key with the service.
+
 %%%%%%%%%%%%%   Peerson Passwords in P2P networks %%%%%%%%%%%%%
-%% To log out from the system, the user does not have to interact
-%%with the DHT or the storage system. Simply wiping her local
-%%cache from application data and all key material restores the
-%%pre-login state. If the user chose to remember the login on a
-%%device, the corresponding device login information file FDL
-%%can also be deleted from the storage.
 %% A problem related to logging out is revoking remembered
 %%credentials on another device, e. g., a user’s stolen phone. To
 %%accomplish this, we first run the password change operation,
@@ -313,6 +309,16 @@ user $U$.
 
 \section{Password Change}
 
+First, the node $A$ needs to recover his actual private key using the proccess
+in~\ref{sec:private_key_recovery}. Then the node $A$ generates a new private/public
+key pair using the new password.  With this, the node $A$ request a
+password change to every node $I_i$ in $I$. The request is signed with the
+actual user private keys, and includes the new user public key $U^{pub}_{new}$
+and salt used to derive his new private key $U^{salt}_{new}$. 
+ When the node $A$ recieves at least $\frac{L}{2} + 1$ identical affirmative
+answers from $I$ regarding the user password change, then $A$ assumes that the
+user keys (and password) were updated.
+
 
 %%%%%%%%%%%%%   Peerson Passwords in P2P networks %%%%%%%%%%%%%
 %%Before the user can change the password, she must log in using her password to
@@ -334,165 +340,58 @@ user $U$.
 %%storage to reclaim space.
 %%%%%%%%%%%%%   Peerson Passwords in P2P networks %%%%%%%%%%%%%
 
-\chapter{Evaluation}
+\section{Lazy User's Information Store Maintenance}
+Insertions and departures of nodes in the DHT cause modifications of the
+leafsets, and it is therefore crucial to maintain the consistency of the user's
+information $S_{username}$ used for his identification procedures. The user's information
+consists in the user's public keys and salt. This has to be done on every node in the identification service
+$I$.\\
 
-In this section we present a theoretical evaluation of
-the authentication system.
-%, as well as a set of simulations and performance
-%results.
+Upon entering a leafset, a node $X$ must update its own view of the user's
+information. Analog to the lazy log consistency maintenance procedure seen
+in~\cite{p2p_certification}, it starts by following the steps below to find
+which user's information store must be updated.\\
 
-%%%Theoretical evaluation
+\textit{Step 1:} $X$ constructs the set of nodes
+$N = \{ X_{-L/2}, X_{-L/2 +1}, \cdots, X, \cdots X_{L/2 -1}, X_{L/2} $
+composed of its leafset, and of the $\frac{L}{2} +1$ nodes both on the right
+side and on the left of its leafset. 
+%% TODO: figure example  of this
+In order to build this set of nodes, $X$ can ask the farthest nodes $X_{-L/2}$
+and $X_{L/2}$ of its leafset for their own respective leafsets. If one of these
+nodes fails to answer in a timely manner, $X$ can ask the second to farthest
+node, and so on until its immediate neighbors in the leafset. Having
+$\frac{L}{2} +1$ malicious neighbors on both sides is highly improbable, and
+practically infeasible: for more details about this statement, please refer to
+our probabilistic evaluation in section~\eqref{sec:eval_lazy_maintenance}. \\
 
-We suppose in the following that the underlying
-reputation system makes an error $\varepsilon$ when classifying a
-node $X$ with a reputation $R(x) \geq \rho$, where $\rho \in [ 0 \cdots 1 ]$,
-and $ \varepsilon = f ( \rho )$. In other words, classifying a node $X$ as
-honest because its reputation is greater than $\rho$ has a
-probability of error $\varepsilon$.
-Let $n$ be the size of the Trusted Ring. The probability
-to have $k$ misclassified nodes in the Trusted Ring, that
-is $k$ malicious nodes is:
-
+\textit{Step 2:} $X$ computes interval $L$ such that
 $$
-P_{k_{malicious}} = \left(\!
-                          \begin{array}{c}
-                            n\\
-                            k
-                          \end{array}
-                    \!\right)              
-                    \varepsilon^{n-k} ( 1 - \varepsilon )^k
-$$
-
-Then, the probability to have at most $k$ malicious
-nodes in a Trusted Ring of size $n$ is:
-
-$$
-P_{\leq k} = \sum^{k}_{i=1} \left(\!
-                                \begin{array}{c}
-                                    n\\
-                                    k
-                                  \end{array}
-                            \!\right)              
-                    \varepsilon^{n-i} ( 1 - \varepsilon )^i
+L = [ X_{-L/2} - \frac{| X_{-L/2} - X_{-L/2 +1} |}{2}, X_{L/2} +\frac{|
+X_{L/2} - X_{L/2 -1} |}{2} ]
 $$
 
-Therefore, the probability to have $k$ or more malicious
-nodes in a Trusted Ring of size $n$ is:
 
-$$
-P_{\leq k} = \sum^{n}_{i=k} \left(\!
-                                \begin{array}{c}
-                                    n\\
-                                    i
-                                  \end{array}
-                            \!\right)              
-                    \varepsilon^{n-i} ( 1 - \varepsilon )^i
-$$
-
-The user identification fails when:
-\begin{enumerate}
-  \item The user cannot retrieve his own PKI from the \textit{trustset}.
-  \item or when the public key of the user fails to be retrieved.
-\end{enumerate}
-
-These failures can happen when the \textit{trustsets} storing the PKI or the public
-key have more malicious nodes than normal nodes.
-
-The probability that a \textit{trustset} has half or more malicious nodes, assuming a maximum
-classification error for the underlying reputation system
-of $5\%$, is .% FILL HERE
-%Hence the probability for having a fully erroneous trustset is theoretically possible, but
-%practically infeasible.
-
-Considering a maximum error rate of $5\%$ is a typical
-value for a reputation system. In some cases it may be
-over-estimated (for more details, please refer the results
-obtained for the WTR reputation system\cite{wrt_reputation_system}). This
-error hardly depends on the total number of malicious
-nodes in the network, and decreases when the ratio
-of malicious node decreases. The less malicious nodes
-there are in the system, the easier it is to discriminate
-against them.
+and sends it to every node in set $N$. Upon reception of this message, every
+node replies with a set of all the usernames $U^{username} \in L$ it
+stores, along with the last information regarding the user's
+information corresponding to each username. Thus the format of a response is a
+variable-size set of pairs $\{ U^{username}, S_{username}\}$.\\
 
 
+\textit{Step 3:} $X$ builds set 
+$Y =  \{ \{U^{username_i}, S_{username_i}\},\cdots,\{ U^{username_j},
+S_{username_j}\} \} $ the union of all recieved usernames and user's
+information. $X$ then discards all pairs $\{ U^{username}, S_{username}\}$ that
+appear less than $\frac{L}{2} +1$ times in $Y$, since these may have been
+generated by colluding nodes. Once this is done, $X$ synchronizes all the
+user's information store whose username matches one of the remaining usernames
+in set $Y$.
 
-\section{Forgotten passwords}
+% checkpoints
+For every user information that $X$ must synchronize, $X$ selects a node $Z$ in $N$ that
+holds this user information. If $X$ does not have any entry for this username,
+then $X$ must ask $Z$ for the entire user's information store. Otherwise, $X$
+sends the last $q$ public keys and salts it has of the user.
 
-\section{Password-recovery mechanisms}
-  - HUGE danger
-  - Security questions
-  - threshold-based secret sharing with delegate selection and encrypting
-  shares with passwords
-
-
-
-%%%%%%%%%%%%%   Peerson Passwords in P2P networks %%%%%%%%%%%%%
-An important part of password-based logins is the possi-
- bility for users to recover their accounts if they forget their
- passwords. We refer to this as a password recovery mechanism.
- The goal of a password recovery mechanism is to provide a
- secondary way of authenticating the user. There are a number
- of password recovery mechanisms used in practice. In our
- experience, three of the most common ones are password
- hints, security questions, and e-mail based recovery. Other
-
-approaches (beyond the scope of this paper) include vouching
-for identity by social contacts [21], or using trusted devices.
- Password hints means that the user may enter a hint at
-the same time as she sets this password. The hint will be
-displayed to her if she forgets her password, and should be
-selected such that it helps her recall her password, but does
-not make it significantly easier for someone else to guess it.
-The hint is not truly a secondary authentication mechanism,
-but rather a means to recovering the original password-based
-authentication mechanism. A basic version of password hints
-would be straightforward to implement in our system: the
-hint can be stored in plaintext in the login information file.
-Security questions and e-mail based password recovery are
-more complex to adapt. We described their implementation in
-detail after listing requirements.
- As in Section IV for the login procedure, we define a set of
-functional requirements for password recovery, based on the
-ISO 27002 standard [19] as follows. We also augment the list
-with requirements of our own (preceded by a star).
-establish methods to verify the identity of a user prior to
-•allowing the user to choose a new password
-communicate with those affected by or involved with
- - recovery security incidents
- - have procedures to allow recovery and restoration of
-business operations and availability of information in a
- time-scaled manner
-a legitimate user should be able to recover lost (forgotten)
- - or broken (device’s) keys
- - the recovery procedure should allow a user to set a new
- password, not reveal the old password
- - the process of recovery should be easy to use
- - sensitive information for recovery should be kept secret
-Our protocols support these requirements. The sole exception
-is that if a password is reset via security questions alone, the
-system would not “communicate with those affected” (e.g.,
-send an e-mail notification that the password had been reset,
-as is common in centralized services). We remark that the
-last item is a property many centralizedstronger than systems
-provide. In our system, no one learns the answers to a user’s
-security questions. We consider this to be important, since
-many systems use similar security questions.
- The operations described in this section imply minor addi-
-tions to the protocols of Section IV, i. e., invoking the update
-procedures after each password change (to sustain transaction
-safety, the updates have to be included in the final write
-operation of the password change operation).
-A. Security Questions
- Security questions is a password recovery technique that
-relies on answers to questions the user is asked during regis-
-tration. The answers should be such that they cannot be easily
-guessed or researched by an attacker, but still stable over
-time, memorable, and definite [22]. Rabkin [23] underlines
-the importance to choose good questions especially in the era
-of social networks. Frykholm and Juels [12] discuss a related
-technique that is similar to our adaption of this scheme.
-%%%%%%%%%%%%%   Peerson Passwords in P2P networks %%%%%%%%%%%%%
- 
-
-\section{Password Change}
-
+%% TODO: complete this
