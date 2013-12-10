@@ -11,7 +11,7 @@ DEPENDENCIES=$(NAME).tex
 all:
 	@echo "Generando presentación por primera vez..."
 	@mkdir -p bin
-	pdflatex $(FLAGS) $(NAME).tex
+	pdflatex $(FLAGS) $(NAME).tex --shell-escape
 	@echo "y por segunda vez..."
 	pdflatex $(FLAGS) $(NAME).tex
 

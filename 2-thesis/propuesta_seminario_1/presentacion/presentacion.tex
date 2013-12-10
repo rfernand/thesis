@@ -3,6 +3,7 @@
 \usepackage[spanish]{babel}
 %\usepackage[dvips]{epsfig}
 \usepackage{graphics}
+\usepackage{svg}
 \usepackage{url}
 \usepackage{ulem}
 \usepackage{beamerthemesplit}
@@ -12,6 +13,11 @@
 \usetheme{CambridgeUS}
 \setbeamercovered{transparent}
 
+\let\Oldframetitle\frametitle
+\renewcommand{\frametitle}[1]{\vspace{0.2cm}\begin{huge}#1\end{huge}}
+\let\Oldframesubtitle\framesubtitle
+\renewcommand{\framesubtitle}[1]{\\ \vspace{0.4cm} \hspace{0.4cm}\begin{large}#1\end{large}}
+
 \title{User identification with username and password in structured P2P networks}
 \subtitle{}
 \author[R. Fernández]{Rodrigo Fernández \\ \small{\texttt{rfernand@inf.utfsm.cl}}}
@@ -20,100 +26,172 @@
 \date{\today}
 
 \begin{document}
-\bibliographystyle{plain}
+  \bibliographystyle{plain}
+
   \frame{\titlepage}
   \frame{\tableofcontents}
-	\section{}
+
   \section{General formulation of the problem and thesis proposal}
   \subsection{Context and Motivation}
 
   \begin{frame}
   \frametitle{P2P Networks}
-  \framesubtitle{Characteristics}
-  \begin{table}
-  \begin{tabular}{p{7cm}p{3cm}}
-  \begin{itemize}
-    \item Scalable
-    \item Decentralized
-    \item Self-maintained
-    \item Robust
-  \end{itemize}
-  &
-  \vspace{1.5cm}
-  \includegraphics[width=4cm]{../../presentacion/img/p2p-unstructured}\\
-  \end{tabular}
-  \end{table}
-  \end{frame}
+  \framesubtitle{They can be used for}
   
-  \begin{frame}
-  \frametitle{P2P Networks}
-  \framesubtitle{Overlay structure}
   \begin{table}
   \begin{tabular}{p{7cm}p{3cm}}
   \begin{itemize}
-      \item Structured networks (CAN, CHORD)
-      \item Unstructured networks (Gnutella, Bittorrent)
+    \item Storage and file sharing
+    \item Email
+    \item Money (heard about bitcoin?)
+    \item Transaction certification
+    \item and a lot more!
   \end{itemize}
   &
   \vspace{1.5cm}
-  \includegraphics[width=4cm]{../../presentacion/img/p2p-structured}\\
+  %\includegraphics[width=4cm]{../../presentacion/img/p2p-unstructured}\\
+  \end{tabular}
+  \end{table}
+  \end{frame}
+
+    \begin{frame}
+    \frametitle{P2P Networks Properties}
+    \begin{table}
+    \begin{tabular}{p{7cm}p{3cm}}
+    \begin{itemize}
+      \item Scalable
+      \item Decentralized
+      \item Self-maintained
+      \item Robust
+    \end{itemize}
+    &
+    \vspace{1.5cm}
+    \includegraphics[width=4cm]{../../presentacion/img/p2p-unstructured}\\
+    \end{tabular}
+    \end{table}
+    \end{frame}
+    
+    \begin{frame}
+    \frametitle{P2P Networks Overlay structure}
+    \begin{table}
+    \begin{tabular}{p{7cm}p{3cm}}
+    \begin{itemize}
+        \item Structured networks (CAN, CHORD)
+        \item Unstructured networks (Gnutella, Bittorrent)
+    \end{itemize}
+    &
+    \vspace{1.5cm}
+    \includegraphics[width=4cm]{../../presentacion/img/p2p-structured}\\
+    \end{tabular}
+    \end{table}
+    \end{frame}
+
+    \begin{frame}
+    \frametitle{P2P Networks}
+    \framesubtitle{Unstructured networks}
+    \begin{table}
+    \begin{tabular}{p{7cm}p{3cm}}
+    \begin{itemize}
+        \item Usually organized as a hiearchical/plain graph.
+        \item Search is costly and can result in false negatives.
+        \item Can achieve certain grade of node anonymity. 
+    \end{itemize}
+    &
+    \vspace{1.5cm}
+    \includegraphics[width=4cm]{../../presentacion/img/p2p-unstructured}\\
+    \end{tabular}
+    \end{table}
+    \end{frame}
+
+    \begin{frame}
+    \frametitle{P2P Networks}
+    \framesubtitle{Structured networks}
+    \begin{table}
+    \begin{tabular}{p{7cm}p{3cm}}
+    \begin{itemize}
+        \item Strong topology structure, usually ring or mesh based.
+        \item More efficient search, without false negatives.
+        %\item Specific routing algorithm
+    \end{itemize}
+    &
+    \vspace{1.5cm}
+    \includegraphics[width=4cm]{../../presentacion/img/p2p-structured}\\
+    \end{tabular}
+    \end{table}
+    \end{frame}
+
+    \begin{frame}
+    \frametitle{P2P Networks}
+    \framesubtitle{Structured network example: CHORD}
+    \begin{table}
+    \begin{tabular}{p{3cm}p{7cm}}
+    \begin{itemize}
+        \item Routing algorithm based on SHA-1
+        \item Data search reaches O(log(N)) nodes
+    \end{itemize}
+    &
+    \vspace{0.5cm}
+    \includegraphics[width=8cm]{../../presentacion/img/chord-search}\\
+    \end{tabular}
+    \end{table}
+    \end{frame}
+
+  \begin{frame}
+  \frametitle{Complex systems needs a way to identify an user...}
+  \begin{table}
+  \begin{tabular}{p{7cm}p{3cm}}
+  \framesubtitle{Options?}
+  \begin{itemize}
+    \item Keys randomly derived (Ej: PKI)
+    \item Keys derived from a password
+  \end{itemize}
+  &
+  \vspace{1.5cm}
+  %\includegraphics[width=4cm]{../../presentacion/img/p2p-unstructured}\\
   \end{tabular}
   \end{table}
   \end{frame}
 
   \begin{frame}
-  \frametitle{P2P Networks}
-  \framesubtitle{Unstructured networks}
+  \frametitle{Keys randomly derived}
+  \framesubtitle{Basic Public-key cryptography}
+  \includesvg[width=4cm]{../../presentacion/img/Public-key-crypto-1}\\
   \begin{table}
   \begin{tabular}{p{7cm}p{3cm}}
   \begin{itemize}
-      \item Usually organized as a hiearchical/plain graph.
-      \item Search is costly and can result in false negatives.
-      \item Can achieve certain grade of node anonymity. 
+    \item What about multiple devices?
   \end{itemize}
   &
   \vspace{1.5cm}
-  \includegraphics[width=4cm]{../../presentacion/img/p2p-unstructured}\\
+  %\includegraphics[width=4cm]{../../presentacion/img/p2p-unstructured}\\
   \end{tabular}
   \end{table}
   \end{frame}
 
   \begin{frame}
-  \frametitle{P2P Networks}
-  \framesubtitle{Structured networks}
+  \frametitle{Keys derived from a password}
+  \framesubtitle{Basic example}
+  \framesubtitle{}
+  $$ \text{DK}=\text{KDF}(\text{Key}, \text{Salt}, \text{Iterations}) $$
   \begin{table}
   \begin{tabular}{p{7cm}p{3cm}}
   \begin{itemize}
-      \item Strong topology structure, usually ring or mesh based.
-      \item More efficient search, without false negatives.
-      %\item Specific routing algorithm
+    \item PBKDF2
+    \item scrypt
+    \item bcrypt
+    %\item What about multiple devices?
   \end{itemize}
   &
   \vspace{1.5cm}
-  \includegraphics[width=4cm]{../../presentacion/img/p2p-structured}\\
+  %\includegraphics[width=4cm]{../../presentacion/img/p2p-unstructured}\\
   \end{tabular}
   \end{table}
   \end{frame}
 
-  \begin{frame}
-  \frametitle{P2P Networks}
-  \framesubtitle{Structured network example: CHORD}
-  \begin{table}
-  \begin{tabular}{p{3cm}p{7cm}}
-  \begin{itemize}
-      \item Routing algorithm based on SHA-1
-      \item Data search reaches O(log(N)) nodes
-  \end{itemize}
-  &
-  \vspace{0.5cm}
-  \includegraphics[width=8cm]{../../presentacion/img/chord-search}\\
-  \end{tabular}
-  \end{table}
-  \end{frame}
   
   \begin{frame}
   \frametitle{Username / password identification}
-  \framesubtitle{Why?}
+  \framesubtitle{In short:}
   \begin{table}
   \begin{tabular}{p{7cm}p{3cm}}
   \begin{itemize}
