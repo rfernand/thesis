@@ -14,9 +14,9 @@
 \setbeamercovered{transparent}
 
 \let\Oldframetitle\frametitle
-\renewcommand{\frametitle}[1]{\vspace{0.2cm}\begin{huge}#1\end{huge}}
+\renewcommand{\frametitle}[1]{\vspace{0.2cm}\begin{huge}#1\end{huge}\\}
 \let\Oldframesubtitle\framesubtitle
-\renewcommand{\framesubtitle}[1]{\\ \vspace{0.4cm} \hspace{0.4cm}\begin{large}#1\end{large}}
+\renewcommand{\framesubtitle}[1]{\vspace{0.4cm} \hspace{0.4cm}\begin{large}#1\end{large}\\}
 
 \title{User identification with username and password in structured P2P networks}
 \subtitle{}
@@ -142,7 +142,7 @@
   \begin{tabular}{p{7cm}p{3cm}}
   \framesubtitle{Options?}
   \begin{itemize}
-    \item Keys randomly derived (Ej: PKI)
+    \item Keys randomly derived
     \item Keys derived from a password
   \end{itemize}
   &
@@ -155,15 +155,13 @@
   \begin{frame}
   \frametitle{Keys randomly derived}
   \framesubtitle{Basic Public-key cryptography}
-  \includesvg[width=4cm]{../../presentacion/img/Public-key-crypto-1}\\
   \begin{table}
   \begin{tabular}{p{7cm}p{3cm}}
+  \includegraphics[width=6cm]{img/Public-key-crypto}\\
+  &
   \begin{itemize}
     \item What about multiple devices?
   \end{itemize}
-  &
-  \vspace{1.5cm}
-  %\includegraphics[width=4cm]{../../presentacion/img/p2p-unstructured}\\
   \end{tabular}
   \end{table}
   \end{frame}
@@ -175,6 +173,7 @@
   $$ \text{DK}=\text{KDF}(\text{Key}, \text{Salt}, \text{Iterations}) $$
   \begin{table}
   \begin{tabular}{p{7cm}p{3cm}}
+  Some functions for this are:
   \begin{itemize}
     \item PBKDF2
     \item scrypt
@@ -189,6 +188,8 @@
   \end{frame}
 
   
+  \subsection{Problem statement}
+  % problem for other solutions- multiple devices per user
   \begin{frame}
   \frametitle{Username / password identification}
   \framesubtitle{In short:}
@@ -227,24 +228,49 @@
   \end{tabular}
   \end{table}
   \end{frame}
-  
+
   \begin{frame}
-  \frametitle{Identification schemes}
-  \framesubtitle{In need of a third party}
-  \begin{table}
-  \begin{tabular}{p{7cm}p{3cm}}
-  \begin{itemize}
-      \item PKI
-      \item Username/password pair
-  \end{itemize}
+  \frametitle{Peerson proposal}
+  \center
+  \includegraphics[height=0.9\textheight]{../../../img/password_peerson}\\
   
-  Poor scaling, single point of failure, heavy administration overhead.
-  &
-  \vspace{1.5cm}
-  \includegraphics[width=4cm]{../../presentacion/img/keyboard_key}\\
-  \end{tabular}
-  \end{table}
   \end{frame}
+
+  \begin{frame}
+  \frametitle{Peerson proposal}
+  \framesubtitle{Other way to see it}
+  \center
+  \includegraphics[height=0.7\textheight]{../../../img/password_peerson_alternative}\\
+  \end{frame}
+
+  \begin{frame}
+  \frametitle{Peerson proposal problem...}
+  \framesubtitle{It only works in a ``perfect'' world}
+
+  \begin{enumerate}
+    \item In reality there are bizantine nodes
+    \item How to ensure that a node is telling the truth?
+    \item Resilience against sybil attacks?
+  \end{enumerate}
+  \end{frame}
+  
+  %\begin{frame}
+  %\frametitle{Identification schemes}
+  %\framesubtitle{In need of a third party}
+  %\begin{table}
+  %\begin{tabular}{p{7cm}p{3cm}}
+  %\begin{itemize}
+  %    \item PKI
+  %    \item Username/password pair
+  %\end{itemize}
+  %
+  %Poor scaling, single point of failure, heavy administration overhead.
+  %&
+  %\vspace{1.5cm}
+  %\includegraphics[width=4cm]{../../presentacion/img/keyboard_key}\\
+  %\end{tabular}
+  %\end{table}
+  %\end{frame}
   
   \begin{frame}
   \frametitle{Trust in P2P networks}
@@ -281,10 +307,32 @@
   \end{tabular}
   \end{table}
   \end{frame}
+
+  \begin{frame}
+  \frametitle{Trust in P2P networks}
+  \framesubtitle{Bizantine nodes}
+  \begin{table}
+  \begin{tabular}{p{7cm}p{3cm}}
+  Are all nodes that not behave as expected
+  %Multiples causes: connection problems, viruses, modified software, etc.\\
+  %\b{\*Nobody can be trusted}
+  \begin{enumerate}
+      \item Faulty nodes
+      \item Malicious nodes
+      \item Infected nodes
+  \end{enumerate}
+    A peer is honest only if the peers executes the protocol faithfully;
+    otherwise, the peer is faulty.
+  &
+  \vspace{1.5cm}
+  \includegraphics[width=4cm]{../../presentacion/img/malicious}\\
+  \end{tabular}
+  \end{table}
+  \end{frame}
   
   \begin{frame}
   \frametitle{Trust in P2P networks}
-  \framesubtitle{How to detect faulty nodes?}
+  \framesubtitle{How to detect bizantine nodes?}
   %Consequently, the quality of service of applications may
   %be deteriorated due to message overhead or data loss.
   \begin{table}
@@ -302,59 +350,94 @@
   \end{tabular}
   \end{table}
   \end{frame}
-  
+
   \begin{frame}
-  \frametitle{Trust in P2P networks}
-  \framesubtitle{Bizantine nodes}
+  \frametitle{Reputation systems}
+  \framesubtitle{CORPS Trust model}
+  %Consequently, the quality of service of applications may
+  %be deteriorated due to message overhead or data loss.
   \begin{table}
-  \begin{tabular}{p{7cm}p{3cm}}
-  Are all nodes that not behave as expected
-  %Multiples causes: connection problems, viruses, modified software, etc.\\
-  %\b{\*Nobody can be trusted}
-  \begin{enumerate}
-      \item Faulty nodes
-      \item Malicious nodes
-      \item Infected nodes
-  \end{enumerate}
-  &
-  \vspace{1.5cm}
-  \includegraphics[width=4cm]{../../presentacion/img/malicious}\\
+  \begin{tabular}{p{11cm}}
+    \begin{enumerate}
+      \item Every node $X$ has an associated reputation value $R(X)$
+      which represents the probability that $X$ is an honest node.
+      \item $R(X)$ is computed using the recommendations emitted
+      by nodes that have completed a transaction with $X$. Bad
+      recommendations have a stronger effect on $R(X)$ than
+      good ones. It should be more difficult for node to
+      increase its reputation value than to decrease it.
+      \item For every node $X$, $R(X)$ is highly available in the DHT.
+    \end{enumerate}
   \end{tabular}
   \end{table}
   \end{frame}
   
+  
   \begin{frame}
-  \frametitle{Trust in P2P networks}
-  \framesubtitle{Bizantine node tolerance}
+  \frametitle{Bizantine node tolerance}
   \begin{table}
   \begin{tabular}{p{7cm}p{3cm}}
     P2P networks can achieve byzantine fault tolerance under $1/3$ byzantine
     peers\\
-    A peer is honest only if the peers executes the protocol faithfully;
-    otherwise, the peer is faulty.
+
+    \\Group agreement:
+    The goal is to obtain at least $\frac{L}{2} + 1$ identical answers from a
+group of $L$ nodes.
   &
   \vspace{1.5cm}
   \includegraphics[width=4cm]{../../presentacion/img/bizantine_generals_problem}\\
   \end{tabular}
   \end{table}
   \end{frame}
-  
-  
+
+  \begin{frame}
+  \frametitle{Probability of error}
+
+      If $p$ represents the probability that a single node is malicious, and
+      $N$ the total noumber of nodes in the DHT.\\
+
+      With $p= 0.3$, for   
+      $\frac{L}{2}$ consecutive nodes to be malicious in a leafset. The
+probability is gived by:
+
+  \begin{equation} \label{eq:p_leafset}
+    P= p^{\frac{L}{2}}
+  \end{equation}
+
+  \end{frame}
+
   \begin{frame}
   \frametitle{Trust in P2P networks}
-  \framesubtitle{Bizantine node tolerance}
+  \framesubtitle{Probability of error}
+
+  \begin{equation} \label{eq:p_leafset}
+    P= p^{\frac{L}{2}}
+  \end{equation}
+
   \begin{table}
-  \begin{tabular}{p{7cm}p{3cm}}
-    P2P networks can achieve byzantine fault tolerance under $1/3$ byzantine
-    peers\\
-    A peer is honest only if the peers executes the protocol faithfully;
-    otherwise, the peer is faulty.
-  &
-  \vspace{1.5cm}
-  \includegraphics[width=4cm]{../../presentacion/img/bizantine_generals_problem}\\
-  \end{tabular}
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|c|c|}
+      \cline{2-3}
+      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
+      \hline
+      \textbf{Size of Trusted Set (L)} & \textbf{p = 0,3} & \textbf{p = 0,05} \\
+      \hline \hline
+      8 &  $0.0081$              & $6.25 \times 10^{-6}$  \\
+      \hline
+      16 & $6.56 \times 10^{-5}$ & $ 3.9 \times 10^{-11}$ \\
+      \hline
+      32 & $4.3 \times 10^{-9}$  & $ 1.52 \times 10^{-21} $  \\
+      \hline
+    \end{tabular}
+    \caption{Probability of failure in a transaction that needs $L/2+1$
+identical answers}
+    \label{tab:p_leafset}
   \end{table}
+
   \end{frame}
+  
+  
 
   %intro of p2p networks
 
@@ -363,11 +446,16 @@
   
     % examples
 
-  \subsection{Problem statement}
-  % problem for other solutions- multiple devices per user
 
 
   \subsection{Thesis proposal}
+    \begin{frame}
+    \frametitle{Thesis proposal}
+    \begin{itemize}
+      \item Propose and evaluate a new user identification system that can work
+in the presence of bizantine nodes in real life scenarios.
+    \end{itemize}
+    \end{frame}
   %
   %%Before developing an P2P system with the desired functionalities, an adequate
   %%system architecture is needed. We will thoroughly evaluate a new user
@@ -385,8 +473,6 @@
     \begin{frame}
     \frametitle{Working Hypothesis}
     %\framesubtitle{Main Goals}
-    \begin{table}
-    \begin{tabular}{p{7cm}p{3cm}}
       \begin{itemize}
           \item It is assumed that the use of a reputation system and trusted nodes
             management mitigates the efectivity of malicious nodes on identity
@@ -394,11 +480,6 @@
           \item It is assumed that encryption schemes available today are
             sufficient to secure the user's private data in the P2P networks.
       \end{itemize}
-    &
-    \vspace{1.5cm}
-    %\includegraphics[width=4cm]{img/p2p-unstructured}\\
-    \end{tabular}
-    \end{table}
     \end{frame}
 
   \section{Goals}
@@ -406,8 +487,6 @@
     \begin{frame}
     \frametitle{Goals}
     \framesubtitle{Main Goals}
-    \begin{table}
-    \begin{tabular}{p{7cm}p{3cm}}
     The implementation of a secure \textit{username/password} based user identification scheme in structured P2P
     networks using:
     \begin{itemize}
@@ -420,19 +499,12 @@
     %    \item Use a layer developed scheme that can easily adapt to most commonly
     %          used P2P networks.
     %\end{enumerate}
-    &
-    \vspace{1.5cm}
-    %\includegraphics[width=4cm]{img/p2p-unstructured}\\
-    \end{tabular}
-    \end{table}
     \end{frame}
 
   \subsection{Specifics Goals}
     \begin{frame}
     \frametitle{Goals}
     \framesubtitle{Specifics Goals}
-    \begin{table}
-    \begin{tabular}{p{7cm}p{3cm}}
     \begin{itemize}
       \item Study the possibility of password recovery mechanisms.
       \item Study and use trust management to maintain a
@@ -442,19 +514,13 @@
       \item Study and use secure routing, search and storage mechanisms in
             structured P2P networks.
     \end{itemize}
-    &
-    \vspace{1.5cm}
-    %\includegraphics[width=4cm]{img/p2p-unstructured}\\
-    \end{tabular}
-    \end{table}
     \end{frame}
+
   \section{Results}
   \subsection{Contributions and Expected Results}
     \begin{frame}
     \frametitle{Results}
     \framesubtitle{Contributions and Expected Results}
-    \begin{table}
-    \begin{tabular}{p{7cm}p{3cm}}
       \begin{itemize}
           \item Design of a secure and modern user identification system for
                 structured P2P networks.
@@ -466,11 +532,6 @@
                 %publisher. The paper will show the results of the user identification system
                 %designed in this project.
       \end{itemize}
-    &
-    \vspace{1.5cm}
-    %\includegraphics[width=4cm]{img/p2p-unstructured}\\
-    \end{tabular}
-    \end{table}
     \end{frame}
 
   \subsection{Validation procedures}
@@ -505,7 +566,7 @@
 {
 	\vspace{2cm}
 	\begin{center}
-		\Large{EOF}
+		\Large{Questions?}
 	\end{center}
 }
 \end{document}
