@@ -75,7 +75,7 @@
     \begin{table}
     \begin{tabular}{p{7cm}p{3cm}}
     \begin{itemize}
-        \item Structured networks (CAN, CHORD)
+        \item Structured networks (CAN, CHORD, Pastry)
         \item Unstructured networks (Gnutella, Bittorrent)
     \end{itemize}
     &
@@ -121,16 +121,18 @@
 
     \begin{frame}
     \frametitle{P2P Networks}
-    \framesubtitle{Structured network example: CHORD}
+    \framesubtitle{Structured network example: Pastry}
     \begin{table}
-    \begin{tabular}{p{3cm}p{7cm}}
+    \begin{tabular}{p{6cm}p{4cm}}
     \begin{itemize}
         \item Routing algorithm based on SHA-1
+        \item Each node maintains a routing table, leafset and a neighbor set.
         \item Data search reaches O(log(N)) nodes
     \end{itemize}
     &
     \vspace{0.5cm}
-    \includegraphics[width=8cm]{../../presentacion/img/chord-search}\\
+    %\includegraphics[width=8cm]{../../presentacion/img/chord-search}\\
+    \includegraphics[width=4cm]{../../img/pastryrouting}\\
     \end{tabular}
     \end{table}
     \end{frame}
@@ -230,6 +232,19 @@
   \end{frame}
 
   \begin{frame}
+  \frametitle{Peerson proposal}
+  \framesubtitle{Protocols}
+
+  \begin{enumerate}
+    \item User registration
+    \item User sign in
+    \item Logout
+    \item Password change
+    \item Password recovery
+  \end{enumerate}
+  \end{frame}
+
+  \begin{frame}
   \frametitle{Peerson proposal problem...}
   \framesubtitle{It only works in a ``perfect'' world}
 
@@ -240,28 +255,10 @@
   \end{enumerate}
   \end{frame}
   
-  %\begin{frame}
-  %\frametitle{Identification schemes}
-  %\framesubtitle{In need of a third party}
-  %\begin{table}
-  %\begin{tabular}{p{7cm}p{3cm}}
-  %\begin{itemize}
-  %    \item PKI
-  %    \item Username/password pair
-  %\end{itemize}
-  %
-  %Poor scaling, single point of failure, heavy administration overhead.
-  %&
-  %\vspace{1.5cm}
-  %\includegraphics[width=4cm]{../../presentacion/img/keyboard_key}\\
-  %\end{tabular}
-  %\end{table}
-  %\end{frame}
-  
   \begin{frame}
   \frametitle{Trust in P2P networks}
   \begin{table}
-  \begin{tabular}{p{7cm}p{3cm}}
+  \begin{tabular}{p{10cm}}
   \begin{enumerate}
       \item To deliver a valuable service in P2P applications, it
   is important to trust that the participants will act as requested.
@@ -269,9 +266,6 @@
   messages, and that the designated peers will indeed save the information
   correctly so that operations can be successful.
   \end{enumerate}
-  &
-  \vspace{1.5cm}
-  \includegraphics[width=4cm]{../../presentacion/img/malicious}\\
   \end{tabular}
   \end{table}
   \end{frame}
@@ -282,14 +276,11 @@
   %Consequently, the quality of service of applications may
   %be deteriorated due to message overhead or data loss.
   \begin{table}
-  \begin{tabular}{p{7cm}p{3cm}}
+  \begin{tabular}{p{10cm}}
   \begin{enumerate}
       \item Complex since a P2P network includes untrusted nodes from an open environment.
       \item Untrusted nodes may be faulty, malicious, and act together to attack the network.
   \end{enumerate}
-  &
-  \vspace{1.5cm}
-  \includegraphics[width=4cm]{../../presentacion/img/malicious}\\
   \end{tabular}
   \end{table}
   \end{frame}
@@ -555,5 +546,47 @@ identical answers}
 
   \end{frame}
   
+
+\begin{frame}[allowframebreaks]
+\frametitle{Methodology and Working plan}
+\scriptsize
+\noindent {\bf Stage I:} Problem definition
+\begin{enumerate}
+    \item Study of P2P network systems and P2P search and storage mechanisms.
+          \emph{(August 2012)}
+    \item Study the P2P networks capabilities to implement complex systems as
+          seen in centralized systems.
+          \emph{(September 2012 - November 2012)}
+    \item Born of the idea.
+          \emph{(December 2013)}
+    \item Problem specification, hypothesis and project objectives.
+          \emph{(February 2013)}
+\end{enumerate}
+
+\noindent {\bf Stage II:} P2P Systems definition
+\begin{enumerate}
+    \item State of the art of P2P network systems and P2P search and storage mechanisms.
+          \emph{(May 2013)}
+    \item State of the art of building of trust between nodes in P2P networks.
+          \emph{(April 2013 - June 2013)}
+    \item State of the art of user identification schemes in P2P networks and
+          how to secure the different system protocols.
+          \emph{(July 2013)}
+\end{enumerate}
+
+\noindent {\bf Stage III:} Solution proposal
+\begin{enumerate}
+    \item User identification system design for structured P2P networks.
+          \emph{(August 2013 - September 2013)}
+    \item Theoretic evaluation of the user identification proposal.
+          \emph{(October 2013)}
+    \item Final thesis report development.
+          \emph{(November 2013 - January 2013 2013)}
+    \item Paper development.
+          \emph{(February 2014)}
+\end{enumerate}
+\normalsize
+\end{frame}
+
   
 \end{document}
