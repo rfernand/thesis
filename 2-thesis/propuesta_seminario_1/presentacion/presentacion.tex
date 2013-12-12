@@ -44,7 +44,6 @@
     \item Storage and file sharing
     \item Email
     \item Money (heard about bitcoin?)
-    \item Transaction certification
     \item and a lot more!
   \end{itemize}
   &
@@ -92,7 +91,7 @@
     \begin{table}
     \begin{tabular}{p{7cm}p{3cm}}
     \begin{itemize}
-        \item Usually organized as a hiearchical/plain graph.
+        \item Usually organized as a hierarchical/plain graph.
         \item Search is costly and can result in false negatives.
         \item Can achieve certain grade of node anonymity. 
     \end{itemize}
@@ -136,21 +135,49 @@
     \end{table}
     \end{frame}
 
+  \subsection{Problem statement}
+  % problem for other solutions- multiple devices per user
   \begin{frame}
   \frametitle{Complex systems needs a way to identify an user...}
+  \framesubtitle{In short:}
   \begin{table}
   \begin{tabular}{p{7cm}p{3cm}}
-  \framesubtitle{Options?}
   \begin{itemize}
-    \item Keys randomly derived
-    \item Keys derived from a password
+    \item Many \textbf{complex systems} require authenticated users to work.
+    \item Most of the users has \textbf{more than one device}, so identification through
+      multiple devices is needed.
+    \item \textbf{User are accustomed} to username/password solutions.
   \end{itemize}
   &
   \vspace{1.5cm}
-  %\includegraphics[width=4cm]{../../presentacion/img/p2p-unstructured}\\
+  \includegraphics[width=4cm]{../../presentacion/img/users}\\
   \end{tabular}
   \end{table}
   \end{frame}
+  
+  
+  \begin{frame}
+  \frametitle{P2P Identification Schemes}
+  \framesubtitle{Options?}
+  
+    Decentralized schemes distributes the task of public key auth to all
+    participants.
+  \begin{table}
+  \begin{tabular}{p{7cm}p{3cm}}
+  \begin{itemize}
+    \item PGP-like scheme\\ Creates web of trust to auth public keys based on
+      their acquaintances opinions.
+    \item Quorum-based scheme\\ Multiple independent participants replicate
+      public keys.
+    \item Username/Password scheme
+  \end{itemize}
+  &
+  \vspace{1.5cm}
+  \includegraphics[width=4cm]{../../presentacion/img/password}\\
+  \end{tabular}
+  \end{table}
+  \end{frame}
+
 
   \begin{frame}
   \frametitle{Keys randomly derived}
@@ -187,47 +214,6 @@
   \end{table}
   \end{frame}
 
-  
-  \subsection{Problem statement}
-  % problem for other solutions- multiple devices per user
-  \begin{frame}
-  \frametitle{Username / password identification}
-  \framesubtitle{In short:}
-  \begin{table}
-  \begin{tabular}{p{7cm}p{3cm}}
-  \begin{itemize}
-    \item Many \textbf{complex systems} require authenticated users to work.
-    \item Most of the users has \textbf{more than one device}, so identification through
-      multiple devices is needed.
-    \item \textbf{User are accostumed} to username/password solutions.
-  \end{itemize}
-  &
-  \vspace{1.5cm}
-  \includegraphics[width=4cm]{../../presentacion/img/users}\\
-  \end{tabular}
-  \end{table}
-  \end{frame}
-  
-  \begin{frame}
-  \frametitle{Username / password identification}
-  \framesubtitle{P2P Identification Schemes}
-  
-    Descentralized schemes distributes the task of public key auth to all
-    participants.
-  \begin{table}
-  \begin{tabular}{p{7cm}p{3cm}}
-  \begin{itemize}
-    \item PGP-like scheme\\ Creates web of trust to auth public keys based on
-      their acquaintances opinions.
-    \item Quorum-based scheme\\ Multiple independent participants replicate
-      public keys.
-  \end{itemize}
-  &
-  \vspace{1.5cm}
-  \includegraphics[width=4cm]{../../presentacion/img/password}\\
-  \end{tabular}
-  \end{table}
-  \end{frame}
 
   \begin{frame}
   \frametitle{Peerson proposal}
@@ -238,7 +224,7 @@
 
   \begin{frame}
   \frametitle{Peerson proposal}
-  \framesubtitle{Other way to see it}
+  \framesubtitle{(simplified version)} 
   \center
   \includegraphics[height=0.7\textheight]{../../../img/password_peerson_alternative}\\
   \end{frame}
@@ -248,9 +234,9 @@
   \framesubtitle{It only works in a ``perfect'' world}
 
   \begin{enumerate}
-    \item In reality there are bizantine nodes
+    \item In reality there are byzantine nodes
     \item How to ensure that a node is telling the truth?
-    \item Resilience against sybil attacks?
+    \item Resilience against Sybil attacks?
   \end{enumerate}
   \end{frame}
   
@@ -310,7 +296,7 @@
 
   \begin{frame}
   \frametitle{Trust in P2P networks}
-  \framesubtitle{Bizantine nodes}
+  \framesubtitle{Byzantine nodes}
   \begin{table}
   \begin{tabular}{p{7cm}p{3cm}}
   Are all nodes that not behave as expected
@@ -332,18 +318,18 @@
   
   \begin{frame}
   \frametitle{Trust in P2P networks}
-  \framesubtitle{How to detect bizantine nodes?}
+  \framesubtitle{How to detect byzantine nodes?}
   %Consequently, the quality of service of applications may
   %be deteriorated due to message overhead or data loss.
   \begin{table}
   \begin{tabular}{p{7cm}p{3cm}}
-  \begin{description}
+  \begin{enumerate}
       \item{Reputation systems:} Assess the past history of a
   peer by gathering feedback from nodes with previous interactions with this
   peer.
       \item{Accountability:} Detects and exposes faulty nodes by
   creating non-repudiable records of every node’s actions.
-  \end{description}
+  \end{enumerate}
   &
   \vspace{1.5cm}
   \includegraphics[width=4cm]{../../presentacion/img/malicious}\\
@@ -374,7 +360,7 @@
   
   
   \begin{frame}
-  \frametitle{Bizantine node tolerance}
+  \frametitle{Byzantine node tolerance}
   \begin{table}
   \begin{tabular}{p{7cm}p{3cm}}
     P2P networks can achieve byzantine fault tolerance under $1/3$ byzantine
@@ -390,54 +376,6 @@ group of $L$ nodes.
   \end{table}
   \end{frame}
 
-  \begin{frame}
-  \frametitle{Probability of error}
-
-      If $p$ represents the probability that a single node is malicious, and
-      $N$ the total noumber of nodes in the DHT.\\
-
-      With $p= 0.3$, for   
-      $\frac{L}{2}$ consecutive nodes to be malicious in a leafset. The
-probability is gived by:
-
-  \begin{equation} \label{eq:p_leafset}
-    P= p^{\frac{L}{2}}
-  \end{equation}
-
-  \end{frame}
-
-  \begin{frame}
-  \frametitle{Trust in P2P networks}
-  \framesubtitle{Probability of error}
-
-  \begin{equation} \label{eq:p_leafset}
-    P= p^{\frac{L}{2}}
-  \end{equation}
-
-  \begin{table}
-    \centering
-    \footnotesize
-    \begin{tabular}{|c|c|c|}
-      \cline{2-3}
-      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
-      \hline
-      \textbf{Size of Trusted Set (L)} & \textbf{p = 0,3} & \textbf{p = 0,05} \\
-      \hline \hline
-      8 &  $0.0081$              & $6.25 \times 10^{-6}$  \\
-      \hline
-      16 & $6.56 \times 10^{-5}$ & $ 3.9 \times 10^{-11}$ \\
-      \hline
-      32 & $4.3 \times 10^{-9}$  & $ 1.52 \times 10^{-21} $  \\
-      \hline
-    \end{tabular}
-    \caption{Probability of failure in a transaction that needs $L/2+1$
-identical answers}
-    \label{tab:p_leafset}
-  \end{table}
-
-  \end{frame}
-  
-  
 
   %intro of p2p networks
 
@@ -453,7 +391,7 @@ identical answers}
     \frametitle{Thesis proposal}
     \begin{itemize}
       \item Propose and evaluate a new user identification system that can work
-in the presence of bizantine nodes in real life scenarios.
+in the presence of byzantine nodes in real life scenarios.
     \end{itemize}
     \end{frame}
   %
@@ -475,7 +413,7 @@ in the presence of bizantine nodes in real life scenarios.
     %\framesubtitle{Main Goals}
       \begin{itemize}
           \item It is assumed that the use of a reputation system and trusted nodes
-            management mitigates the efectivity of malicious nodes on identity
+            management mitigates the effectivity of malicious nodes on identity
             usurpation attacks.
           \item It is assumed that encryption schemes available today are
             sufficient to secure the user's private data in the P2P networks.
@@ -509,7 +447,7 @@ in the presence of bizantine nodes in real life scenarios.
       \item Study the possibility of password recovery mechanisms.
       \item Study and use trust management to maintain a
             secure layer inside the P2P network.
-      \item Use bizantine tolerant algorithms to verify and maintain the
+      \item Use byzantine tolerant algorithms to verify and maintain the
             system consistency in the presence of malicious nodes.
       \item Study and use secure routing, search and storage mechanisms in
             structured P2P networks.
@@ -551,7 +489,7 @@ in the presence of bizantine nodes in real life scenarios.
       %
       \begin{itemize}
           \item Proving that the system will have a minimal probability of error.
-          \item Proving that the system will  maintain his consistency in networks with at most 30\% of bizantine nodes. 
+          \item Proving that the system will  maintain his consistency in networks with at most 30\% of byzantine nodes. 
       \end{itemize}
     &
     \vspace{1.5cm}
@@ -569,4 +507,53 @@ in the presence of bizantine nodes in real life scenarios.
 		\Large{Questions?}
 	\end{center}
 }
+
+  \begin{frame}
+  \frametitle{Probability of error}
+
+      If $p$ represents the probability that a single node is malicious, and
+      $N$ the total number of nodes in the DHT.\\
+
+      With $p= 0.3$, for   
+      $\frac{L}{2}$ consecutive nodes to be malicious in a leafset. The
+probability is given by:
+
+  \begin{equation} \label{eq:p_leafset}
+    P= p^{\frac{L}{2}}
+  \end{equation}
+
+  \end{frame}
+
+  \begin{frame}
+  \frametitle{Trust in P2P networks}
+  \framesubtitle{Probability of error}
+
+  \begin{equation} \label{eq:p_leafset}
+    P= p^{\frac{L}{2}}
+  \end{equation}
+
+  \begin{table}
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|c|c|}
+      \cline{2-3}
+      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
+      \hline
+      \textbf{Size of Trusted Set (L)} & \textbf{p = 0,3} & \textbf{p = 0,05} \\
+      \hline \hline
+      8 &  $0.0081$              & $6.25 \times 10^{-6}$  \\
+      \hline
+      16 & $6.56 \times 10^{-5}$ & $ 3.9 \times 10^{-11}$ \\
+      \hline
+      32 & $4.3 \times 10^{-9}$  & $ 1.52 \times 10^{-21} $  \\
+      \hline
+    \end{tabular}
+    \caption{Probability of failure in a transaction that needs $L/2+1$
+identical answers}
+    \label{tab:p_leafset}
+  \end{table}
+
+  \end{frame}
+  
+  
 \end{document}
