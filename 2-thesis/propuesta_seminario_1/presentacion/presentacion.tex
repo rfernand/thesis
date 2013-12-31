@@ -182,42 +182,6 @@
 
 
   \begin{frame}
-  \frametitle{Keys randomly derived}
-  \framesubtitle{Basic Public-key cryptography}
-  \begin{table}
-  \begin{tabular}{p{7cm}p{3cm}}
-  \includegraphics[width=6cm]{img/Public-key-crypto}\\
-  &
-  \begin{itemize}
-    \item What about multiple devices?
-  \end{itemize}
-  \end{tabular}
-  \end{table}
-  \end{frame}
-
-  \begin{frame}
-  \frametitle{Keys derived from a password}
-  \framesubtitle{Basic example}
-  \framesubtitle{}
-  $$ \text{DK}=\text{KDF}(\text{Key}, \text{Salt}, \text{Iterations}) $$
-  \begin{table}
-  \begin{tabular}{p{7cm}p{3cm}}
-  Some functions for this are:
-  \begin{itemize}
-    \item PBKDF2
-    \item scrypt
-    \item bcrypt
-    %\item What about multiple devices?
-  \end{itemize}
-  &
-  \vspace{1.5cm}
-  %\includegraphics[width=4cm]{../../presentacion/img/p2p-unstructured}\\
-  \end{tabular}
-  \end{table}
-  \end{frame}
-
-
-  \begin{frame}
   \frametitle{Peerson proposal}
   \center
   \includegraphics[height=0.9\textheight]{../../../img/password_peerson}\\
@@ -498,6 +462,42 @@ in the presence of byzantine nodes in real life scenarios.
 		\Large{Questions?}
 	\end{center}
 }
+
+  \begin{frame}
+  \frametitle{Keys randomly derived}
+  \framesubtitle{Basic Public-key cryptography}
+  \begin{table}
+  \begin{tabular}{p{7cm}p{3cm}}
+  \includegraphics[width=6cm]{img/Public-key-crypto}\\
+  &
+  \begin{itemize}
+    \item What about multiple devices?
+  \end{itemize}
+  \end{tabular}
+  \end{table}
+  \end{frame}
+
+  \begin{frame}
+  \frametitle{Keys derived from a password}
+  \framesubtitle{Basic example}
+  \framesubtitle{}
+  $$ \text{DK}=\text{KDF}(\text{Key}, \text{Salt}, \text{Iterations}) $$
+  \begin{table}
+  \begin{tabular}{p{7cm}p{3cm}}
+  Some functions for this are:
+  \begin{itemize}
+    \item PBKDF2
+    \item scrypt
+    \item bcrypt
+    %\item What about multiple devices?
+  \end{itemize}
+  &
+  \vspace{1.5cm}
+  %\includegraphics[width=4cm]{../../presentacion/img/p2p-unstructured}\\
+  \end{tabular}
+  \end{table}
+  \end{frame}
+
 
   \begin{frame}
   \frametitle{Probability of error}

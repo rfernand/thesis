@@ -193,11 +193,11 @@ scalable when the size $N$ of the DHT increases.
       \hline
       \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
       \hline \hline
-      8 &  &  \\
+      8 &  $0.188$ & $6.64 \times 10^{-5}$ \\
       \hline
-      16 &  &  \\
+      16 & $0.079$ & $6.57 \times 10^{-8}$  \\
       \hline
-      32 &  &  \\
+      32 & $0.016$ & $8.24 \times 19^{-14}$  \\
       \hline
     \end{tabular}
     \caption{Probability of failure when recovering user private key}
@@ -206,6 +206,54 @@ scalable when the size $N$ of the DHT increases.
 
   \begin{enumerate}
     \item{\textit{Probability of failure:}}
+
+    The user private key recovery between a node $A$ and $I$ can fail (a) if $I$ does
+not respond to $A$ during the key recovery request. This corresponds to the
+probability that more than $L/2$ nodes of $I$ are malicious. The probability of
+encountering exactly $k$ malicious nodes among $L +1$ is given by the binomial
+distribution
+
+    \begin{equation}
+      P_{K malicious} = \begin{pmatrix} L+1 \\ k\end{pmatrix} p^k (1-p)^{L+1-k}
+    \end{equation}
+
+    where $p$ is the probability that a single node is malicious. Hence the
+probability of facing at most k malicious nodes is 
+
+    \begin{equation}
+      P_{\leq k} = \sum_{i=1}^{k} \begin{pmatrix} L+1 \\ k\end{pmatrix} p^i (1-p)^{L+1-i}
+    \end{equation}
+
+    Therefore, the probability of facing more than $k$ malicious nodes among
+$n$ is given by
+
+    \begin{equation}
+      P_{\ge k} = P_{\leq n} - P_{\leq k}
+    \end{equation}
+
+    and the probability that $S$ will not respond is
+
+    \begin{align}
+      P_{\ge L/2} &= P_{\leq L+1} - P_{\leq L/2} \\
+      &= \sum_{i=1}^{L+1} \begin{pmatrix} L+1 \\ i\end{pmatrix} p^i (1-p)^{L+1-i}
+      - \sum_{i=1}^{L/2} \begin{pmatrix} L+1 \\ i\end{pmatrix} p^i (1-p)^{L+1-i}
+    \end{align}
+
+    %% TODO: figure with the likeliness of dealing with an increains gnumber k of malicious nodes among a leafset comprising 32 nodes.
+
+    Then the probability that $I$ will not respond to the user private key recovery
+request is
+
+    \begin{align}
+      P_{AI} &= (1- P_{\ge L/2}) P_{\ge L/2} +  P_{\ge L/2} \\
+      P_{AI} &= 2P_{\ge L/2}) + P^2_{\ge L/2}
+    \end{align}
+
+
+    Table~\eqref{tab:p_private_key_recovery} shows the probability of failure
+between $A$ and $I$, for a leafset size of $L = \{8,16,32\}$.
+
+    
     \item{\textit{Message complexity:}}
   \end{enumerate}
 
