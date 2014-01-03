@@ -4,50 +4,13 @@ At the absence of trusted nodes in a P2P network, additional mechanisms to
 attain certain grade of trust between the participants of a transaction are
 needed. There are reputation systems that grade each node with a reputation
 that can be used to decide if a operation will or not will be made with them,
-and accountability systems that detects malicious behavior analizing the
+and accountability systems that detects malicious behavior analyzing the
 behavior of the nodes in the network. While  detecting malicious behavior with
 accountability systems can ward off a variety of attacks, they need to follow
 each transaction done in the system, with a high cost associated to them.
  In the following section we are going to
 detail a reputation system and a trust model to be of used by the proposed
 solution.
-
-%Debido a la ausencia de un control central, las redes P2P est ́
-% an expuestas a nodos
-%maliciosos, especialmente nodos Bizantinos [13]. Se demuestra en [6] que es
-%imposible
-%dise ̃
-% nar e implementar una autoridad de certificaci ́
-% on completamente P2P necesaria para
-%realizar certificaci ́
-% on basada en un sistema seguro. Adem ́
-% as, utilizar un conjunto de
-%servidores para este fin, no es una soluci ́
-% on escalable. Un 30 % de nodos maliciosos, es
-%un valor com ́
-% unmente aceptado como l ́ımite m ́
-% aximo por la comunidad en investigaci ́
-% on
-%en sistemas P2P. Por lo tanto, construir confiabilidad en este tipo de redes ha
-%llegado a ser
-%uno de los problemas de mayor inter ́es en la comunidad P2P.
-%Los Sistemas de Gesti ́
-% on de Confianza permiten clasificar el comportamiento de un nodo
-%de acuerdo a las transacciones que ha realizado con otros nodos en el sistema,
-%para poder
-%decidir si un nodo es confiable. Las soluciones propuestas se dividen en dos
-%grandes
-%grupos: Sistemas de reputaci ́on [15] y sistemas de tipo accountability [8]. Los
-%sistemas de
-%reputaci ́
-% on permiten obtener un valor R(X) que indica la probabilidad que el nodo X sea
-%honesto. Mientras que los sistemas de tipo accountability permiten detectar y
-%exponer el
-%comportamiento del nodo en base a registros seguros que almacenan las
-%transacciones
-%realizadas con otros nodos, los cuales son comprobados peri ́
-% odicamente.
-
 
 
 \subsection{Reputation systems}
@@ -78,16 +41,16 @@ TrustGuard~\cite{trustguard} and WTR~\cite{wtr}. Nevertheless, to our knowledge,
 none of the existing solutions to promote trust in P2P can be
 $100\%$ effective in detecting and blocking these attacks.
 
-It's assumed an $5\%$ error in the clasification of trusted nodes.
+It's assumed an $5\%$ error in the classification of trusted nodes.
 
 \subsubsection{WTR}
 \label{sec:wrt}
 WTR~\cite{bonnaire2009wtr} is a reputation system over a DHT like Pastry~\cite{pastry} and
 Chord~\cite{chord}. The probability that a node $X$ is honest is determined by
 $R(X)$, with $0 \leq R(X) \leq 1$. WTR calculates the node reputation $R(X)$
-using the \textit{recomendations} of the node $X$. When a node $Y$ makes a transaction with
-node $X$, the node $Y$ issues a recomendation about the behavior of the node
-$X$. The recomendations table~\ref{table:wtr_recomendations} shows how each
+using the \textit{recommendations} of the node $X$. When a node $Y$ makes a transaction with
+node $X$, the node $Y$ issues a recommendation about the behavior of the node
+$X$. The recommendations table~\ref{table:wtr_recomendations} shows how each
 transaction is evaluated.
  
   \begin{table}
@@ -95,12 +58,12 @@ transaction is evaluated.
     \footnotesize
     \begin{tabular}{|l|l|l|}
       \hline
-      \textbf{Status} & \textbf{Recomendation} & \textbf{Description}\\
+      \textbf{Status} & \textbf{Recommendation} & \textbf{Description}\\
       \hline
-      Excelent  & $1.00$    & Very good transaction\\
+      Excellent  & $1.00$    & Very good transaction\\
                 &           & Service fully completed\\
       Good      & $0.75$    & Good transaction\\
-                &           & Some degradations\\
+                &           & Some degradation\\
       Neutral   & $0.50$     & Not completed correctly\\
                 &           & Could be independent of the node\\
       Bad       & $0.25$    & Transaction not completed.\\
@@ -109,14 +72,14 @@ transaction is evaluated.
                 &           & Fully malicious node\\
       \hline
     \end{tabular}
-    \caption{Recomendations in WTR}
+    \caption{Recommendations in WTR}
     \label{table:wtr_recomendations}
   \end{table}
 
 A set of $M$ nodes manage the reputation and the risk associated to node $X$.
 The node ID of the manager $i$ of the node $X$ is
 obtained by the function $m_i = SHA^{i}(X)$. Each manager of the node $X$
-stores the lists of recomendations emitted about $X$. When a manager recieves a
+stores the lists of recommendations emitted about $X$. When a manager receives a
 new request for node $X$, it computes the new reputation value and the risk
 value for $X$.
 Each manager $m_i$ administers a number of $L$ replicas of the reputation information. In Pastry,
@@ -129,7 +92,7 @@ means that doing a transaction with $X$ is really risky, even if $X$ has a very
 good reputation.
 
 The reputation of a node in WTR is influenced by the credibility of the nodes
-that emitted the recomendations about $X$. The credibility of a node $K$ at a
+that emitted the recommendations about $X$. The credibility of a node $K$ at a
 moment $t$ is denoted by $C_t (K)$:%~\ref{eq:credibility_of_a_node}.
 
 \begin{equation}
@@ -144,10 +107,10 @@ moment $t$ is denoted by $C_t (K)$:%~\ref{eq:credibility_of_a_node}.
 \end{equation}
 
 To calculate the reputation of a node, the system only takes in consideration
-the last $m$ recomendations in its recomendations list. This window size $m$ is
+the last $m$ recommendations in its recommendations list. This window size $m$ is
 a fixed parameter of the reputation system. Also, more weight is given to the
-more recent recomendations. 
-Being $F_i^k (X)$ the recomendation $i$, emitted by the node $K$ to the node
+more recent recommendations. 
+Being $F_i^k (X)$ the recommendation $i$, emitted by the node $K$ to the node
 $X$. Then, the reputation of the node $X$ at the time $t$ is defined by:
 
 \begin{equation}
@@ -159,9 +122,9 @@ $X$. Then, the reputation of the node $X$ at the time $t$ is defined by:
 The problem with only considering the reputation of a node when doing a
 transaction is that:
 \begin{enumerate}
-  \item A node with a number $n$ of good recomendations, with $n \ll m$ (very
-few recomendations), can have a very similar reputation than a node with at
-least $m$ recomendations. However, an application could really prefer a node
+  \item A node with a number $n$ of good recommendations, with $n \ll m$ (very
+few recommendations), can have a very similar reputation than a node with at
+least $m$ recommendations. However, an application could really prefer a node
 with a larger history as its reputation is computed with more information, and
 is therefore more reliable.
   \item A node that makes good and bad transactions in turns can have a very
@@ -189,17 +152,17 @@ where
   \end{array}\right.
 \end{equation}
 
-Where $r$ is the number of available recommendations in the siliding window of
+Where $r$ is the number of available recommendations in the sliding window of
 size $m$ for node $X$. $\alpha$ is a dynamic parameter within of range
 $[0\cdots 1]$ that allows an application to give more weight to $T_1$ versus
 $T_2$ for the computation of the risk. $T_1$ is used to evaluate the risk
 associated to the number of recommendations taken in account to compute the
 reputation of the node $X$. $T_2$ corresponds to the variance of the
 recommendations emitted by others nodes. The role of the factor $4$ is to
-normalise $T_2$ to obtain a value in $[0\cdots 1]$
+normalize $T_2$ to obtain a value in $[0\cdots 1]$
 
 Experimental results shows that WTR works well under $30\%$ of malicious nodes,
-becoming inestable with more malicious nodes. Is resistant to DDOS attacks
+becoming unstable with more malicious nodes. Is resistant to DDOS attacks
 thanks to the recursive replication used~\cite{recursive_replication}.
 
 % revise this
@@ -208,7 +171,7 @@ thanks to the recursive replication used~\cite{recursive_replication}.
 While reputation systems lets you to know how much a node can be
 ``trusted'', they don't provide a way to find them to build trusted services on
 them. CORPS~\cite{corps} consider a probabilistic model of trust based on
-reputation to build trusted infraestructure inside a DHT. CORPS builds a double
+reputation to build trusted infrastructure inside a DHT. CORPS builds a double
 ring inside inside a DHT. Over this trusted ring a routing algorithm is supplied to
 find the most trust node closest to a key $k$.
 To be part of the trusted ring, a node needs to have a reputation $R(X) \ge
@@ -234,7 +197,7 @@ If the condition is not met, $X$ does not enters the trustset and continues
 being a normal node.
 
 Normal nodes does not register when a node enters the trustset. It is the
-responsability of the new trusted node to notify each node in its leafset about
+responsibility of the new trusted node to notify each node in its leafset about
 the new trustset.
 
 Each $\delta T$, the managers nodes checks their trusted nodes reputation. If
@@ -243,10 +206,10 @@ a REMOVE\_MESSAGE is sent to the followers of $X$. $\alpha$ is a parameter
 representing the tolerance of the system. It prevents a yo-yo effect, where the nodes keeps entering and
 leaving the trusted ring generating high message costs.
 
-As the system needs a minimun history about the behavior in the transactions
+As the system needs a minimum history about the behavior in the transactions
 done in the network, an initialization period is needed. In this period, there
-can be various locally trusted rings that coexist. The system stabilises after
-aproximatelly 5 transactions per node, when the trusted ring is fully conected.
+can be various locally trusted rings that coexist. The system stabilizes after
+approximately 5 transactions per node, when the trusted ring is fully connected.
 
 To route messages in the ring, CORPS develop a pseudo-trusted routing. The
 pseudo-trusted routing returns the closest trusted node of a given key $k$.
@@ -264,8 +227,8 @@ system.
 Accountability systems detect and expose malicious actions.
 To do this, they review each transaction done by the nodes in the system. They
 put in disposition of honest nodes the information needed to detect and test
-malicius behavior of other nodes. PeerReview~\cite{haeberlen2007peerreview} is a system that
-use secure records of the messages sent and recieved by each node to identify
+malicious behavior of other nodes. PeerReview~\cite{haeberlen2007peerreview} is a system that
+use secure records of the messages sent and received by each node to identify
 malicious actions and verify the behavior of a node.
 
 \subsubsection{PeerReview}
@@ -273,7 +236,7 @@ malicious actions and verify the behavior of a node.
 PeerReview~\cite{haeberlen2007peerreview} uses the records of the transactions
 to detect if a node behavior is malicious or not. It stores secure records with
 a list of entries of all the Input/Output made by a node. All this is stored in
-a log, wich is an append-only list that conaints all the inputs and ouptus of a
+a log, which is an append-only list that contains all the inputs and outputs of a
 particular node's in chronological order. Each log entry $e_k = (s_k, t_k,
 c_k)$ has a sequence number $s_k$, a type $t_k$ and a content $c_k$.
 Additionally, each record includes a recursively defined hash value $h_k =
@@ -305,41 +268,43 @@ this case, node $i$ has evidence that node $j$ is faulty.
 A problem with this type of systems, is that the actions that can be detected
 directly depends of the protocol used. If a malicious node executes an action
 that is not specified in the protocol, it will pass undetected. Also, it only
-detects and label nodes with malicious behaviors; it does not proporcionate a
+detects and label nodes with malicious behaviors; it does not proportionate a
 way to find honest nodes in the network.
-Given that transactions must be periodically verified, this mecanism can have a high
-CPU cost if the protocol is computacionally complex.
+Given that transactions must be periodically verified, this mechanism can have a high
+CPU cost if the protocol is computationally complex.
  
-\subsection{Self-Certification}
-A trusted authority issues identity certificates in a
-centralized system. P. Dewan proposed a self-certification
-mechanism [12] that splits the trusted entity among the
-peers and enables them to generate their own identities in a
-decentralized reputation system. Certified Authority (CA)
-is run by each peer so as to issue an identity certificate(s)
-for itself. These self certified certificates are similar to
-SDSI certificates [9]. Each peer has its own reputation and
-the reputations of all peers collectively form the reputation
-of a CA.
-In Self-certification mechanism there is no need for
-centralized trusted entity which issues identities in a
-centralized system. There is no way to map the identity of
-a peer in the system to its real-life identity when they use
-self-certified identities. They remain pseudonymous in the
-system. The idea of making peers anonymous or
-pseudonymous is desirable in P2P networks, but it can also
-backfire sometimes.
-In Self-certification mechanism the anonymity of the peers
-is preserved by grouping of peers. The combination of self
-certification and anonymity limits the possibility of a Sybil
-attack. In contrast to the traditional CA-based approach,
-neither the group authority nor the transacting peers can
-establish the identity of the peer. In addition, certificate
-revocations are not needed in the group-based approach as
-the group authority only vouches for the real-life existence
-of the peer, unlike the traditional certificate-based
-approaches where various certificate attributes are attested
-by the authority and necessitate revocation if any of those
-attributes mutate in time. If a highly reputed identity is
-compromised, its misuse would be self-destructive as its
-reputation will go down if misused.
+
+% description of distributed CA with self-certification
+%\subsection{Self-Certification}
+%A trusted authority issues identity certificates in a
+%centralized system. P. Dewan proposed a self-certification
+%mechanism [12] that splits the trusted entity among the
+%peers and enables them to generate their own identities in a
+%decentralized reputation system. Certified Authority (CA)
+%is run by each peer so as to issue an identity certificate(s)
+%for itself. These self certified certificates are similar to
+%SDSI certificates [9]. Each peer has its own reputation and
+%the reputations of all peers collectively form the reputation
+%of a CA.
+%In Self-certification mechanism there is no need for
+%centralized trusted entity which issues identities in a
+%centralized system. There is no way to map the identity of
+%a peer in the system to its real-life identity when they use
+%self-certified identities. They remain pseudonymous in the
+%system. The idea of making peers anonymous or
+%pseudonymous is desirable in P2P networks, but it can also
+%backfire sometimes.
+%In Self-certification mechanism the anonymity of the peers
+%is preserved by grouping of peers. The combination of self
+%certification and anonymity limits the possibility of a Sybil
+%attack. In contrast to the traditional CA-based approach,
+%neither the group authority nor the transacting peers can
+%establish the identity of the peer. In addition, certificate
+%revocations are not needed in the group-based approach as
+%the group authority only vouches for the real-life existence
+%of the peer, unlike the traditional certificate-based
+%approaches where various certificate attributes are attested
+%by the authority and necessitate revocation if any of those
+%attributes mutate in time. If a highly reputed identity is
+%compromised, its misuse would be self-destructive as its
+%reputation will go down if misused.
