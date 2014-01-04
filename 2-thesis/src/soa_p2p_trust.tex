@@ -17,7 +17,8 @@ solution.
 Reputation systems mitigate the problem of malicious nodes in
 P2P networks, trying to build trust among the nodes. The key
 idea of a reputation system is to predict the future behaviour
-of nodes based on feedback about their past transactions [1]. A
+of nodes based on feedback about their past
+transactions~\cite{Resnick:2000:RS:355112.355122}. A
 transaction is application dependent, for example forwarding a
 message in the network, buying an item in e-commerce services,
 share or store files, etc. After a transaction, the client node emits
@@ -29,15 +30,13 @@ to compute a global reputation value for every node. Indeed
 all the recommendations about a single node can be handled
 consistently at a common location: either by a specific node
 or by a set of nodes. Among existing reputation systems for
-DHTs, we can cite: PeerTrust~\cite{peertrust}, WTR~\cite{wtr},
-Eigentrust~\cite{eigentrust},
-PowerTrust~\cite{powertrust} and CORPS~\cite{corps}
+DHTs, we can cite: PeerTrust~\cite{xiong2004peertrust}, WTR~\cite{bonnaire2009wtr},
+Eigentrust~\cite{kamvar2003eigentrust},
+PowerTrust~\cite{rahbar2007powertrust} and CORPS~\cite{rosas2011corps}
 
 Reputation systems have to deal with malicious nodes that:
 do not participate, collude with other malicious nodes and
-emit false recommendations. There are techniques to mitigate
-the impact of these attacks, such as the ones presented in
-TrustGuard~\cite{trustguard} and WTR~\cite{wtr}. Nevertheless, to our knowledge,
+emit false recommendations. Nevertheless, to our knowledge,
 none of the existing solutions to promote trust in P2P can be
 $100\%$ effective in detecting and blocking these attacks.
 
@@ -170,7 +169,7 @@ thanks to the recursive replication used~\cite{recursive_replication}.
 \label{sec:corps}
 While reputation systems lets you to know how much a node can be
 ``trusted'', they don't provide a way to find them to build trusted services on
-them. CORPS~\cite{corps} consider a probabilistic model of trust based on
+them. CORPS~\cite{rosas2011corps} consider a probabilistic model of trust based on
 reputation to build trusted infrastructure inside a DHT. CORPS builds a double
 ring inside inside a DHT. Over this trusted ring a routing algorithm is supplied to
 find the most trust node closest to a key $k$.

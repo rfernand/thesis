@@ -1,37 +1,124 @@
+As P2P systems grow in complexity, a way to identify individual users among the
+network nodes is needed. To attain this, additional protocols are needed to
+ensure that the identity of a node corresponds truthfully to the user it
+proclaims to be. A basic way to identify a registered user is by the use of
+private/public encryption scheme. While this can work in simple environments
+with a few known users, to allow registration over the network a way to store
+the user keys and verify its authenticity are needed.
+Next we are going to detail an identification scheme that allow user
+registration and identification using the user's username and password.
+
 \section{P2P Identification Schemes}
-\subsection{Plain PKI scheme}
+
+% TODO for revision
+The subject of securely establishing stable identities in P2P
+systems has been previously studied, for instance by Aberer,
+Datta and Hauswirth~\cite{1318567}. The need for identities mainly arose
+from technical concerns, such as handling dynamic IP address
+assignment, or avoiding Sybil attacks~\cite{the_sybil_attack}. Authentication of a
+node is done via a signature key, automatically generated and
+stored on the node.
+
+Traditionally, P2P networks identified the different nodes that compose the
+system, but not the user behind each one of them as a different being.
+As P2P systems grow in complexity, the need to identify users inside the
+network arose.
+
+% TODO for revision
+Some P2P storage systems also use techniques which are
+related to ours. For example, the DHT-based systems GNUnet
+and Freenet use keyword strings to derive a public-private key
+pair whose private key is used to sign data and the hash of
+the public key to identify the data in the storage. Both of
+these systems use a keyword string as a seed to a pseudo-random number
+generator that produces the key pair~\cite{clarke2010private},~\cite{Bennett03anencoding}.
+Knowing only the memorable keyword string the user can
+store and retrieve information.
+
+% TODO for revision
+Related to forgotten passwords, recovery of information in a
+P2P scenario has been studied by Vu et al.~\cite{5380695} who proposed
+a combination of threshold-based secret sharing with delegate
+selection and encrypting shares with passwords.
+Frykholm and Juels~\cite{Frykholm:2001:EPR:501983.501985} proposed a password-recovery
+mechanism based on security questions very similar to our
+protocol for the same task. They offer better, information-
+theoretic security properties, something not applicable to our
+scenario. We treat the subject of password change, which is not applicable to
+their scenario, although their proposal could be extended to support password
+change using our techniques.
+
+
+%\subsection{Plain PKI scheme}
 \subsection{Peerson Username/Password scheme}
+
+They present in ~\cite{kreitz2012passwords} a suite of protocols for password
+authentication in P2P networks: account registration, login, password change,
+remembered logins, logout from a remote device, and password recovery. The
+password authentication is based on standard cryptographic techniques and can
+be used with standard P2P components. 
+
+It relies in the safe storage, distribution and retrieval of a a)~\textit{login information
+file}, a b)~\textit{device login info file} and a c)~\textit{key store
+file}~\ref{fig:p2p_peerson}.
+
+\begin{enumerate}[a)]
+
+  \item The login information file stores is compose by encrypted files and a
+plain text. The encrypted files are: the user session information (\textit{devmap}), a
+cryptographic key for write authentication ($K_W$), and the filename of the
+\textit{key store file} along with the symmetric key used to encrypt and
+decrypt the key store file ($K_{KS}$). The plain text is a random byte string used as a \textit{salt} to generate the user private key to
+decrypt the first bundle of files. 
+
+  \item The key store file stores all the private keys used to identified the
+    user in the system services. This files is stored encrypted by the $K_{KS}$ key.
+
+  \item The device login information file only stores the filename of the key
+    store file and the $K_{KS}$ key. This is all encrypted by a $K_{DL}$ key
+    stored in the \textit{devmap}.
+\end{enumerate}
+
+\begin{figure}
+\center
+\includegraphics[width=12cm]{../img/password_peerson}\\
+\caption{Peerson scheme storage locations (boxes) and login procedure (arrows) }
+\label{fig:p2p_peerson}
+\end{figure}
+
+Their protocols are as follow:
 %
 %% introduction of identification schemes. Par 2: proposed username/password identification schemes. Part 3: securing the network protocols. Part 4: Pending issues.
 \paragraph{Account registration}
-\includegraphics[width=14cm]{../img/user_registration}\\
+%\includegraphics[width=14cm]{../img/user_registration}\\
 To register a new user account, the user first
 has to choose a \textit{username} and a \textit{password}.
 
 % key store file
-Considering a key-based authentication, the user creates a \textit{key store file}, containing all the
+Considering a key-based authentication, the user creates a \textit{key store
+file} $F_{KS}$, containing all the
 keys used by the P2P application the user wants to log in to.
 The user generates a cryptographic key to authenticate the write operations
 that will be made in the file, and store this key along with the others in the
 \textit{key store file}.
 
-
 % encryption and store of the key store file
-The user then creates a \textit{symmetric key KKS} ,
+The user then creates a \textit{symmetric key} $K_{KS}$,
 encrypts the file content with this key and puts the ciphertext
-into the storage, obtaining a \textit{file name fKS} . Now, the user
-creates a \textit{login information file} by creating a random
-byte string \textit{salt}, deriving a \textit{symmetric key KLI} from the user
+into the storage, obtaining a \textit{file name} $f_{KS}$. Now, the user
+creates a \textit{login information file} $F_{LI}$ by creating a random
+byte string \textit{salt}, deriving a \textit{symmetric key} $K_{LI}$ from the user
 \textit{password} and the \textit{salt}.
-Using the new \textit{ symmetric key KLI}, the user encrypts the \textit{file name fKS},
-the \textit{symmetric key KKS} and the \textit{cryptographic key to
-authenticate the write operations KW}.
+Using the new \textit{ symmetric key} $K_{LI}$, the user encrypts the
+\textit{file name} $f_{KS}$,
+the \textit{symmetric key} $K_{KS}$ and the \textit{cryptographic key to
+authenticate the write operations} $K_W$.
  The salt and the three encrypted values are put
-into the storage, obtaining a file name fLI . The salt is stored
+into the storage, obtaining a file name $f_{LI}$ . The salt is stored
 in plaintext, so that the user later can derive the decryption
-key KLI by only providing the password. Finally, the user
+key $K_{LI}$ by only providing the password. Finally, the user
 performs the write-once operation put on the DHT with
-uname as key and fLI as value.
+username as key and $f_{LI}$ as value.
 
 %unique username
 If the username was taken,
@@ -44,151 +131,259 @@ have succeeded, the user is registered in the system.
 
 \paragraph{Sign-in}
 The user uses his username to find and retrieve his \textit{login information
-file}. Then, using his \textit{password} and the \textit{salt} included in the
-\textit{login information file}, obtains the \textit{file name fKS} used to
-route back to where the \textit{key store file} is stored.  Lastly, uses the
-\textit{symmectric key KKS} to dencrypt the \textit{key store file} and recover
-his user keys.
+file} $F_{LI}$. Then, using his \textit{password} and the \textit{salt} included in the
+\textit{login information file} $F_{LI}$, obtains the \textit{file name}
+$f_{KS}$ used to
+route back to where the \textit{key store file} $F_{KS}$ is stored.  Lastly, uses the
+\textit{symmetric key} $K_{KS}$ to decrypt the \textit{key store file}
+$F_{KS}$ and recover his user keys.
+
+\paragraph{Password Change}
+%To change the password, the user has to rewrite his \textit{login information
+%file}.
+
+
+Before the user can change the password, she must log in using her password to
+obtain $K_{LI}$ . With this information, the password change can be
+accomplished; the user is asked for a new password and a new salt is
+generated. The key-derivation function is used to generate a new key
+$K_{LI}^{new}$
+for the login information file. Then, the content of the key-store file is
+fetched and decrypted (with the old key). A new key $K_{KS}^{new}$ is generated and
+used for encrypting the key-store content again before it is saved to the
+storage system, obtaining a new filename $f_{KS}^{new}$.
+Finally, the login information file
+is updated: $f_{KS}^{new}$, $K_{KS}^{new}$, the write credential $K_{W}$ as well as a new empty
+device mapping \textit{devmapnew} are encrypted with the new key $K_{LI}^{new}$.
+  Together with the new salt, this ciphertext is written to the distributed
+storage, using the reference $f_{LI}$ and the credential $K_W$, to authenticate the
+write operation. Lastly, the keys stored in the key store should be updated by
+the application using the P2P protocol.  At this point, old device login
+information files can also be deleted from the
+storage to reclaim space.
 
 \paragraph{Logout}
-The system does not have something like a "session" to maintain; the only way
-to identify an user is by his keys that are obtained by the identification
-process.
+%The system does not have something like a "session" to maintain; the only way
+%to identify an user is by his keys that are obtained by the identification
+%process.
 
-%%%%%%%%%%%%%%% REWRITE THISSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
- To log out from the system, the user does not have to interact
+To log out from the system, the user does not have to interact
 with the DHT or the storage system. Simply wiping her local
 cache from application data and all key material restores the
 pre-login state. If the user chose to remember the login on a
-device, the corresponding device login information file FDL
+device, the corresponding device login information file $F_{DL}$
 can also be deleted from the storage.
  A problem related to logging out is revoking remembered
 credentials on another device, e. g., a user’s stolen phone. To
-accomplish this, we first run the password change operation,
+accomplish this, they first run the password change operation,
 which locks out all devices with remembered logins, because
-he key store key KKS changed (as well as the filename fKS ).
-Next, we use the device mapping devmap to inform all devices
+he key store key $K_{KS}$ changed (as well as the filename $f_{KS}$ ).
+Next, we use the device mapping \textit{devmap} to inform all devices
 about the new key (and filename), except the device that is to
 be revoked. To inform a device about the change, we update
 the corresponding values in the device’s login information file
  FDL which can be accessed from the device by using the
 locally stored credentials.
- Algorithm 4 describes this necessary extension. After run- the password change
-operation, all devices that not ning shouldbe revoked and that have remembered
-logins (and therefore are devmap) referenced in the device mapping are
-processed. The device login information filename fDL and its key KDL are read,
-and the new key store key KKS new and filename fKS new are written to the
-device login information file FDL, encrypted under the device key KDL.
-Finally, the modified devmap is saved back to the login information file FLI.
-%%%%%%%%%%%%%%% REWRITE THISSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
- 
+
+ After running the password change
+operation, all devices that should not be revoked and that have remembered
+logins (and therefore are referenced in the devmap) are
+processed. The device login information filename $f_{DL}$ and its key $K_{DL}$ are read,
+and the new key store key $K_{KS}^{new}$ and filename $f_{KS}^{new}$ are written to the
+device login information file $F_{DL}$, encrypted under the device key $K_{DL}$.
+Finally, the modified devmap is saved back to the login information file $F_{LI}$.
 
 
-
-\paragraph{Password Change}
-To change the password, the user has to rewrite his \textit{login information
-file}.
-
-
-%%%%%%%%%%%%%%% REWRITE THISSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
-Before the user can change the password, she must log in using her password to
-obtain KLI . With this information, the password change can be accomplished
-(see Algorithm 3): the user is asked for a new password and a new salt is
-generated. The key-derivation function is used to generate a new key KLI new
-for the login information file. Then, the content of the key-store file is
-fetched and decrypted (with the old key). A new key KKS new is generated and
-used for encrypting the key-store content again before it is saved to the
-storage system, obtaining a new filename fKS new.
-Finally, the login information file
-is updated: fKS new, KKS new, the write credential KW as well as a new empty
-device mapping devmapnew are encrypted with the new key KLI new.
-  Together with the new salt, this ciphertext is written to the distributed
-storage, using the reference fLI and the credential KW, to authenticate the
-write operation. Lastly, the keys stored in the key store should be updated by
-the application using our P2P protocol.  See Section VI-E for a discussion. At
-this point, old device login information files can also be deleted from the
-storage to reclaim space.
-%%%%%%%%%%%%%%% REWRITE THISSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
-
-\paragraph{Forgotten passwords and password-recovery mechanisms}
-  - HUGE danger
-  - Security questions
-  - threshold-based secret sharing with delegate selection and encrypting
-  shares with passwords
-
-
+\subsubsection{Forgotten passwords and password-recovery mechanisms}
+  %- HUGE danger
+  %- Security questions
+  %- threshold-based secret sharing with delegate selection and encrypting
+  %shares with passwords
 
 %%%%%%%%%%%%%   Peerson Passwords in P2P networks %%%%%%%%%%%%%
-An important part of password-based logins is the possi-
- bility for users to recover their accounts if they forget their
- passwords. We refer to this as a password recovery mechanism.
- The goal of a password recovery mechanism is to provide a
- secondary way of authenticating the user. There are a number
- of password recovery mechanisms used in practice. In our
- experience, three of the most common ones are password
- hints, security questions, and e-mail based recovery. Other
+%An important part of password-based logins is the possi-
+% bility for users to recover their accounts if they forget their
+% passwords. We refer to this as a password recovery mechanism.
+% The goal of a password recovery mechanism is to provide a
+% secondary way of authenticating the user. There are a number
+% of password recovery mechanisms used in practice. In our
+% experience, three of the most common ones are password
+% hints, security questions, and e-mail based recovery. Other
+%
+%approaches (beyond the scope of this paper) include vouching
+%for identity by social contacts [21], or using trusted devices.
+% Password hints means that the user may enter a hint at
+%the same time as she sets this password. The hint will be
+%displayed to her if she forgets her password, and should be
+%selected such that it helps her recall her password, but does
+%not make it significantly easier for someone else to guess it.
+%The hint is not truly a secondary authentication mechanism,
+%but rather a means to recovering the original password-based
+%authentication mechanism. A basic version of password hints
+%would be straightforward to implement in our system: the
+%hint can be stored in plaintext in the login information file.
+%Security questions and e-mail based password recovery are
+%more complex to adapt. We described their implementation in
+%detail after listing requirements.
+%
+% As in Section IV for the login procedure, we define a set of
+%functional requirements for password recovery, based on the
+%ISO 27002 standard [19] as follows. We also augment the list
+%with requirements of our own (preceded by a star).
+%establish methods to verify the identity of a user prior to
+%•allowing the user to choose a new password
+%communicate with those affected by or involved with
+% - recovery security incidents
+% - have procedures to allow recovery and restoration of
+%business operations and availability of information in a
+% time-scaled manner
+%a legitimate user should be able to recover lost (forgotten)
+% - or broken (device’s) keys
+% - the recovery procedure should allow a user to set a new
+% password, not reveal the old password
+% - the process of recovery should be easy to use
+% - sensitive information for recovery should be kept secret
+%
+%Our protocols support these requirements.
 
-approaches (beyond the scope of this paper) include vouching
-for identity by social contacts [21], or using trusted devices.
- Password hints means that the user may enter a hint at
-the same time as she sets this password. The hint will be
-displayed to her if she forgets her password, and should be
-selected such that it helps her recall her password, but does
-not make it significantly easier for someone else to guess it.
-The hint is not truly a secondary authentication mechanism,
-but rather a means to recovering the original password-based
-authentication mechanism. A basic version of password hints
-would be straightforward to implement in our system: the
-hint can be stored in plaintext in the login information file.
-Security questions and e-mail based password recovery are
-more complex to adapt. We described their implementation in
-detail after listing requirements.
- As in Section IV for the login procedure, we define a set of
-functional requirements for password recovery, based on the
-ISO 27002 standard [19] as follows. We also augment the list
-with requirements of our own (preceded by a star).
-establish methods to verify the identity of a user prior to
-•allowing the user to choose a new password
-communicate with those affected by or involved with
- - recovery security incidents
- - have procedures to allow recovery and restoration of
-business operations and availability of information in a
- time-scaled manner
-a legitimate user should be able to recover lost (forgotten)
- - or broken (device’s) keys
- - the recovery procedure should allow a user to set a new
- password, not reveal the old password
- - the process of recovery should be easy to use
- - sensitive information for recovery should be kept secret
-Our protocols support these requirements. The sole exception
-is that if a password is reset via security questions alone, the
-system would not “communicate with those affected” (e.g.,
-send an e-mail notification that the password had been reset,
-as is common in centralized services). We remark that the
-last item is a property many centralizedstronger than systems
-provide. In our system, no one learns the answers to a user’s
-security questions. We consider this to be important, since
-many systems use similar security questions.
- The operations described in this section imply minor addi-
-tions to the protocols of Section IV, i. e., invoking the update
-procedures after each password change (to sustain transaction
-safety, the updates have to be included in the final write
-operation of the password change operation).
-A. Security Questions
- Security questions is a password recovery technique that
-relies on answers to questions the user is asked during regis-
-tration. The answers should be such that they cannot be easily
-guessed or researched by an attacker, but still stable over
-time, memorable, and definite [22]. Rabkin [23] underlines
-the importance to choose good questions especially in the era
-of social networks. Frykholm and Juels [12] discuss a related
-technique that is similar to our adaption of this scheme.
-%%%%%%%%%%%%%   Peerson Passwords in P2P networks %%%%%%%%%%%%%
+%% The sole exception
+%% is that if a password is reset via security questions alone, the
+%% system would not “communicate with those affected” (e.g.,
+%% send an e-mail notification that the password had been reset,
+%% as is common in centralized services). We remark that the
+%% last item is a property many centralizedstronger than systems
+%% provide. In our system, no one learns the answers to a user’s
+%% security questions. We consider this to be important, since
+%% many systems use similar security questions.
+%% 
+%%  The operations described in this section imply minor addi-
+%% tions to the protocols of Section IV, i. e., invoking the update
+%% procedures after each password change (to sustain transaction
+%% safety, the updates have to be included in the final write
+%% operation of the password change operation).
+%% A. Security Questions
+%%  Security questions is a password recovery technique that
+%% relies on answers to questions the user is asked during regis-
+%% tration. The answers should be such that they cannot be easily
+%% guessed or researched by an attacker, but still stable over
+%% time, memorable, and definite [22]. Rabkin [23] underlines
+%% the importance to choose good questions especially in the era
+%% of social networks. Frykholm and Juels [12] discuss a related
+%% technique that is similar to our adaption of this scheme.
+%% %%%%%%%%%%%%%   Peerson Passwords in P2P networks %%%%%%%%%%%%%
+
+Depending on the desired functionality of the network, they propose two
+mechanisms to provide user password recovery. The actual implementation
+requires small modifications in the protocols seen above.
+
+\paragraph{Using security questions.}
+
+ The protocol assume that the user provides $n$ answers $A_i$ to suitable
+ security questions $Q_i$ . In order to recover the password, it is
+ required for the user to answer any $k$ out of these $n$ questions
+ correctly. The choice of $k$ constitutes an obvious trade-off
+ between security and usability. A successful recovery yields
+ the key $K_{LI}$ to the login information file, allowing the user to
+change the password. The implementation
+does not require the user to provide new answers after a regular
+ password change. Additionally, the protocol avoids storing the plaintext
+ answers to the security questions.
+ For the setup of the question based recovery mechanism, the protocol first
+create $n$ shares $qS_1, \cdots, qS_n$ of the
+ key $K_{LI}$ under an $(n, k)$-secret sharing scheme. For each of
+ these shares, it is created a salt $qsalt_i$ , derived a key $qK_i$ from
+ this salt and the answer $A_i$, and used it to encrypt the share,
+ yielding $qS^{enc}_i$. Furthermore, it is encrypted the key $qK_i$ with
+ the login information file key $K_{LI}$, for the update procedure
+ described later. Finally, the login information file is extended
+ with all questions $Q_i$, the salts $qsalt_i$, the encrypted shares
+ $qS_i^{enc}$ and the encrypted keys $qK_i^{enc}$. When recovering, the
+ user has to reproduce at least $k$ answers, which together with
+ the stored salts can be used to derive $k$ keys $qK_i$, which in
+ turn can decrypt $k$ shares $qS_i$.
+ When $K_{LI}$ changes (e. g., due to a regular password
+ change), we update the recovery information %as in~\ref{sec:}
+ for the new key $K_{LI}^{new}$, a new set of shares is created.
+ Next, the keys $qK_i$ are decrypted and used to encrypt the new
+ shares. Neither the keys $qK_i$ nor the salts $salt_i$ change, so
+ the user can still use the same answers for recovery. Finally,
+ the updated shares (and re-encrypted keys, to allow further
+ updates) are saved back to the login information file.
+
+\paragraph{Email based.}
+
+  In e-mail based password recovery, the user is sent an e-mail
+ containing some information, typically a link with a token, by
+ which she can reset her password. This link is sent to an e-mail
+ address she has registered with her account.
+ We adapt this scheme by randomly choosing a number of
+ peers, that collaboratively provide this functionality to the user.
  
 
+ It use $(n, k)$-secret sharing to enable password recovery even
+ if not all of the involved peers are online when the user wants
+ to recover the password.
+ To provide persistence of the recovery mechanism independent of a changing key $K_{LI}$ (e. g., due to a password change),
+ the result of the recovery process is a recovery key $K_R$ ,
+ that always encrypts the current version of $K_{LI}$.
+  From the recovery key $K_R$, $n$
+ shares $eS_1, \cdots, eS_n$ are generated using $(n, k)$-secret sharing.
+ For each share, a random peer $peer_i$ is picked, two salts $esalt_i$
+ and $ksalt_i$ are created and a cryptographic commitment $C_i$ is
+ derived from the salt $esalt_i$ together with the email. This
+ commitment will be used to authorize the user to the peer,
+ and bind it to this specific e-mail address. Next, a key $eK_i$,
+ to encrypt the share $eS_i$ , is derived in the same way as the
+ commitment, but with salt $ksalt_i$. A different salt is needed
+ so that the peer cannot decrypt the share (before learning the
+ address). The commitment and the encrypted share are stored
+ at the peer. The login information $F_{LI}$ file is extended with a
+ list of the chosen peers $peer_i$ and the according salts $esalt_i$ ,
+ $ksalt_i$, as well as $K_{LI}^{enc}$, encrypted with the recovery key, and
+ the recovery key, encrypted with $K_{LI}$ (to allow for password
+ changes).
 
-\section{Keys generation}
-\subsection{Randomly derived}
-  manual backup of the keys
-\subsection{Keys derived from a password}
+ To recover the password, the user looks up the
+ available information in the login information file, including
+ the list of peers to be requested for assistance. Each request is
+ authorized by the commitment $C_i$, that the peer can derive
+ from the salt $esalt_i$ and the e-mail address that the user
+ provided. If the request was legitimate, the peer
+ sends the encrypted share to the e-mail address. As soon as
+ the user collected $k$ answers, he can recover $K_{LI}$ .
 
+ To provide long-term persistence of this recovery mechanism, $K_{LI}^{enc}$
+ has to be updated whenever $K_{LI}$ changes.
+ 
+ \paragraph{Combining Approaches}
+ Also mentions a combining approach using questions and email recovery, either
+sequentially or in parallel.
+  By sequential composition, they mean
+ that the user must both correctly answer security questions and
+ receive e-mail. In parallel composition, either
+ mechanism can be used alone to recover the password. The
+ latter is achieved by using both systems in parallel.
+ For sequential composition, the user picks a uniformly
+ random string $r$ of the same length as $K_{LI}$. The user stores $r$ in
+one of the mechanisms, and $K_{LI} \bigoplus r$ in the second mechanism, where
+$\bigoplus $ denotes the exclusive-OR operation.
+
+  If one recovers both of these, $K_{LI}$ can be computed. If one learns only one
+ of the pieces, nothing is gained, as both $r$ and $K_{LI} \bigoplus r$ are
+ uniformly random. More generally, to combine $n$ mechanisms
+  in arbitrary ways, $(n, k)$-secret sharing can be used. What they
+ describe there are two trivial such schemes for $n = 2$.\\
+
+
+
+%\section{Keys generation}
+%\subsection{Randomly derived}
+%  manual backup of the keys
+%\subsection{Keys derived from a password}
+
+The problem with the existing protocols is that they do not implement in their
+protocols measures against the presence of malicious nodes.
+A malicious or byzantine node is any node that does
+not behave as expected by the protocol of the system. The presence of this type
+of nodes can easily break the security and degenerate the quality of the
+service in the whole system.
