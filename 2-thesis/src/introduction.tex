@@ -57,6 +57,33 @@ this to work, the proof of identity need to be:
 \end{description}
 
 
+%%%% This was moved from formalization to the introduction. Seems better placed here.
+Existing systems for the user identification in P2P networks only consider the
+use of preshared keys to identificate the user in the network. While that can
+be easily implemented, does not provide to the users the flexibility that a
+username-password based identification provides when using different devices to
+log in in the system. As the user needs to transfer manually his keys from one
+device to another, there are many security issues when they are handled without
+care or the devices (like a cellphone) are lost. 
 
+The use of a username and a password means that the user keys needs to: a) be
+secured inside the identification system or b) be derived from information
+stored in the identification system. Between  the two options, the first one
+needs a trusted storing scheme with additional use of encryption to secure the
+private keys. In the other hand deriving the user private keys let us build the
+identification system with the same desired properties without adding
+additional complexity.
 
+To handle the user keys without compromising the users identity, aditional
+security layers needs to be placed inside the P2P network.
 
+To secure the stored keys, the proposed system uses encryption, indirection and
+rings of trust inside the network. The system goal is to offer a secure mean to
+identify an user using only his username/password knowledge taking in
+consideration the precense of bizantine nodes.
+
+As shown in \cite{the_sybil_attack}, it is impossible to get a 100\% reliable
+system over a DHT where malicious nodes are present. The goal of our approach
+is to reduce drastically the probability of a malicious node to impersonate
+another user using the identification system.
+%%%% This was moved from formalization to the introduction. Seems better placed here.

@@ -1,36 +1,17 @@
-Existing systems for the user identification in P2P networks only consider the
-use of preshared keys to identificate the user in the network. While that can
-be easily implemented, does not provide to the users the flexibility that a
-username-password based identification provides when using different devices to
-log in in the system. As the user needs to transfer manually his keys from one
-device to another, there are many security issues when they are handled without
-care or the devices (like a cellphone) are lost. 
+%% TODO: introduction about the chapter
 
-The use of a username and a password means that the user keys needs to: a) be
-secured inside the identification system or b) be derived from information
-stored in the identification system. Between  the two options, the first one
-needs a trusted storing scheme with additional use of encryption to secure the
-private keys. In the other hand deriving the user private keys let us build the
-identification system with the same desired properties without adding
-additional complexity.
-
-To handle the user keys without compromising the users identity, aditional
-security layers needs to be placed inside the P2P network.
-
-To secure the stored keys, the proposed system uses encryption, indirection and
-rings of trust inside the network. The system goal is to offer a secure mean to
-identify an user using only his username/password knowledge taking in
-consideration the precense of bizantine nodes.
-
+\section{A pseudo-secure identification service}
 As shown in \cite{the_sybil_attack}, it is impossible to get a 100\% reliable
 system over a DHT where malicious nodes are present. The goal of our approach
 is to reduce drastically the probability of a malicious node to impersonate
 another user using the identification system.
 
 While the probability can always exist, it should be highly unlikely to happen
-if we consider a probability of the order of $10^{-14}$.
+if we consider a very very low probability, like of the order of $10^{-14}$. The objective of of
+the system is obtain probaility of error lower than $10^{-14}$, while
+maintaining an aceptable cost in system messages.
 
-\section{Building blocks and notation}
+\section{Building blocks}
 
 For simplicity, we assume in the following that the underlyng DHT is
 Pastry~\cite{pastry} seen in the section~\ref{sec:pastry}. We suppose that
@@ -67,7 +48,7 @@ A simple storage system is needed.
 
 %% TODO: Eval where to put this part about reputation systems
 
-It assumes a reputation system in the overlay structure with the following properties:
+The protocols assumes a reputation system in the overlay structure with the following properties:
 \begin{enumerate}
   \item Every node $X$ has an associated reputation value $R(X)$
   which represents the probability that $X$ is an honest node.
@@ -79,7 +60,7 @@ It assumes a reputation system in the overlay structure with the following prope
   \item For every node $X$, $R(X)$ is highly available in the DHT.
 \end{enumerate}
 
-The reputation value $R(X)$ is the probability that node $X$ will
+The reputation value $R(X)$, as seen in~\ref{sec:reputation_systems} is the probability that node $X$ will
 be honest in the future. This reputation value is computed
 according to a list of recommendations emitted by nodes that
 have already carried out transactions with $X$.
@@ -106,3 +87,22 @@ To maintain the same nomenclature seen in CORPS~\ref{sec:corps}, in all the foll
 we call a node $n_i \in TS$ a trusted node, even if there still remains a
 probability that this node's actual reputation is smaller than the threshold
 $\rho$.
+
+
+\section{Notation}
+% definition of a node and a service that is going to identify with it
+
+Let A be a node of the DHT, and $S = \{S_1, S_2, \cdots, S_n\}$ a set of $n$
+nodes that cooperate to provide a service. Let $NameofS$ be the name of service
+$S$; every node that needs to use the service knows $NameofS$. $K_s =
+SHA(NameofS)$ is the key that identifies $S$ in DHT, and $S_{root}$ is the node
+closest to $K_s$ in the DHT. It follows that $S = \{S_1, S_2, \cdots, S_n\}$ is
+composed of node $S_{root}$ and of all the nodes in its leafset. Let $I$ be a
+identification service such that $I = \{ I_1, I_2, \cdots, I_n\}$ is a group of
+$n$ nodes belonging to the DHT. 
+
+% interaction between A, S & I, Figure and such
+
+We suppose that the number of nodes that compose a service $S$ is fixed and does
+not change over time. We also suppose that the same stands for any
+quasi-identification service $I$.

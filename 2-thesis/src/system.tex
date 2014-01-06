@@ -5,30 +5,6 @@ identification algorithms will work.
 %This system provides a distributed and secure way to attain a user-password
 %identification scheme like the ones commonly seen in centralized services.
 
-\section{A Quasi-Identification Service}
-
-% definition of a node and a service that is going to identify with it
-
-Let A be a node of the DHT, and $S = \{S_1, S_2, \cdots, S_n\}$ a set of $n$
-nodes that cooperate to provide a service. Let $NameofS$ be the name of service
-$S$; every node that needs to use the service knows $NameofS$. $K_s =
-SHA(NameofS)$ is the key that identifies $S$ in DHT, and $S_{root}$ is the node
-closest to $K_s$ in the DHT. It follows that $S = \{S_1, S-2, \cdots, S_n\}$ is
-composed of node $S_{root}$ and of all the nodes in its leafset. Let $I$ be a
-identification service such that $I = \{ I_1, I_2, \cdots, I_n\}$ is a group of
-$n$ nodes belonging to the DHT. 
-
-% interaction between A, S & I, Figure and such
-
-We suppose that the number of nodes that compose a service $S$ is fixed and does
-not change over time. We also suppose that the same stands for any
-quasi-identification service $I$.
-
-
-
-% normal p2p networks provide storage for the peers inside but does not ensure
-% control of capabilities, deletion nor modification of the files.
-
 \section{Architectural principles}
 
 \subsection{Securing the nodes of a leafset}
@@ -88,6 +64,42 @@ sufficient amount of identical answers after a timeout $\delta t$. this is a
 very rare and highly improbable case, as shown by our evaluation
 in~\ref{sec:evaluation}.
 
+
+\subsection{User Identification Service}
+\label{sec:identificators}
+%%% more message costly version:
+%%A set of $N$ nodes $I_1, I_2, \cdots, I_{N}$ manage the user information
+%%needed for his identification.
+%%The node ID of the identificator $i$ of the user $U$ with username $username$ is
+%%obtained by the function $I_i = SHA^{i}(username)$.
+%%The identificators $I_i$ of the username $username$ forms the identification service $I$ for the user with username $username$.
+%%Each identificator $I_i$ administers a number of $L$ replicas of the user information. In Pastry,
+%%the replicas are stored in the leafset of each node, while in Chord the $r$
+%%successors of each node are used.
+
+Every user registered has a set $I$ of nodes that
+will constitute the quasi-secure identification authority for the
+identification service.
+To determine which  nodes belong to $I$, a node computes its key $K$ such that
+$K = SHA(U^{username} \bigoplus SHA(U^{username}))$. 
+
+$I_{root}$ is the node closest to $K$ in the DHT, and the quasi-secure identification authority $I =
+{I_1, I_2, \cdots, I_{L+1}}$ for the identification of the user with the
+username $username$ is composed of $I_{root}$ and of its leafset secured
+through DiversityTrustedRoute. These nodes are called identificators of the
+user $U$ with username $username$.
+
+ In order to prevent man-in-the-middle attack, we use an asymmetric key
+encryption shceme for the communications between a node $A$ and $I$. This
+induces that every node in $I$ must exchange public keys with every node that
+makes a request for the user information. The initial cost expressed in number
+of messages is $2(L+1)$, but this exchange only occurs the first time a
+node $A$ requests the user identification service from $I$, as the node $A$
+maintains a local cache with the public keys of the nodes $I_i \in I$. Also,
+every node $I_i \in I$ maintains a local cache with the public keys of ${I_1,
+I_2, \cdots, I_{L+1}}$, and key exchanges only occur again if a new node
+replaces one of the original nodes from $I$.
+
 %%%%%%% ---- OLD, NOT APPLICABLE TODAY ----
 %%%The general view of the system consists in a multi-layered network based in trusted rings.
 %%The general view of the system consists in a double-layered network; a Trusted
@@ -101,7 +113,7 @@ in~\ref{sec:evaluation}.
 %%checks of capacity of his members to remain in the trusted ring and a
 %%reputation system to evaluate this. Also, similar to the
 %%leafset concept in Pastry, each trusted node needs to maintain a
-%%\textit{trustset}, wich basically consist in D numerically closest trusted
+%%\textit{trustset}, which basically consist in D numerically closest trusted
 %%nodes with D/2 clockwise nodes, and D/2 counter-clockwise ones.
 %%
 %%The system used to build the trusted node infraestructure in the P2P networks
@@ -112,13 +124,14 @@ in~\ref{sec:evaluation}.
 %%trusted nodes. Every trusted nodes maintains a \textit{trustsets}.
 
 
+\section{System Protocols}
 We now describe our protocols based on the system model. 
 %Figure 2 shows the information objects and
 %their storage locations, with arrows for the abstract flow of the
 %login procedure, Table I lists the terms used in the algorithms.
 %A. Account Registration
 
-\section{Account registration}
+\subsection{Account registration}
 \includegraphics[width=14cm]{../img/registration_protocol_mockup.png}\\
 
 To register a new user account ($U$), the node first
@@ -129,7 +142,7 @@ has to choose a \textit{username} and a \textit{password}.
 % This operation use a accounted routing algorithm that uses only trusted
 % nodes. When the register operation reaches the closest node to the username,
 % it propagates a TRUSTSET_USERNAME_REGISTRATION operation. This operation sends a
-% call to each node in the trustset of the node, wich then pass to do a council
+% call to each node in the trustset of the node, which then pass to do a council
 % meeting. If the meeting results in favor, each of them sends a
 % OK_USERNAME_REGISTRATION(user_identity_file_name) to node doing the REGISTER operation.
 % 
@@ -149,7 +162,14 @@ the username $U^{username}$, the node $A$ computes its key $K$ such that $K =
 SHA(U^{username})$. 
 
 Then the node $A$ sends a request to every node $I_i$ in $I$ to register the
-$U^{salt}$ and $U^{Pub}$ under the chosen  username  $U^{username}$. When the node
+$U^{salt}$ and $U^{Pub}$ under the chosen  username  $U^{username}$.
+
+Each node $I_i \in I$ then sends a user registration confirmation message to all nodes
+in $I$ containing the new user public key and salt. If a node $I_i$ recieves at
+least $\frac{L}{2} + 1$ identical user registration confirmation messages from
+the others nodes in $I$, it sends a affirmative answer to the node $A$.
+
+When the node
 $A$ recieves at least $\frac{L}{2} + 1$ identical affirmative answers from
 $I$ regarding the user registration, then $A$ assumes that the user was
 actually registered.
@@ -158,124 +178,8 @@ actually registered.
 In case that the username was taken,
 the node $A$ is prompted for a new username.
 
-
-\section{Sign-in}
-
-\subsection{User private key recovery}
-\label{sec:private_key_recovery}
-\includegraphics[width=14cm]{../img/login_protocol_mockup}\\
-
-First, the node $A$ looks for the set $I$ set of nodes that will constitute the
-identification service for the user $U$.
-To obtain the list of nodes $I$ that provides the user identification service for
-the username $U^{username}$, the node $A$ computes its key $K$ such that $K =
-SHA(U^{username})$. 
-Then the node $A$ sends a request to every node $I_i$ in $I$ to obtain the user
-salt $U^{salt}$ needed to derive the user private key $U^{priv}$.
- When the node $A$ recieves at least $\frac{L}{2} + 1$ identical affirmative answers from
-$I$ regarding the user salt, then $A$ assumes that the salt retrieved
-corresponds to the one registered previously by the user ($U^{salt}$). Finally,
-the node proccedes to derive the user private key $U^{priv}$ using his user password $U^{password}$.
-
-\subsection{User identified service request}
-\includegraphics[width=14cm]{../img/session_creation_protocol_mockup}\\
-
-Before carrying out a transaction for a client $A$, $S$ proceeds to
-verify the identity of the client from another set $I$ of nodes. At the end of
-the intentification process, the objective is to return a session key to $A$
-and to store the created session on the nodes that belong $C$.
-
-% CHALLENGE, TODO: FIND A BETTER ONE
-Each node in $S$ generates a random secret $S^{secret}_i$ wich is sent to the
-client $A$. Then, client $A$ responds each request with the corresponding secret
-encrypted with his user private key $U^{priv}$, generating
-$E^{secret_i}_{U^{priv}}$. 
-%The service $S$ send a $EncryptedSecretRequest$ to the client $A$, wich is
-%responded with the 
-% The service requires a encrypted secret from the client A. The node A
-encrypts the secret using his private key obtained through
-\ref{sec:private_key_recovery}.
-
-Upon reception of the $E^{secret_i}_{U^{priv}}$ message from the client $A$, every node in $S$
-starts looking for the set $I$ of nodes that will constitute the quasi
-identification authority. To determine wich nodes belong to $I$, $S$ computes
-its key $K$ such that $K = SHA(U^{username})$. $I_{root}$ is the node closest
-to $K$ in the DHT, and the quasi identification authority $I = \{ I_1, I_2,
-\cdots, I_{L+1}\}$ for the identification of $A$ is composed of $I_{root}$
-and its leafset secured through DiversityTrustedRoute.
-
-Then each node in $S$ sends a request to every node $I_i$ in $I$ asking for the Username public key $U^{pub}$. When a node
-$S_i$ of $S$ recieves at least $\frac{L}{2} + 1$ identical answers from
-$I$ regarding the $U^{pub}$, then $S_i$ assumes that the public key recieved
-actually corresponds to the Username being identified. Each node $S_i$ in $S$
-uses the $U^{pub}$ to decrypt $E^{secret_i}_{U^{priv}}$. If the result matches
-the shared random secret $S^{secret}_i$, $S_i$ recognizes the node $A$ as the
-user $U$.
-
-
-\section{Logout}
-The session are maintained by each service the user identified with. To close a
-session, the node identified as the user $U$ sends a session close request to
-the service $S$ using the session keys for the transaction. Also, the sessions
-keys are issued for a certain time. After that time is passed, the node needs
-to ask for a new session key with the service.
-
-%%%%%%%%%%%%%   Peerson Passwords in P2P networks %%%%%%%%%%%%%
-%% A problem related to logging out is revoking remembered
-%%credentials on another device, e. g., a user’s stolen phone. To
-%%accomplish this, we first run the password change operation,
-%%which locks out all devices with remembered logins, because
-%%he key store key KKS changed (as well as the filename fKS ).
-%%Next, we use the device mapping devmap to inform all devices
-%%about the new key (and filename), except the device that is to
-%%be revoked. To inform a device about the change, we update
-%%the corresponding values in the device’s login information file
-%% FDL which can be accessed from the device by using the
-%%locally stored credentials.
-%% Algorithm 4 describes this necessary extension. After run- the password change
-%%operation, all devices that not ning shouldbe revoked and that have remembered
-%%logins (and therefore are devmap) referenced in the device mapping are
-%%processed. The device login information filename fDL and its key KDL are read,
-%%and the new key store key KKS new and filename fKS new are written to the
-%%device login information file FDL, encrypted under the device key KDL.
-%%Finally, the modified devmap is saved back to the login information file FLI.
-%%%%%%%%%%%%%   Peerson Passwords in P2P networks %%%%%%%%%%%%%
- 
-
-\section{Password Change}
-
-First, the node $A$ needs to recover his actual private key using the proccess
-in~\ref{sec:private_key_recovery}. Then the node $A$ generates a new private/public
-key pair using the new password.  With this, the node $A$ request a
-password change to every node $I_i$ in $I$. The request is signed with the
-actual user private keys, and includes the new user public key $U^{pub}_{new}$
-and salt used to derive his new private key $U^{salt}_{new}$. 
- When the node $A$ recieves at least $\frac{L}{2} + 1$ identical affirmative
-answers from $I$ regarding the user password change, then $A$ assumes that the
-user keys (and password) were updated.
-
-
-%%%%%%%%%%%%%   Peerson Passwords in P2P networks %%%%%%%%%%%%%
-%%Before the user can change the password, she must log in using her password to
-%%obtain KLI . With this information, the password change can be accomplished
-%%(see Algorithm 3): the user is asked for a new password and a new salt is
-%%generated. The key-derivation function is used to generate a new key KLI new
-%%for the login information file. Then, the content of the key-store file is
-%%fetched and decrypted (with the old key). A new key KKS new is generated and
-%%used for encrypting the key-store content again before it is saved to the
-%%storage system, obtaining a new filename fKS new.
-%%Finally, the login information file
-%%is updated: fKS new, KKS new, the write credential KW as well as a new empty
-%%device mapping devmapnew are encrypted with the new key KLI new.
-%%  Together with the new salt, this ciphertext is written to the distributed
-%%storage, using the reference fLI and the credential KW, to authenticate the
-%%write operation. Lastly, the keys stored in the key store should be updated by
-%%the application using our P2P protocol.  See Section VI-E for a discussion. At
-%%this point, old device login information files can also be deleted from the
-%%storage to reclaim space.
-%%%%%%%%%%%%%   Peerson Passwords in P2P networks %%%%%%%%%%%%%
-
-\section{Lazy User's Information Store Maintenance}
+\subsubsection{Lazy User's Information Store Maintenance}
+\label{sec:lazy_node_maintenance}
 Insertions and departures of nodes in the DHT cause modifications of the
 leafsets, and it is therefore crucial to maintain the consistency of the user's
 information $S_{username}$ used for his identification procedures. The user's information
@@ -321,12 +225,124 @@ information. $X$ then discards all pairs $\{ U^{username}, S_{username}\}$ that
 appear less than $\frac{L}{2} +1$ times in $Y$, since these may have been
 generated by colluding nodes. Once this is done, $X$ synchronizes all the
 user's information store whose username matches one of the remaining usernames
-in set $Y$.
+in set $Y$.\\
 
-% checkpoints
-For every user information that $X$ must synchronize, $X$ selects a node $Z$ in $N$ that
-holds this user information. If $X$ does not have any entry for this username,
-then $X$ must ask $Z$ for the entire user's information store. Otherwise, $X$
-sends the last $q$ public keys and salts it has of the user.
+% checkpoints -> not used in this implementation
+%For every file of user information that $X$ must synchronize, $X$ selects a node $Z$ in $N$ that
+%holds this user information. If $X$ does not have any entry for this username,
+%then $X$ must ask $Z$ for the entire user's information store. Otherwise, $X$
+%sends the last $q$ public keys and salts it has of the user.
 
-%% TODO: complete this
+It is essential for $X$ to handle the synchronization as an atomic operation,
+as responding to a change password request while the user information is not up
+to date may lead to problems in further requests. Therefore, $X$ postpones all
+transactions about the user information until the synchronization is over.
+
+
+\subsubsection{Node Failures and Node Departures}
+\label{sec:node_failures_and_departures}
+Two situations call for the removal of a node. A normal departure corresponds
+to an honest node that notifies its departure to the nodes of its leafset. In a
+crash departure situation, the noide fails silently. Pastry exchanges
+periodical heartbeats among nodes in the same leafset in order to detect such
+failures.\\
+
+Upon removal of a peer in its leafset, a node $X$ will look for a replacement.
+$X$ starts by identifying which side of its leafset it must fix: the left side
+or the right side, depending on the nodeId of the node that was removed. Let $N
+= {N_{\alpha}, N_{\beta}, \cdots, N_{\omega}}$ be the set of $\frac{L}{2} - 1$
+nodes corresponding to the side of the leafset in need of fixing. In order to
+find the next node to add to its leafset, $X$ request the leafset of the
+farthest node $N_{\omega}$ in set $N$. Upon reception of the answer, $X$ then
+inserts in its own leafset the reference to the node closest to $N_{\omega}$
+that does not yet belong to $N$. If $N_{\omega}$ remains silent, $X$ must
+repeat the operation with the second to farthest node in $N$, and so on until
+reaching node $N_{\alpha}$ if no timely answer ever comes back. If $X$ fails to
+receive any answer from the nodes in its leafset, then it cannot repair its
+leafset.\\
+
+Once it has successfully fixed its leafset, $X$ must synchronize its user's
+information. $X$
+uses DiversityTrustedRoute to acquire the leafset of the node it has just
+added. $X$ then synchronizes its stored user's information with the nodes in
+the acquired leafset by means of the scheme described in~\ref{sec:lazy_node_maintenance}.
+
+
+\subsection{Sign-in}
+
+\subsubsection{User private key recovery}
+\label{sec:private_key_recovery}
+\includegraphics[width=14cm]{../img/login_protocol_mockup}\\
+
+First, the node $A$ looks for the set $I$ set of nodes that will constitute the
+identification service for the user $U$.
+To obtain the list of nodes $I$ that provides the user identification service for
+the username $U^{username}$, the node $A$ computes its key $K$ such that $K =
+SHA(U^{username})$. 
+Then the node $A$ sends a request to every node $I_i$ in $I$ to obtain the user
+salt $U^{salt}$ needed to derive the user private key $U^{priv}$.
+ When the node $A$ recieves at least $\frac{L}{2} + 1$ identical affirmative answers from
+$I$ regarding the user salt, then $A$ assumes that the salt retrieved
+corresponds to the one registered previously by the user ($U^{salt}$). Finally,
+the node proccedes to derive the user private key $U^{priv}$ using his user password $U^{password}$.
+
+\subsubsection{Identified user service request}
+\includegraphics[width=14cm]{../img/session_creation_protocol_mockup}\\
+
+Before carrying out a transaction for a client $A$, $S$ proceeds to
+verify the identity of the client from another set $I$ of nodes. At the end of
+the intentification process, the objective is to return a session key to $A$
+and to store the created session on the nodes that belong $S$.
+
+% CHALLENGE, TODO: USE ONE AS EXAMPLE
+% CHALLENGE, TODO: Explain challenge properties
+Each node in $S$ agrees in generating a random challenge, which is then sent to the
+client $A$ by every node $S_i \in S$ using the user public key to encrypt the
+message.
+
+Then, client $A$ responds each request with the corresponding answer to the
+challenge encrypted with his user private key $U^{priv}$, generating
+$E^{challenge}_{U^{priv}}$. 
+
+Upon reception of the $E^{secret_i}_{U^{priv}}$ message from the client $A$, every node in $S$
+starts looking for the set $I$ of nodes that will constitute the quasi
+identification authority. As seen in user identification service~\ref{sec:user_identificators}, to
+determine which nodes belong to $I$, $S$ computes
+its key $K$ such that $K = SHA(U^{username})$.
+
+Then each node in $S$ sends a request to every node $I_i$ in $I$ asking for the Username public key $U^{pub}$. When a node
+$S_i$ of $S$ recieves at least $\frac{L}{2} + 1$ identical answers from
+$I$ regarding the $U^{pub}$, then $S_i$ assumes that the public key recieved
+actually corresponds to the Username being identified. Each node $S_i$ in $S$
+uses the $U^{pub}$ to decrypt $E^{secret_i}_{U^{priv}}$. If the result matches
+the shared random secret $S^{secret}_i$, $S_i$ recognizes the node $A$ as the
+user $U$.
+Lastly, each node in $S$ agrees in the generation of the sessions keys for the
+node $A$, which is then sent to the client $A$ by every node $S_i \in S$ using
+the user public key to encrypt it. The session keys are stored in the
+nodes that belong to $S$.
+
+\subsection{Logout}
+The session are maintained by each service the user identified with. To close a
+session, the node identified as the user $U$ sends a session close request to
+the service $S$ using the session keys for the transaction. Also, the sessions
+keys are issued for a certain time. After that time is passed, the node needs
+to ask for a new session key with the service.
+
+
+\subsection{Password Change}
+
+First, the node $A$ needs to recover his actual private key using the proccess
+in~\ref{sec:private_key_recovery}. Then the node $A$ generates a new private/public
+key pair using the new password.  With this, the node $A$ request a
+password change to every node $I_i$ in $I$. The request is signed with the
+actual user private keys, and includes the new user public key $U^{pub}_{new}$
+and salt used to derive his new private key $U^{salt}_{new}$. 
+Each node $I_i \in I$ then sends a password change confirmation message to all nodes
+in $I$ containing the new user public key and salt. If a node $I_i$ recieves at
+least $\frac{L}{2} + 1$ identical password change confirmation messages from
+the others nodes in $I$, it sends a affirmative answer to the node $A$.
+ When the node $A$ recieves at least $\frac{L}{2} + 1$ identical affirmative
+answers from $I$ regarding the user password change, then $A$ assumes that the
+user keys (and password) were updated.
+

@@ -83,6 +83,247 @@ DHT increases.
 
 \section{Account registration}
 \label{sec:eval_account_registration}
+  % TODO Recalculate table
+  \begin{table}
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|c|c|}
+      \cline{2-3}
+      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
+      \hline
+      \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
+      \hline \hline
+      %8 &  $0.0988087$ & $3.32222 \times 10^{-5}$ \\
+      %\hline
+      %16 & $0.0402769$ & $3.28714 \times 10^{-8}$  \\
+      %\hline
+      %32 & $0.00782066$ & $4.11893 \times 10^{-14}$  \\
+
+      8 &  $0.098$ & $3.322 \times 10^{-5}$ \\
+      \hline
+      16 & $0.040$ & $3.287 \times 10^{-8}$  \\
+      \hline
+      32 & $0.007$ & $4.118 \times 10^{-14}$  \\
+      \hline
+    \end{tabular}
+    \caption{Probability of failure when registering a new user account}
+    \label{tab:p_account_registration}
+  \end{table}
+  
+  \begin{enumerate}
+    \item{\textit{Probability of failure:}}
+    The user registration between a node $A$ and $I$ can fail if $I$ does
+not respond (or responds false information) to $A$ during the registration request or during the registration
+progress. In all cases, this corresponds to the probability that more than
+$L/2$ nodes of $I$ are malicious. The probability of encountering exactly $k$
+malicious nodes among $L +1$ is given by the binomial distribution
+
+    \begin{equation}
+      P_{K malicious} = \begin{pmatrix} L+1 \\ k\end{pmatrix} p^k (1-p)^{L+1-k}
+    \end{equation}
+
+    where $p$ is the probability that a single node is malicious. Hence the
+probability of facing at most k malicious nodes is 
+
+    \begin{equation}
+      P_{\leq k} = \sum_{i=1}^{k} \begin{pmatrix} L+1 \\ k\end{pmatrix} p^i (1-p)^{L+1-i}
+    \end{equation}
+
+    Therefore, the probability of facing more than $k$ malicious nodes among
+$n$ is given by
+
+    \begin{equation}
+      P_{\ge k} = P_{\leq n} - P_{\leq k}
+    \end{equation}
+
+    and the probability that $I$ will not respond is
+
+    %% for wolfram alpha
+    %% P_{\leq L+1} =  sum( ((L+1) choose i)  * p^i * (1-p)^(L+1-i), from i=1 to L+1) where L=8, p=0.3
+    %% P_{\ge L/2}  =  sum( ((L+1) choose i)  * p^i * (1-p)^(L+1-i), from i=1 to L+1) - sum( ((L+1) choose i)  * p^i * (1-p)^(L+1-i), from i=1 to L/2)  where L=8, p=0.3
+
+    \begin{align}
+      P_{\ge L/2} &= P_{\leq L+1} - P_{\leq L/2} \\
+      &= \sum_{i=1}^{L+1} \begin{pmatrix} L+1 \\ i\end{pmatrix} p^i (1-p)^{L+1-i}
+      - \sum_{i=1}^{L/2} \begin{pmatrix} L+1 \\ i\end{pmatrix} p^i (1-p)^{L+1-i}
+    \end{align}
+
+    %% TODO: figure with the likeliness of dealing with an increains gnumber k of malicious nodes among a leafset comprising 32 nodes.
+
+    Then the probability that $I$ will not respond to the user registration
+request or responds with a fake successfull registration is
+
+    \begin{align}
+      P_{AI} &= P_{\ge L/2} 
+    \end{align}
+
+
+    Table~\eqref{tab:p_account_registration} shows the probability of failure
+between $A$ and $I$, for a leafset size of $L = \{8,16,32\}$.
+
+    
+    \item{\textit{Message complexity:}}
+    First, $A$ must get the leafset of $I$. The associated cost is $n = 5
+\times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
+    The number $n$ of message inherent to the transaction itself is given by
+
+    \begin{align}
+      n &= \underbrace{2(L+1)}_\text{Init} +
+           \underbrace{L+1}_\text{Registration Data} +
+           \underbrace{(L+1)L}_\text{I registration confirmations} +
+           \underbrace{L+1}_\text{ACKs}\\
+      n &= (L+4)(L+1)
+      n &= L^2+ 5L + 4
+    \end{align}
+     The total cost is then
+
+    $$
+      n_{total} = 5 \times O(log_{2b}(N)) + Q + 4 + L^2 + 5L + 4
+    $$    
+    The total cost only depends on the size $L$ of the leafset, which is a
+constant, and $O(log(N))$. In the best case, 
+
+    $$
+      n_{total} = O(log_{2b}(N)) + L^2 + 5L + 4
+    $$
+    Therefore, the cost of a transaction between $A$ and service $I$ remains
+scalable when the size $N$ of the DHT increases.
+
+  \end{enumerate}
+
+\subsection{Lazy User's Information Store Maintenance}
+\label{sec:eval_lazy_maintenance}
+  \begin{table}
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|c|c|}
+      \cline{2-3}
+      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
+      \hline
+      \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
+      \hline \hline
+      8 &  &  \\
+      \hline
+      16 &  &  \\
+      \hline
+      32 &  &  \\
+      \hline
+    \end{tabular}
+    \caption{Probability of failure when performing the user's information store maintenance}
+    \label{tab:p_lazy_maintenance}
+  \end{table}
+  
+  \begin{enumerate}
+    \item{\textit{Probability of failure:}}
+    \item{\textit{Message complexity:}}
+  \end{enumerate}
+
+
+  % TODO SUM the error in key recovery and auth request
+\section{Sign-in}
+\label{sec:eval_sign_in}
+
+  \subsection{User private key recovery}
+  % TODO Recalculate table
+  \label{sec:eval_private_key_recovery}
+  \begin{table}
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|c|c|}
+      \cline{2-3}
+      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
+      \hline
+      \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
+      \hline \hline
+      8 &  $0.098$ & $3.322 \times 10^{-5}$ \\
+      \hline
+      16 & $0.040$ & $3.287 \times 10^{-8}$  \\
+      \hline
+      32 & $0.007$ & $4.118 \times 10^{-14}$  \\
+      \hline
+    \end{tabular}
+    \caption{Probability of failure when recovering user private key}
+    \label{tab:p_private_key_recovery}
+  \end{table}
+
+  \begin{enumerate}
+    \item{\textit{Probability of failure:}}
+
+    The user private key recovery between a node $A$ and $I$ can fail (a) if $I$ does
+not respond (or responds fake information) to $A$ during the key recovery
+request. While a response with fake information (like a salt forged by malicious nodes) can be more dangerous for the
+user, the probability remains the same, corresponding to the
+probability that more than $L/2$ nodes of $I$ are malicious. The probability of
+encountering exactly $k$ malicious nodes among $L +1$ is given by the binomial
+distribution
+
+    \begin{equation}
+      P_{K malicious} = \begin{pmatrix} L+1 \\ k\end{pmatrix} p^k (1-p)^{L+1-k}
+    \end{equation}
+
+    where $p$ is the probability that a single node is malicious. Hence the
+probability of facing at most k malicious nodes is 
+
+    \begin{equation}
+      P_{\leq k} = \sum_{i=1}^{k} \begin{pmatrix} L+1 \\ k\end{pmatrix} p^i (1-p)^{L+1-i}
+    \end{equation}
+
+    Therefore, the probability of facing more than $k$ malicious nodes among
+$n$ is given by
+
+    \begin{equation}
+      P_{\ge k} = P_{\leq n} - P_{\leq k}
+    \end{equation}
+
+    and the probability that $I$ will not respond is
+
+    \begin{align}
+      P_{\ge L/2} &= P_{\leq L+1} - P_{\leq L/2} \\
+      &= \sum_{i=1}^{L+1} \begin{pmatrix} L+1 \\ i\end{pmatrix} p^i (1-p)^{L+1-i}
+      - \sum_{i=1}^{L/2} \begin{pmatrix} L+1 \\ i\end{pmatrix} p^i (1-p)^{L+1-i}
+    \end{align}
+
+    %% TODO: figure with the likeliness of dealing with an increains gnumber k of malicious nodes among a leafset comprising 32 nodes.
+
+    Then the probability that $I$ will not respond to the user private key recovery
+request (or that $I$ responds fake user information) is
+
+    \begin{align}
+      P_{AI} &= P_{\ge L/2}
+    \end{align}
+
+
+    Table~\eqref{tab:p_private_key_recovery} shows the probability of failure
+between $A$ and $I$, for a leafset size of $L = \{8,16,32\}$.
+
+    
+    \item{\textit{Message complexity:}}
+    First, $A$ must get the leafset of $I$. The associated cost is $n = 5
+\times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
+    The number $n$ of message inherent to the transaction itself is given by
+
+    \begin{align}
+      n &= \underbrace{2(L+1)}_\text{Init} + \underbrace{L+1}_\text{Data} +  \underbrace{L+1}_\text{ACKs}\\
+      n &= 4(L+1)
+    \end{align}
+     The total cost is then
+
+    $$
+      n_{total} = 5 \times O(log_{2b}(N)) + Q + 4 + 4(L+1)
+    $$    
+    The total cost only depends on the size $L$ of the leafset, which is a
+constant, and $O(log(N))$. In the best case, 
+
+    $$
+      n_{total} = O(log_{2b}(N)) + 4(L+1)
+    $$
+    Therefore, the cost of a transaction between $A$ and service $I$ remains
+scalable when the size $N$ of the DHT increases.
+  \end{enumerate}
+
+
+  \subsection{User identified service request}
+  \label{sec:eval_identified_service_request}
   \begin{table}
     \centering
     \footnotesize
@@ -96,19 +337,127 @@ DHT increases.
       \hline
       16 & $0.079$ & $6.57 \times 10^{-8}$  \\
       \hline
-      32 & $0.016$ & $8.24 \times 19^{-14}$  \\
+      32 & $0.016$ & $8.24 \times 10^{-14}$  \\
+      \hline
       \hline
     \end{tabular}
-    \caption{Probability of failure when registering a new user account}
-    \label{tab:p_account_registration}
+    \caption{Probability of failure in identified service request}
+    \label{tab:p_identified_service_request}
   \end{table}
   
   \begin{enumerate}
     \item{\textit{Probability of failure:}}
-    The user registration between a node $A$ and $I$ can fail (a) if $I$does
-not respond to $A$ during the registration request or during the registration
-progress, or (b) if $I$ does not send the ACKs to $A$ to terminate the user
-registration. In both cases, this corresponds to the probability that more than
+    A identified service request between a node $A$, the service $S$ and $I$ can fail (a) if $I$ does
+not respond (or responds fake information) to $S$ during the user information recovery
+request, or (b) if $S$ does not respond (or responds fake information) to $A$
+during the challenge or the session keys generation. While a response with fake information can be more dangerous for the
+user, the probability remains the same, corresponding to the
+probability that more than $L/2$ nodes of $I$ (or $S$) are malicious. The probability of
+encountering exactly $k$ malicious nodes among $L +1$ is given by the binomial
+distribution
+
+    \begin{equation}
+      P_{K malicious} = \begin{pmatrix} L+1 \\ k\end{pmatrix} p^k (1-p)^{L+1-k}
+    \end{equation}
+
+    where $p$ is the probability that a single node is malicious. Hence the
+probability of facing at most k malicious nodes is 
+
+    \begin{equation}
+      P_{\leq k} = \sum_{i=1}^{k} \begin{pmatrix} L+1 \\ k\end{pmatrix} p^i (1-p)^{L+1-i}
+    \end{equation}
+
+    Therefore, the probability of facing more than $k$ malicious nodes among
+$n$ is given by
+
+    \begin{equation}
+      P_{\ge k} = P_{\leq n} - P_{\leq k}
+    \end{equation}
+
+    and the probability that $I$/$S$ will not respond is
+
+    \begin{align}
+      P_{\ge L/2} &= P_{\leq L+1} - P_{\leq L/2} \\
+      &= \sum_{i=1}^{L+1} \begin{pmatrix} L+1 \\ i\end{pmatrix} p^i (1-p)^{L+1-i}
+      - \sum_{i=1}^{L/2} \begin{pmatrix} L+1 \\ i\end{pmatrix} p^i (1-p)^{L+1-i}
+    \end{align}
+
+    %% TODO: figure with the likeliness of dealing with an increains gnumber k of malicious nodes among a leafset comprising 32 nodes.
+
+    Then the probability that $I$ will not respond to the service user
+information recovery request, or that $S$ not respond to the node $A$ is
+
+    \begin{align}
+      P_{AI} &= (1- P_{\ge L/2}) P_{\ge L/2} +  P_{\ge L/2} \\
+      P_{AI} &= 2P_{\ge L/2} - P^2_{\ge L/2}
+    \end{align}
+
+
+    Table~\eqref{tab:p_identified_service_request} shows the probability of failure
+between $A$, the service $S$ and $I$, for a leafset size of $L = \{8,16,32\}$.
+    \item{\textit{Message complexity:}}
+    First, $A$ must get the leafset of $S$. The associated cost is $n = 5
+\times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
+Then, every node in $S$ must get the leafset of $I$, with each leafset request
+having the same associated cost as before $n = (L+1)(5 \times O(log_{2b}(N)) + Q + 4)$~\ref{sec:eval_leafset}.
+    The number $n$ of message inherent to the transaction itself is given by
+
+    \begin{align}
+      % TODO: + ommited for space, fix this with other way to express this
+      n &= \underbrace{2(L+1)}_\text{Init A with S} +
+           \underbrace{2(L+1)^2}_\text{Init S with I} +
+           \underbrace{(L+1)^2}_\text{Data from I to S} +
+           \underbrace{(L+1)L}_\text{Init Challenge} +
+           \underbrace{2(L+1)}_\text{S challenges A} +
+           \underbrace{L+1}_\text{ACKs}\\
+      n &= 5(L+1) + 3(L+1)(L+1)+ (L+1)L\\
+      n &= (L+1)(5 + 3(L+1) + L)\\
+      n &= 3(L+1)^2 + 5L + 5 + L^2 + L\\
+      n &= 3L^2 +6L + 3 + 5L + 5 + L^2 + L\\
+      n &= 4L^2 +12L + 8 
+    \end{align}
+     The total cost is then
+
+    $$
+      n_{total} = (L +2)(5 \times O(log_{2b}(N)) + Q + 4) + 4L^2 +12L + 8 
+    $$    
+    The total cost only depends on the size $L$ of the leafset, which is a
+constant, and $O(log(N))$. In the best case, 
+
+    $$
+      n_{total} = (L +2)O(log_{2b}(N)) + 4L^2 +12L + 8 
+    $$
+    Therefore, the cost of a transaction between $A$ and service $I$ remains
+scalable when the size $N$ of the DHT increases.
+  \end{enumerate}
+
+\section{Logout}
+  \label{sec:eval_logout}
+  \begin{table}
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|c|c|}
+      \cline{2-3}
+      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
+      \hline
+      \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
+      \hline \hline
+      8 &  $0.098$ & $3.322 \times 10^{-5}$ \\
+      \hline
+      16 & $0.040$ & $3.287 \times 10^{-8}$  \\
+      \hline
+      32 & $0.007$ & $4.118 \times 10^{-14}$  \\
+      \hline
+    \end{tabular}
+    \caption{Probability of failure in user logout}
+    \label{tab:p_logout}
+  \end{table}
+  
+  \begin{enumerate}
+    \item{\textit{Probability of failure:}}
+    The user logout between a node $A$ and $S$ can fail if $S$ does
+not respond (or responds false information) to $A$ during the logout request.
+  In all cases, this corresponds to the probability that more than
 $L/2$ nodes of $I$ are malicious. The probability of encountering exactly $k$
 malicious nodes among $L +1$ is given by the binomial distribution
 
@@ -140,50 +489,44 @@ $n$ is given by
 
     %% TODO: figure with the likeliness of dealing with an increains gnumber k of malicious nodes among a leafset comprising 32 nodes.
 
-    Then the probability that $I$ will not respond to the user registration
-request or to not send the final ACKs is
+    Then the probability that $S$ will not respond to the user logout 
+request or responds with a fake successfull logout is
 
     \begin{align}
-      P_{AI} &= (1- P_{\ge L/2}) P_{\ge L/2} +  P_{\ge L/2} \\
-      P_{AI} &= 2P_{\ge L/2}) + P^2_{\ge L/2}
+      P_{AI} &= P_{\ge L/2} 
     \end{align}
 
 
-    Table~\eqref{tab:p_account_registration} shows the probability of failure
-between $A$ and $I$, for a leafset size of $L = \{8,16,32\}$.
+    Table~\eqref{tab:p_logout} shows the probability of failure
+between $A$ and $S$, for a leafset size of $L = \{8,16,32\}$.
 
     
     \item{\textit{Message complexity:}}
-    First, $A$ must get the leafset of $I$. The associated cost is $n = 5
+    First, $A$ must get the leafset of $S$. The associated cost is $n = 5
 \times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
     The number $n$ of message inherent to the transaction itself is given by
 
     \begin{align}
-      n &= \underbrace{2(L+1)}_\text{Init} \underbrace{L+1}_\text{Data} \underbrace{L+1}_\text{ACKs}\\
-      n &= 3(L+1)
+      n &= \underbrace{2(L+1)}_\text{Init} +  \underbrace{L+1}_\text{Logout Request} + \underbrace{L+1}_\text{ACKs}\\
+      n &= 4(L+1)
     \end{align}
      The total cost is then
 
     $$
-      n_{total} = 5 \times O(log_{2b}(N)) + Q + 4 + 3(L+1)
+      n_{total} = 5 \times O(log_{2b}(N)) + Q + 4 + 4(L+1)
     $$    
     The total cost only depends on the size $L$ of the leafset, which is a
 constant, and $O(log(N))$. In the best case, 
 
     $$
-      n_{total} = O(log_{2b}(N)) + 3(L+1)
+      n_{total} = O(log_{2b}(N)) + 4(L+1)
     $$
     Therefore, the cost of a transaction between $A$ and service $I$ remains
 scalable when the size $N$ of the DHT increases.
-
   \end{enumerate}
 
-
-\section{Sign-in}
-\label{sec:eval_sign_in}
-
-  \subsection{User private key recovery}
-  \label{sec:eval_private_key_recovery}
+\section{Password Change}
+  \label{sec:eval_password_change}
   \begin{table}
     \centering
     \footnotesize
@@ -193,24 +536,29 @@ scalable when the size $N$ of the DHT increases.
       \hline
       \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
       \hline \hline
-      8 &  $0.188$ & $6.64 \times 10^{-5}$ \\
+      8 &  $0.098$ & $3.322 \times 10^{-5}$ \\
       \hline
-      16 & $0.079$ & $6.57 \times 10^{-8}$  \\
+      16 & $0.040$ & $3.287 \times 10^{-8}$  \\
       \hline
-      32 & $0.016$ & $8.24 \times 19^{-14}$  \\
+      32 & $0.007$ & $4.118 \times 10^{-14}$  \\
       \hline
     \end{tabular}
-    \caption{Probability of failure when recovering user private key}
-    \label{tab:p_private_key_recovery}
+    \caption{Probability of failure when changing the user password}
+    \label{tab:p_password_change}
   \end{table}
-
+  
   \begin{enumerate}
     \item{\textit{Probability of failure:}}
+    A password change request between a node $A$, the identification service
+$I$ can fail (a) if $L/2 + 1$ nodes in $I$ does not responds (or responds fake
+information) correctly the password change confirmation message to the nodes 
+$I_i \in I$ during the password change request, or (b) if $S$ does not respond (or responds fake information) to $A$
+during the password change request. While a response with fake information can be more dangerous for the
+user, the event of that happening is the same as when there is no response:
+when more than $L/2$ nodes of $I$ are malicious.
 
-    The user private key recovery between a node $A$ and $I$ can fail (a) if $I$ does
-not respond to $A$ during the key recovery request. This corresponds to the
-probability that more than $L/2$ nodes of $I$ are malicious. The probability of
-encountering exactly $k$ malicious nodes among $L +1$ is given by the binomial
+%%%%%%%%%%%%% REPEATED PROBABILITY MESSAGE %%%%%%%%%%%%
+The probability of encountering exactly $k$ malicious nodes among $L +1$ is given by the binomial
 distribution
 
     \begin{equation}
@@ -231,139 +579,56 @@ $n$ is given by
       P_{\ge k} = P_{\leq n} - P_{\leq k}
     \end{equation}
 
-    and the probability that $S$ will not respond is
+    and the probability that $I$ will not respond is
 
     \begin{align}
       P_{\ge L/2} &= P_{\leq L+1} - P_{\leq L/2} \\
       &= \sum_{i=1}^{L+1} \begin{pmatrix} L+1 \\ i\end{pmatrix} p^i (1-p)^{L+1-i}
       - \sum_{i=1}^{L/2} \begin{pmatrix} L+1 \\ i\end{pmatrix} p^i (1-p)^{L+1-i}
     \end{align}
+%%%%%%%%%%%%% REPEATED PROBABILITY MESSAGE %%%%%%%%%%%%
 
     %% TODO: figure with the likeliness of dealing with an increains gnumber k of malicious nodes among a leafset comprising 32 nodes.
 
-    Then the probability that $I$ will not respond to the user private key recovery
-request is
+    Then the probability that $I$ will not respond to the service user
+information recovery request is
 
     \begin{align}
-      P_{AI} &= (1- P_{\ge L/2}) P_{\ge L/2} +  P_{\ge L/2} \\
-      P_{AI} &= 2P_{\ge L/2}) + P^2_{\ge L/2}
+      P_{AI} &= P_{\ge L/2} \\
     \end{align}
 
 
-    Table~\eqref{tab:p_private_key_recovery} shows the probability of failure
-between $A$ and $I$, for a leafset size of $L = \{8,16,32\}$.
+    Table~\eqref{tab:p_password_change} shows the probability of failure
+between $A$, the service $S$ and $I$, for a leafset size of $L = \{8,16,32\}$.
 
-    
     \item{\textit{Message complexity:}}
-  \end{enumerate}
+    First, $A$ must get the leafset of $I$. The associated cost is $n = 5
+\times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
+%%% not needed, this has to be done in the leafset maintenance
+%Then, every node in $I$ must get the leafset of $I$, with each leafset request
+%having the same associated cost as before $n = (L+1)(5 \times O(log_{2b}(N)) + Q + 4)$~\ref{sec:eval_leafset}.
+    The number $n$ of message inherent to the transaction itself is given by
 
+    \begin{align}
+      n &= \underbrace{2(L+1)}_\text{Init A with I} +
+           \underbrace{(L+1)L}_\text{Data from I to I} +
+           \underbrace{L+1}_\text{ACKs}\\
+      n &= 3(L+1) + L(L+1)\\
+      n &= L^2 + 4L + 3
+    \end{align}
+     The total cost is then
 
-  \subsection{User identified service request}
-  \label{sec:eval_identified_service_request}
-  \begin{table}
-    \centering
-    \footnotesize
-    \begin{tabular}{|c|c|c|}
-      \cline{2-3}
-      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
-      \hline
-      \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
-      \hline \hline
-      8 &  &  \\
-      \hline
-      16 &  &  \\
-      \hline
-      32 &  &  \\
-      \hline
-    \end{tabular}
-    \caption{Probability of failure in identified service request}
-    \label{tab:p_identified_service_request}
-  \end{table}
-  
-  \begin{enumerate}
-    \item{\textit{Probability of failure:}}
-    \item{\textit{Message complexity:}}
-  \end{enumerate}
+    $$
+      n_{total} = 5 \times O(log_{2b}(N)) + Q + 4 +  L^2 + 4L + 3
+    $$    
+    The total cost only depends on the size $L$ of the leafset, which is a
+constant, and $O(log(N))$. In the best case, 
 
-\section{Logout}
-  \label{sec:eval_logout}
-  \begin{table}
-    \centering
-    \footnotesize
-    \begin{tabular}{|c|c|c|}
-      \cline{2-3}
-      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
-      \hline
-      \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
-      \hline \hline
-      8 &  &  \\
-      \hline
-      16 &  &  \\
-      \hline
-      32 &  &  \\
-      \hline
-    \end{tabular}
-    \caption{Probability of failure in user logout}
-    \label{tab:p_logout}
-  \end{table}
-  
-  \begin{enumerate}
-    \item{\textit{Probability of failure:}}
-    \item{\textit{Message complexity:}}
-  \end{enumerate}
-
-\section{Password Change}
-  \label{sec:eval_password_change}
-  \begin{table}
-    \centering
-    \footnotesize
-    \begin{tabular}{|c|c|c|}
-      \cline{2-3}
-      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
-      \hline
-      \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
-      \hline \hline
-      8 &  &  \\
-      \hline
-      16 &  &  \\
-      \hline
-      32 &  &  \\
-      \hline
-    \end{tabular}
-    \caption{Probability of failure when changing the user password}
-    \label{tab:p_password_change}
-  \end{table}
-  
-  \begin{enumerate}
-    \item{\textit{Probability of failure:}}
-    \item{\textit{Message complexity:}}
-  \end{enumerate}
-
-\section{Lazy User's Information Store Maintenance}
-\label{sec:eval_lazy_maintenance}
-  \begin{table}
-    \centering
-    \footnotesize
-    \begin{tabular}{|c|c|c|}
-      \cline{2-3}
-      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
-      \hline
-      \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
-      \hline \hline
-      8 &  &  \\
-      \hline
-      16 &  &  \\
-      \hline
-      32 &  &  \\
-      \hline
-    \end{tabular}
-    \caption{Probability of failure when performing the user's information store maintenance}
-    \label{tab:p_lazy_maintenance}
-  \end{table}
-  
-  \begin{enumerate}
-    \item{\textit{Probability of failure:}}
-    \item{\textit{Message complexity:}}
+    $$
+      n_{total} = O(log_{2b}(N)) + L^2 + 4L + 3
+    $$
+    Therefore, the cost of a transaction between $A$ and service $I$ remains
+scalable when the size $N$ of the DHT increases.
   \end{enumerate}
 
 %We suppose in the following that the underlying

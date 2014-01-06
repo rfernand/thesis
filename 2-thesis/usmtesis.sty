@@ -68,12 +68,12 @@
 % Usar 1.37 veces el salto baseline-to-baseline normal 
 %\renewcommand{\baselinestretch}{1.37}
 \renewcommand{\baselinestretch}{1}
-\renewcommand{\contentsname}{\'Indice}
-\renewcommand{\listtablename}{\'Indice de tablas}
-\renewcommand{\listfigurename}{\'Indice de ilustraciones}
-\renewcommand{\appendixname}{Ap\'endice}
-\renewcommand{\tablename}{Tabla}
-\renewcommand{\bibname}{Bibliograf\'ia}
+%\renewcommand{\contentsname}{\'Indice}
+%\renewcommand{\listtablename}{\'Indice de tablas}
+%\renewcommand{\listfigurename}{\'Indice de ilustraciones}
+%\renewcommand{\appendixname}{Ap\'endice}
+%\renewcommand{\tablename}{Tabla}
+%\renewcommand{\bibname}{Bibliograf\'ia}
 %\renewcommand{\bibliography}{Bibliograf\'ia}
 
 % Redefinir los macors utilizados para flotantes (incluyendo tablas y figuras)
@@ -170,8 +170,8 @@
 
 % New if constructs:    Default conditions:
 \newif\ifpermission     \permissiontrue  
-%\newif\iffigurespage    \figurespagetrue 
-%\newif\iftablespage     \tablespagetrue
+\newif\iffigurespage    \figurespagetrue 
+\newif\iftablespage     \tablespagetrue
 \newif\iffront@pages    \front@pagestrue
 \newif\ifthird@reader   \third@readerfalse
 \newif\iffourth@reader  \fourth@readerfalse
@@ -325,15 +325,15 @@
 
     \iffront@pages\tableofcontents\else\addtocounter{page}{1}\fi
     \newpage
-    %\iftablespage
-        %\addcontentsline{toc}{chapter}{Index of Tables}\listoftables
-        %\newpage
-    %\fi
-    %\iffigurespage
-        %\addcontentsline{toc}{chapter}{Index of Figures}\listoffigures
-        \addcontentsline{toc}{chapter}{\'Indice de Figuras}\listoffigures
+
+    \iftablespage
+        \addcontentsline{toc}{chapter}{Index of Tables}\listoftables
         \newpage
-    %\fi
+    \fi
+    \iffigurespage
+        \addcontentsline{toc}{chapter}{Index of Figures}\listoffigures
+        \newpage
+    \fi
 }
 \def\nonumchapter#1{%
     \chapter*{#1}
