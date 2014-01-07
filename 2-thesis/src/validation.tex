@@ -2,41 +2,36 @@ In this chapter we will discuss some security issues and the portability of our
 solution.% and our decision about not having a password recovery mechanism
 
 \section{Security Issues}
+%Regarding P2P networks and identification systems, there are many issues that
+%hand that need to be accounted for when building the system. 
 % objectives achieved?
 % what L? (L=32)
-The reliability of a centralized identification service depends mostly on the
+\subsection{Trustworthiness}
+In comparison with centralized approaches, we know that the reliability of a
+centralized identification service depends mostly on the
 supporting host: its availability, its security and its capacity  to handle
-significant amounts of concurrent requests. In practice this entails that a
-centralized identification service is not foolproof: it is as trustworthy as
-the group of servers it runs on. Well-established centralized identification
-services have been breached. %%%%%%%%% TODO: ADD REFERENCES
+significant amounts of concurrent requests. 
+In practice this entails that a centralized identification service is not
+foolproof: it is as trustworthy as the group of servers it runs on.
+Well-established centralized identification services have been breached. %%%%%%%%% TODO: ADD REFERENCES
 In a decentralized approach, the main issue is that the supporting hosts are
-not accountable for their decisions and therefore cannot be trusted. 
+not accountable for their decisions and therefore cannot be trusted.\\
 
-That is precisely the point of our solution: a identificator node is not
-accountable on
-its own, and we rely in sets of nodes to cooperate for the verification of the
-integrity of the operation.
- Because of this, as other P2P systems, a 100\% secure implementation cannot be achieved
+Because of this, as other P2P systems, a 100\% secure implementation cannot be achieved
 (section~\ref{sec:pseudo-secure}).
+Having account of that, because even a trusted node is not accountable on its
+own, we rely in sets of nodes to cooperate for the verification of the
+integrity of the operation.
 
-Still, with a $5\%$ proportion of
-malicious nodes distributed uniformly in the P2P system, the resulting probability of a false
+With our solution, with a leafset size of $L = 32$ nodes and a
+$5\%$ proportion of malicious nodes distributed uniformly in the P2P system, the resulting probability of a false
 positive, where a decision made by malicious nodes is adopted, is of the order
-of $10^{-14}$. This value is far lower than any we have encountered in the
-literature about decentralized identification systems. It is obtained with a
-with a leafset size of $L = 32$ nodes.
-Also the system maintains a cost scalable when the size of nodes $N$ of the DHT
+of $10^{-14}$. 
+This value is far lower than any we have encountered in the
+literature about decentralized identification systems.Also the system maintains a cost scalable when the size of nodes $N$ of the DHT
 increases, and remains very affordable in terms of communications overhead. 
-
-The main objective of this work was the implementation of a secure username/password based user identification scheme in structured P2P
-networks using secure routing and building of trust between nodes. Still, as seen in the
-protocols evaluation (section~\ref{sec:evaluation}), an acceptable probability of error of the order
-of $10^{-14}$ can be achieved with a leafset size of $L = 32$. Also the system
-maintains a cost scalable when the size of nodes $N$ of the DHT increases.
-This was possible thanks to the use of a reputation system and trusted
-nodes management, which mitigated the effectivity of malicious nodes attacks in
-the network.
+We think that probability is acceptable for a user identification system to be
+used in real life applications.
 
 
 \subsection{Sybil attacks}
@@ -129,6 +124,17 @@ assumed that the key derivation function (e.g., bcrypt) is slow enough to make
 unfeasible for a computer to guess the password of an user in a certain
 amount of time (like more than 20 years).
 
+\subsection{Passwords}
+The traditional view is that passwords should be replaced by some better
+mechanism, but despite significant research efforts into dislodging passwords,
+they are still by far the most common authentication mechanism today.
+Reasons for their prevalence include simplicity, price, and very strong user
+familiarity.
+It is known that the average user tends to use the
+same password in more than one service, presenting serious security problems
+for the user identity integrity. A definitive solution to this problem have not
+been found yet, but a strict password creation policy can seems to mitigate this
+problem (but at the same time this can increase the cases of forgotten passwords)
 
 %\section{Password Recovery}
 %While the system does not allow password recovery operations...
