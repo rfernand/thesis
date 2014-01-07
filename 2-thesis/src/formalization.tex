@@ -1,4 +1,7 @@
 %% TODO: introduction about the chapter
+Next, we define the main assumptions and building blocks for the
+identification system, formalizing the notations used for the following system's protocols.
+
 
 \section{A pseudo-secure identification service}
 \label{sec:pseudo-secure}
@@ -9,20 +12,20 @@ another user using the identification system.
 
 While the probability can always exist, it should be highly unlikely to happen
 if we consider a very very low probability, like of the order of $10^{-14}$. The objective of of
-the system is obtain probaility of error lower than $10^{-14}$, while
-maintaining an aceptable cost in system messages.
+the system is obtain probability of error lower than $10^{-14}$, while
+maintaining an acceptable cost in system messages.
 
 \section{Building blocks}
 \label{sec:building_blocks}
 
-For simplicity, we assume in the following that the underlyng DHT is
+For simplicity, we assume in the following that the underling DHT is
 Pastry~\cite{pastry} seen in the section~\ref{sec:pastry}. We suppose that
 every node in the DHT self-generates its own pair of public and privates keys
 ($X^{pub}$, $X^{priv}$) to be used with an asymmetrical encryption
 algorithm~\cite{asymmetrical_encryption_algorithm}. The size of the keys used
 in the whole system is both fixed and large enough to make it computationally
-infeasible to decrypt an information without knowing the corresponging private
-keys. We will assume that an User is identified by the criptographic proof of
+unfeasible to decrypt an information without knowing the corresponding private
+keys. We will assume that an User is identified by the cryptographic proof of
 his private key. 
 
 SHA stands for the Secure Hash Algorithm One (SHA-1 - 160 bits hash). We also

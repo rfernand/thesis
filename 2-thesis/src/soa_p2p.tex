@@ -33,21 +33,21 @@ The main properties of a P2P system are:
 connected as \textit{nodes}, with different hardware characteristics each one.
     \item \textbf{Robust}: It is resilient to different types of failures; like
 falls and lost of nodes, while maintaining a high data and service availability.
-    \item \textbf{Self-organized}: The network structure is maintained and organized by the same nodes that form it, without a manual intervetion needed.
+    \item \textbf{Self-organized}: The network structure is maintained and organized by the same nodes that form it, without a manual intervention needed.
 \end{enumerate}
 
 \subsection{Peer-to-peer System structure}
 \label{sec:p2p_estructure}
 
 P2P systems are characterized by do not having a central coordination. Each
-peer is independient and has a local view of the system. The global behavior
+peer is independent and has a local view of the system. The global behavior
 emerges from the local interaction of its members~\cite{Aberer:2001:PIS:503271.503268}.
 %El comportamiento global emerge de las interacciones locales
 %de sus miembros, y el sistema debe asegurar que toda información y servicio sea
 %accesible a pesar de no existir una coordinación central de la
 %misma.
 Depending in the system topology, they are categorized as structured or
-unstructered P2P networks. The structured P2P networks are characterized by a
+unstructured P2P networks. The structured P2P networks are characterized by a
 strong node structure, like a tree or a ring, resulting in additional costs for
 each node to maintain the. In unstructured P2P networks the nodes are organized
 by simple graphs.
@@ -64,7 +64,7 @@ by simple graphs.
 
 %definition
 The unstructured systems does not have a strong structure topology. The nodes
-establish links in a semi-arbitrary way. Usually, they organize as a hiearchical or a
+establish links in a semi-arbitrary way. Usually, they organize as a hierarchical or a
 plain graph.
 
 %advantage
@@ -72,12 +72,12 @@ Their main advantage is that they can achieve certain grade of node anonymity.
 
 %disadvantage
 The downsize of this type of systems is that searches can end in false
-negatives and have a bigger cost in comparizon with structured networks. This
+negatives and have a bigger cost in comparison with structured networks. This
 is because the search algorithms do not pass through every node inside the
 graph.
 
 They are commonly used to share files, using the anonymity of the user to
-distribute any tipe of file through the net.
+distribute any type of file through the net.
 
 % examples
 There are many implementations of unstructured networks:
@@ -85,7 +85,7 @@ Gnutella~\cite{oai:CiteSeerXPSU:10.1.1.61.7302},
 BitTorrent~\cite{bittorrent}, 
 %Freenet~\cite{freenet}, 
 %Overnet~\cite{overnet}, 
-among others. Each one use differents ways to organize the nodes, some using a
+among others. Each one use different ways to organize the nodes, some using a
 node hierarchy to facility the searches in the the network, and others simply
 does not count with a search method (BitTorrent).
 
@@ -109,9 +109,9 @@ are:
 \begin{itemize}
     \item \textbf{Flooding}: 
 Each node tries to forward every message to every one of its neighbours except
-the source node. To avoid som wasted duplicate deliveries and infinite loops,
+the source node. To avoid some wasted duplicate deliveries and infinite loops,
 each message has a \textit{Time To Live} (TTL) that limits the amount of times
-that it can be forwarded. This type of searches has a cuadratic cost of network
+that it can be forwarded. This type of searches has a quadratic cost of network
 messages, of order O($N^2$), were N is the number of nodes that can route data
 inside the network.
     \item \textbf{K-Random Walk}: Similar to the \textit{flooding} method, with
@@ -154,7 +154,7 @@ structures to organize.
 %advantages
 The main advantage of this systems is the search of information. The data search does not
 suffer of false negatives, and is more efficient in message cost and response
-time than the unstrucutred ones. 
+time than the unstructured ones. 
 
 %disadvantages
 As the nodes can be found and traced easily with a query, user anonymity is harder to
@@ -163,7 +163,7 @@ anonymity from his users, this is one of the main reasons to not use this type
 of systems.
 
 % examples
-The vast mayority of structured P2P systems use distributed hash tables
+The vast majority of structured P2P systems use distributed hash tables
 (DHT)~\footnote{http://en.wikipedia.org/wiki/Distributed\_hash\_table} as
 structural base for the search and storage system~\cite{BalakrishnanEtAl03}.
 CHORD~\cite{conf:hotos:DabekBKKMSB01},
@@ -185,11 +185,11 @@ architecture is made to have a basic operational cost proportional to $log(N)$,
 with $N$ being the number of nodes in the network.
 
 The protocol takes in consideration that nodes can be inactive or away one
-moment or another. Uses the SHA-1 function to asign identifiers to each node
+moment or another. Uses the SHA-1 function to assign identifiers to each node
 and keys in the system. The Chord protocol dynamically allocates identifiers to nodes that
 join or leaves the network. The rest of tasks and services that the system
 would need - like user identification, storage, interfaces, etc.- are
-responsability of other implementations of a higher abstraction level than the
+responsibility of other implementations of a higher abstraction level than the
 Chord protocol itself.
 
 \label{sec:chord}
@@ -201,14 +201,14 @@ Chord protocol itself.
 \end{figure}
 
 \paragraph{Chord Data Storage}
-The network data is stored in the closest node succesor of the hash key of the
-data. The network searchs are made querying the closest succesor
+The network data is stored in the closest node successor of the hash key of the
+data. The network search's are made querying the closest successor
 nodes that the node has in his \textit{finger table}.
 The id key $k$ is assigned to the node id $k$ if this one is active in the
 network. If $k$ is not available at that moment, it search for the first node
 successor to $k$ that is active and the key id is assigned to him. This
-sustitute node is denominated \textit{succesor of $k$}.
-The more close a node id is from other, the more far away phisically are the
+substitute node is denominated \textit{successor of $k$}.
+The more close a node id is from other, the more far away physically are the
 nodes distributed, giving the network a better resilience to errors.
 
 \paragraph{Chord Information Search}
@@ -220,10 +220,10 @@ In a search, the number of nodes that a query needs to reach is of order
 $O(log(N))$.
 The problem that Chord has is that it does not maintain a correlation
 between the logical locality of the nodes and their geographical positioning. This
-produces that the network communication ocurrs between nodes very close
-logically, but very far phisically in the network. While some
-optimizations using different heuristics exists to make it better, the locality
-problem is not completelly fixed.
+produces that the network communication occurs between nodes very close
+logically, but very far physically in the network. While some
+optimization's using different heuristics exists to make it better, the locality
+problem is not completely fixed.
 
 \paragraph{Pastry}
 \label{sec:pastry}
@@ -233,16 +233,16 @@ are distributed and how to find the node responsible of the storage of a key.
 \paragraph{Pastry Data Storage}
 
 The data storage is made applying the same hash function used to assign node
-identifiers (\textit{nodeID}) to the data filename. This results a key, wich is
-mapped to a single node. In Pastry, the file is stored in the node that has the closest nodeID to
-the to the data's key.
+identifiers (\textit{nodeID}) to the data filename. This results a key, which is
+mapped to a single node. In Pastry, the file is stored in the node that has the closest nodeID
+to the data's key.
 
-Exists many replication technices that manage and distribute copies of the file
+Exists many replication techniques that manage and distribute copies of the file
 in the network. The distribution of the copies is made using the closest nodes
-to the chosen node. Using this, if the node in charge of the storage of thefile
+to the chosen node. Using this, if the node in charge of the storage of the file
 is missing, the file can still be recovered from his replicas. Also, thanks
 to the hash algorithm used, the replicas that are nearby inside the network are
-in reality distributed far geograficaly, improving the data availability
+in reality distributed far geographically, improving the data availability
 in the system.
 
 \paragraph{Pastry Data Search}
@@ -261,11 +261,11 @@ The routing table has a row for each assigned address block. The blocks are
 form dividing the nodeID of the local node in digits of $b$ bits. This
 generates a numeric system in base $2^b$. In that way, starting at the client,
 the nodes are grouped by their number of digits in common in a prefix of the
-local node's nodeId and the other node. The table stores in each row the
+local node's nodeID and the other node. The table stores in each row the
 address of the closest know node, fulfilling the prefix condition of that row.
 
 The messages can be sent to any address in the key space, regardless of whether
-the node exists or not. The content is sent through the network until it reaches the node with the given ID (or the closest one, if the exact one does not exist). When a node recieves or sends a message, it checks the leafset searching for a direct route. If it does not find one, it sends the message to the known node in the routing table that has  more prexifes in common with the objective. This makes sure that the message will shorten the distance at each step in the search, reaching always the node with the closest nodeID to the objective.
+the node exists or not. The content is sent through the network until it reaches the node with the given ID (or the closest one, if the exact one does not exist). When a node receives or sends a message, it checks the leafset searching for a direct route. If it does not find one, it sends the message to the known node in the routing table that has  more prexifes in common with the objective. This makes sure that the message will shorten the distance at each step in the search, reaching always the node with the closest nodeID to the objective.
 
 In~\ref{fig:p2p_pastry_routing} we can see an example of the routing algorithm used in Pastry when sending a message.
 

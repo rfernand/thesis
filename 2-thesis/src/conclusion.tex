@@ -1,6 +1,11 @@
-
-The main objective of this work was the implementation of a secure username/password based user identification scheme in structured P2P
-networks using secure routing and building of trust between nodes. As other P2P
+The main objective of this work was the implementation of a secure
+username/password based user identification scheme in structured P2P
+networks using secure routing and building of trust between nodes.
+With that in mind, we presents a quasi-identification service on top of a DHT. It
+replicates the user information needed to maintain the identification system
+over multiple peers and retains identical results from a qualified majority to
+certify that a user public information corresponds to the correct registered user.
+As other P2P
 systems, a 100\% secure implementation cannot be achieved
 (section~\ref{sec:pseudo-secure}). Still, as seen in the
 protocols evaluation (section~\ref{sec:evaluation}), an acceptable probability of error of the order
@@ -9,7 +14,21 @@ maintains a cost scalable when the size of nodes $N$ of the DHT increases.
 This was possible thanks to the use of a reputation system and trusted
 nodes management, which mitigated the effectivity of malicious nodes attacks in
 the network.
-
 An over DHT implementation allows let the system be easily adaptable  to the
-most commonly used P2P networks.
-While the system does not allow password recovery operations...
+most commonly used P2P networks.\\
+
+
+While the proposed system is resilient to many of the most common attacks,
+and issues related to the bad choice of user passwords can be mitigated enforcing a
+strict password creation policy, there are still problems related to the use of
+password in identification systems.
+It is known that the average user tends to use the
+same password in more than one service, presenting serious security problems
+for the user identity integrity. A definitive solution to this problem have not
+been found yet.
+We are currently working in developing an identification service that
+allows password recovery operations while not compromising the user identity
+through the integration of scalable trust mechanisms.
+
+%\textbf{Acknowledgements.} The work presented was partially funded by a CONICYT
+%scholarship.
