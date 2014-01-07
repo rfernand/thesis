@@ -167,27 +167,33 @@ between $A$ and $I$, for a leafset size of $L = \{8,16,32\}$.
     \begin{align}
       n &= \underbrace{2(L+1)}_\text{Init} +
            \underbrace{L+1}_\text{Registration Data} +
+           \underbrace{(L+2)(L+1)}_\text{Challenge} +
            \underbrace{(L+1)L}_\text{I registration confirmations} +
            \underbrace{L+1}_\text{ACKs}\\
-      n &= (L+4)(L+1)\\
-      n &= L^2+ 5L + 4
+      n &= (2L+6)(L+1)\\
+      n &= 2L^2+ 8L + 6
     \end{align}
 
      The total cost is then
     $$
-      n_{total} = 5 \times O(log_{2b}(N)) + Q + 4 + L^2 + 5L + 4
+      n_{total} = 5 \times O(log_{2b}(N)) + Q + 4 + 2L^2 + 8L + 6
     $$    
 
     The total cost only depends on the size $L$ of the leafset, which is a
 constant, and $O(log(N))$. In the best case, 
     $$
-      n_{total} = O(log_{2b}(N)) + L^2 + 5L + 4
+      n_{total} = O(log_{2b}(N)) + 2L^2 + 8L + 6
     $$
-    Therefore, the cost of a transaction between $A$ and service $I$ remains
-scalable when the size $N$ of the DHT increases.
+    Therefore, the cost user registration operation remains scalable when the size $N$ of the DHT increases.
 
 \section{Lazy User's Information Store Maintenance}
 \label{sec:eval_lazy_maintenance}
+
+      %8 &  $0.0988087$ & $3.32222 \times 10^{-5}$ \\
+      %\hline
+      %16 & $0.0402769$ & $3.28714 \times 10^{-8}$  \\
+      %\hline
+      %32 & $0.00782066$ & $4.11893 \times 10^{-14}$  \\
 
   \begin{table}
     \centering
@@ -198,17 +204,17 @@ scalable when the size $N$ of the DHT increases.
       \cline{2-4}
       \multicolumn{1}{c|}{} & \textbf{L} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
       \hline
-      \multirow{3}{*}{\rotatebox[origin=c]{90}{\textbf{Case 1}}} & 8 &  &  \\
+      \multirow{3}{*}{\rotatebox[origin=c]{90}{\textbf{Case 1}}} & 8 & $0.106108$ & $3.9472 \times 10^{-5}$\\
       \cline{2-4}
-      \multicolumn{1}{|c|}{} & 16 &  &  \\
+      \multicolumn{1}{|c|}{} & 16 & $0.0403399$ & $3.29105 \times 10^{-8}$ \\
       \cline{2-4}
-      \multicolumn{1}{|c|}{} & 32 &  &  \\
+      \multicolumn{1}{|c|}{} & 32 & $0.00782066$ & $4.11893 \times 10^{-14}$ \\
       \hline
-      \multirow{3}{*}{\rotatebox[origin=c]{90}{\textbf{Case 2}}} & 8 &  &  \\
+      \multirow{3}{*}{\rotatebox[origin=c]{90}{\textbf{Case 2}}} & 8 & $0.123141$ & $1.58218 \times 10^{-4}$ \\
       \cline{2-4}
-      \multicolumn{1}{|c|}{} & 16 &  &  \\
+      \multicolumn{1}{|c|}{} & 16 & $0.0404868$ & $3.36526 \times 10^{-8}$ \\
       \cline{2-4}
-      \multicolumn{1}{|c|}{} & 32 &  &  \\
+      \multicolumn{1}{|c|}{} & 32 & $0.00782067$ & $4.11893 \times 10^{-14}$ \\
       \hline
     \end{tabular}
     \caption{Probability of failure when performing the user's information store maintenance}
@@ -319,7 +325,7 @@ constant, and $O(log(N))$. In the best case,
     $$
       n_{total} = O(log_{2b}(N)) + 4(L+1)
     $$
-    Therefore, the cost of a transaction between $A$ and service $I$ remains
+    Therefore, the cost of recovering a user private key remains
 scalable when the size $N$ of the DHT increases.
 
 
@@ -424,7 +430,7 @@ constant, and $O(log(N))$. In the best case,
     $$
       n_{total} = (L +2)O(log_{2b}(N)) + 4L^2 +12L + 8 
     $$
-    Therefore, the cost of a transaction between $A$ and service $I$ remains
+    Therefore, the cost of a user sign in operation remains
 scalable when the size $N$ of the DHT increases.
 
 \section{Logout}
@@ -516,8 +522,7 @@ constant, and $O(log(N))$. In the best case,
     $$
       n_{total} = O(log_{2b}(N)) + 4(L+1)
     $$
-    Therefore, the cost of a transaction between $A$ and service $I$ remains
-scalable when the size $N$ of the DHT increases.
+    Therefore, the cost of a user logout operation remains scalable when the size $N$ of the DHT increases.
 
 \section{Password Change}
   \label{sec:eval_password_change}
@@ -620,7 +625,7 @@ constant, and $O(log(N))$. In the best case,
     $$
       n_{total} = O(log_{2b}(N)) + L^2 + 4L + 3
     $$
-    Therefore, the cost of a transaction between $A$ and service $I$ remains
+    Therefore, the cost of a password change operation remains
 scalable when the size $N$ of the DHT increases.
 
 %We suppose in the following that the underlying

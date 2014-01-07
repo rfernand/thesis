@@ -1,0 +1,145 @@
+In this chapter we will discuss some security issues and the portability of our
+solution.% and our decision about not having a password recovery mechanism
+
+\section{Security Issues}
+% objectives achieved?
+% what L? (L=32)
+The reliability of a centralized identification service depends mostly on the
+supporting host: its availability, its security and its capacity  to handle
+significant amounts of concurrent requests. In practice this entails that a
+centralized identification service is not foolproof: it is as trustworthy as
+the group of servers it runs on. Well-established centralized identification
+services have been breached. %%%%%%%%% TODO: ADD REFERENCES
+In a decentralized approach, the main issue is that the supporting hosts are
+not accountable for their decisions and therefore cannot be trusted. 
+
+That is precisely the point of our solution: a identificator node is not
+accountable on
+its own, and we rely in sets of nodes to cooperate for the verification of the
+integrity of the operation.
+ Because of this, as other P2P systems, a 100\% secure implementation cannot be achieved
+(section~\ref{sec:pseudo-secure}).
+
+Still, with a $5\%$ proportion of
+malicious nodes distributed uniformly in the P2P system, the resulting probability of a false
+positive, where a decision made by malicious nodes is adopted, is of the order
+of $10^{-14}$. This value is far lower than any we have encountered in the
+literature about decentralized identification systems. It is obtained with a
+with a leafset size of $L = 32$ nodes.
+Also the system maintains a cost scalable when the size of nodes $N$ of the DHT
+increases, and remains very affordable in terms of communications overhead. 
+
+The main objective of this work was the implementation of a secure username/password based user identification scheme in structured P2P
+networks using secure routing and building of trust between nodes. Still, as seen in the
+protocols evaluation (section~\ref{sec:evaluation}), an acceptable probability of error of the order
+of $10^{-14}$ can be achieved with a leafset size of $L = 32$. Also the system
+maintains a cost scalable when the size of nodes $N$ of the DHT increases.
+This was possible thanks to the use of a reputation system and trusted
+nodes management, which mitigated the effectivity of malicious nodes attacks in
+the network.
+
+
+\subsection{Sybil attacks}
+\label{sec:sybil_attacks}
+
+The Sybil attack~\cite{the_sybil_attack} is a major concern if obtaining
+network identities is cheap (NodeIDs). Such an attack allows to tamper the ratio of
+malicious nodes in the system as a single node acts under multiple identities:
+the ratio can rise above the $30\%$ upper threshold. \\
+
+A common practise of the Sybil attack has a single malicious user create
+several identities with numerically close nodeIDs to be able to control a
+substantial part of the DHT. We assume that the generation of the nodeIDs can
+be verified by any node in the network, for instance the bootstrapping node or
+the node with the closest nodeID. Our proposition assumes that nodeIDs are
+computed from a public key, generated with a well-known public/private key
+algorithm. We also suppose that the number of bits of these keys is sufficient
+to avoid a brute force attack to reverse the SHA-1 function. During the join
+procedure to the DHT, a node $A$ must provide several pieces of information to
+the verifier node $X$: its public key $key_{pub}$, and the associated nodeID computed using
+$nodeID = SHA1(key_{pub}$. $X$ can easily verify the correctness of the nodeID
+with the public key. IF they do not match, then $X$ prevents $A$ from joining
+the ring.\\
+
+Due to the mathematical properties of the SHA-1 hash function, it is
+practically impossible for a node to find two keys $key_{pub1}$ and
+$key_{pub2}$ such that $SHA1(key_{pub1}) = SHA1(key_{pub2}$. Therefore, it is
+also practically impossible for a node to find several public keys that give
+numerically close nodeIDs in the ring. Thus it is practically unfeasible for a
+node to control a substantial sector of the ring.\\
+
+However, a single node can still generate several nodeIDs distributed over the
+ring. This kind of Sybil attack does not allow to control a sector of the ring,
+but will increase failures in the DHT (Routing failures, etc.).  Reputation
+systems can efficiently mitigate the Sybil attack, but will collapse if the
+ratio of malicious nodes is too high ($> 30\%$). To our knowledge, no existing reputation system can control a large
+number of Sybil attacks in a DHT, and this is still a difficult topic within
+the P2P research community.\\
+
+As seen before in section~\ref{sec:challenges_puzzles}, other solutions to
+mitigate the presence of sybils is to make obtaining nodeIDs
+exponentially difficult when a node needs a new
+one. Existing solutions usually
+rely on a set of servers to provide the nodeIDs, and are therefore not very
+scalable.\\
+
+The impact of a Sybil attack over the Trusted ring of the reputation system
+would mainly be at the level of its \textit{trustsets}. The main idea is to be
+able to control various nodeIDs in a \textit{trustset}. This is not an easy
+task; as shown above is practically unfeasible to obtain numerically close
+nodeIDs that belong to the same \textit{trustset}. Moreover, controlling a very
+large number of trustsets is practically impossible, as it will require to
+control a very large number of nodeIDs. This is unfeasible due to the number of
+transactions required from an attacker in order to establish a good reputation
+for all of its nodeIDs, and then insert them into the Trusted
+Ring~\cite{rosas2011corps}.\\
+
+Analog to the problem of Sybil attacks to control multiple nodeIDs, an attacker
+would like to try to control a large amount of user accounts in the
+identification system. Having registered a large amount of usernames used, a new
+user could have difficulties to find an unused username when registering in the
+network. Also, having a large amount of identities through the services in the
+network can be used to exploit some of their functionalities.
+In our solution, we use computational challenges to mitigate the problem of a
+node registering multiple amount of users among the system. Other solutions to
+this problem is the use of CAPTCHA~\cite{von2003captcha} as an additional
+challenge for the user registration. While this type of challenge is not
+without faults, it adds an additional layer of security against Sybil attacks.
+
+
+\subsection{Collusion of nodes}
+
+A collusion of nodes consists in an agreement made among various nodes to make
+a combined attack, like artificially increase or decrease the reputation of a
+set of nodes by colluding nodes of the reputation system. Some existing
+reputations systems like WTR can efficiently mitigate the effect of this kind
+of attack. Moreover, colluded nodes should be able to sustain the attack
+permanently in order to maintain a good reputation and remain the Trusted Ring.
+This will have a significant cost for the attackers, and being able to manage a
+great number of attackers is very unlikely. 
+
+\subsection{Offline attacks}
+As our solution relies in a public/private key scheme to identify the user,
+using derived keys from a public salt stored in the network, a malicious node
+could try to guess the password of an user. If the function use to derive the
+private key has a low computation cost, a brute force attack that tries
+different passwords and test the derived private key with the user public key
+can succeed if the attacker has the computational resources to do so. We
+assumed that the key derivation function (e.g., bcrypt) is slow enough to make
+unfeasible for a computer to guess the password of an user in a certain
+amount of time (like more than 20 years).
+
+
+%\section{Password Recovery}
+%While the system does not allow password recovery operations...
+
+\section{Portability}
+
+Although our implementation relies on Pastry as its DHT, our approach can rely
+on other building block implementations. For example it is very simple to
+switch the underlying DHT from Pastry to Chord, as it maintains structures
+that are equivalent to the leafset and the routing table in Pastry. An
+underlying reputation system with the same properties explained
+in Section~\ref{sec:building_blocks}  is also required, but can be easily
+supported by any type of DHT, as long as it provides some type of key lookup
+service and.

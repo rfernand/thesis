@@ -89,7 +89,7 @@ decrypt the first bundle of files.
 Their protocols are as follow:
 %
 %% introduction of identification schemes. Par 2: proposed username/password identification schemes. Part 3: securing the network protocols. Part 4: Pending issues.
-\paragraph{Account registration}
+\subsubsection{Account registration}
 %\includegraphics[width=14cm]{../img/user_registration}\\
 To register a new user account, the user first
 has to choose a \textit{username} and a \textit{password}.
@@ -129,7 +129,7 @@ Once all operations
 have succeeded, the user is registered in the system.
 
 
-\paragraph{Sign-in}
+\subsubsection{Sign-in}
 The user uses his username to find and retrieve his \textit{login information
 file} $F_{LI}$. Then, using his \textit{password} and the \textit{salt} included in the
 \textit{login information file} $F_{LI}$, obtains the \textit{file name}
@@ -138,7 +138,7 @@ route back to where the \textit{key store file} $F_{KS}$ is stored.  Lastly, use
 \textit{symmetric key} $K_{KS}$ to decrypt the \textit{key store file}
 $F_{KS}$ and recover his user keys.
 
-\paragraph{Password Change}
+\subsubsection{Password Change}
 %To change the password, the user has to rewrite his \textit{login information
 %file}.
 
@@ -162,7 +162,7 @@ the application using the P2P protocol.  At this point, old device login
 information files can also be deleted from the
 storage to reclaim space.
 
-\paragraph{Logout}
+\subsubsection{Logout}
 %The system does not have something like a "session" to maintain; the only way
 %to identify an user is by his keys that are obtained by the identification
 %process.

@@ -9,33 +9,33 @@ stored on the node.
 
 Traditionally, P2P networks identified the different nodes that compose the
 system, but not the user behind each one of them as a different being.
-As P2P systems grow in funciontalities, the need to identify users inside the
+As P2P systems grow in functionalities, the need to identify users inside the
 network arose.
 
 While a solution of automatic identification of a node is preferable as long as
 users use a single device, equating a node with a user fails as users
 increasingly access services from multiple devices.
 %example
-Illustrative is the case of backup systems, where an impor-
-tant use case is to restore data on a different system from where
-it was backed up. Here, two different approaches to authen-
-tication have been taken. All approaches build on encrypting
+Illustrative is the case of backup systems, where an important-
+  use case is to restore data on a different system from where
+it was backed up. Here, two different approaches to authentication-
+  have been taken. All approaches build on encrypting
 backed up content, and the approaches vary in whether the
 keys are randomly derived [7], or derived from a password [8].
 In the former case, a user must manually back the keys up,
 as these keys are required to restore the backup. The systems
 deriving a key from a password are related to our proposed
-protocol, and use some related techniques. Also, approachs to handle
+protocol, and use some related techniques. Also, approaches to handle
 remembered logins, and recovering lost passwords has been
 made~\cite{kreitz2012passwords}.
 
 
 P2P networks are conformed by nodes with unique identifiers that map to their
-own IP address. That way is easy to differenciate them between each others, but
+own IP address. That way is easy to differentiate them between each others, but
 it is not enough to handle user identities. To let an user log in to the
 network using different nodes, a user identity \textit{proof} is needed. That
 is because all nodes the P2P networks shares the same functionalities, so
-anybode can identify as an user if it can prove it for the other peers. For
+anybody can identify as an user if it can prove it for the other peers. For
 this to work, the proof of identity need to be:
 \begin{description}
   \item[Unique] The proof and identity has to be unique for each user in the network.
@@ -43,7 +43,7 @@ this to work, the proof of identity need to be:
     %Unique identifiers can be obtained 
     % HASHES(username) maps to a trusted ring of nodes that determines if the
     % username is taken or not
-  \item[Verificable for everyone]  Each node has to be able to verify the proof
+  \item[Verifiable for everyone]  Each node has to be able to verify the proof
     handled by other node, making the relation with the corresponding user if it
     exists.
     % The information to verify the proof has to be in the p2p network. 
@@ -59,7 +59,7 @@ this to work, the proof of identity need to be:
 
 %%%% This was moved from formalization to the introduction. Seems better placed here.
 Existing systems for the user identification in P2P networks only consider the
-use of preshared keys to identificate the user in the network. While that can
+use of pre-shared keys to identify the user in the network. While that can
 be easily implemented, does not provide to the users the flexibility that a
 username-password based identification provides when using different devices to
 log in in the system. As the user needs to transfer manually his keys from one
@@ -74,13 +74,13 @@ private keys. In the other hand deriving the user private keys let us build the
 identification system with the same desired properties without adding
 additional complexity.
 
-To handle the user keys without compromising the users identity, aditional
+To handle the user keys without compromising the users identity, additional
 security layers needs to be placed inside the P2P network.
 
 To secure the stored keys, the proposed system uses encryption, indirection and
 rings of trust inside the network. The system goal is to offer a secure mean to
 identify an user using only his username/password knowledge taking in
-consideration the precense of bizantine nodes.
+consideration the presence of byzantine nodes.
 
 As shown in \cite{the_sybil_attack}, it is impossible to get a 100\% reliable
 system over a DHT where malicious nodes are present. The goal of our approach

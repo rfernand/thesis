@@ -33,7 +33,7 @@ service, node $A$ computes the hash
 of the service name: $K_s = SHA(ServiceName)$. Let $S_{root} $ be the node that
 is closest to $K_s$ in the DHT. $A$ uses DiversityTrustedRoute to acquire the
 leafset of $S_{root}$. $A$ thus obtains access to the set $S$ of nodes that
-process requests for service $ServiceName$. Let L be the number of nodes in a
+process requests for service $ServiceName$. Let $L$ be the number of nodes in a
 leafset: $card(S) = L + 1$.
 
 Once $A$ has acquired $S$, it proceeds to the inception of its service request
@@ -64,6 +64,20 @@ sufficient amount of identical answers after a timeout $\delta t$. this is a
 very rare and highly improbable case, as shown by our evaluation
 in~\ref{sec:evaluation}.
 
+
+\subsection{Challenges and computational puzzles}
+\label{sec:challenges_puzzles}
+A challenge or computational puzzle involve a node $X$ posing a challenge to
+$A$ that requires a large amount of computation to solve, but is easy to verify
+by the node $X$ that sent the challenge. The idea behind the use of
+computational puzzles is to restrict the abuse of certain operations in the
+system, making them costly enough to make an attack unfeasible under normal
+circumstances, but computationally affordable for normal operations of a node
+in the system. As an example, in Borisov et al.~\cite{borisov2006computational} described a
+fully decentralized mechanism based on computational puzzles for structured P2P
+overlays. The following system only needs a challenge that fulfill the
+criteria of a computational puzzle, so any kind of puzzle that fits can be chosen for
+that purpose.
 
 \subsection{User Identification Service}
 \label{sec:identificators}
@@ -253,7 +267,11 @@ SHA(U^{username})$.
 Then the node $A$ sends a request to every node $I_i$ in $I$ to register the
 $U^{salt}$ and $U^{Pub}$ under the chosen  username  $U^{username}$.
 
-Each node $I_i \in I$ then sends a user registration confirmation message to all nodes
+Each node in $I$ agrees in generating a random challenge~\ref{sec:challenges_puzzles}, which is then sent to the
+client $A$ by every node $I_i \in I$ using the node public key to encrypt the
+message.
+
+If the node $A$ succeeds in answering correctly to the challenge, each node $I_i \in I$ then sends a user registration confirmation message to all nodes
 in $I$ containing the new user public key and salt. If a node $I_i$ receives at
 least $\frac{L}{2} + 1$ identical user registration confirmation messages from
 the others nodes in $I$, it sends a affirmative answer to the node $A$.
@@ -293,9 +311,7 @@ verify the identity of the client from another set $I$ of nodes. At the end of
 the identification process, the objective is to return a session key to $A$
 and to store the created session on the nodes that belong $S$.
 
-% CHALLENGE, TODO: USE ONE AS EXAMPLE
-% CHALLENGE, TODO: Explain challenge properties
-Each node in $S$ agrees in generating a random challenge, which is then sent to the
+Each node in $S$ agrees in generating a random challenge~\ref{sec:challenges_puzzles}, which is then sent to the
 client $A$ by every node $S_i \in S$ using the user public key to encrypt the
 message.
 

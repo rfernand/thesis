@@ -1,6 +1,7 @@
 %% TODO: introduction about the chapter
 
 \section{A pseudo-secure identification service}
+\label{sec:pseudo-secure}
 As shown in \cite{the_sybil_attack}, it is impossible to get a 100\% reliable
 system over a DHT where malicious nodes are present. The goal of our approach
 is to reduce drastically the probability of a malicious node to impersonate
@@ -12,6 +13,7 @@ the system is obtain probaility of error lower than $10^{-14}$, while
 maintaining an aceptable cost in system messages.
 
 \section{Building blocks}
+\label{sec:building_blocks}
 
 For simplicity, we assume in the following that the underlyng DHT is
 Pastry~\cite{pastry} seen in the section~\ref{sec:pastry}. We suppose that
@@ -99,7 +101,9 @@ SHA(NameofS)$ is the key that identifies $S$ in DHT, and $S_{root}$ is the node
 closest to $K_s$ in the DHT. It follows that $S = \{S_1, S_2, \cdots, S_n\}$ is
 composed of node $S_{root}$ and of all the nodes in its leafset. Let $I$ be a
 identification service such that $I = \{ I_1, I_2, \cdots, I_n\}$ is a group of
-$n$ nodes belonging to the DHT. 
+$n$ nodes belonging to the DHT. Let $L$ be the number of nodes in a
+leafset: $card(S) = L + 1$.
+
 
 % interaction between A, S & I, Figure and such
 
