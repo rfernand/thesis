@@ -139,6 +139,39 @@ problem (but at the same time this can increase the cases of forgotten passwords
 %\section{Password Recovery}
 %While the system does not allow password recovery operations...
 
+
+
+%there can a time
+%when the group nodes cannot decide over something in common, with the
+%When commiting a transaction that needs a group of $n$ nodes
+%
+%
+%This causes that after a transaction that
+%involves a group of nodes, there is some amount of time where the nodes are not
+%syncronized.
+
+\subsection{Node data inconsistency}
+Synchronization between nodes does not happen instantly. Also, thanks to
+the different routes used in the network, simultaneous messages can reach a
+destination at different times. So, differently to centralized systems, P2P
+networks have a certain time where the data in some nodes are inconsistent.
+This is relevant for functions that need a
+group of nodes to be synchronized at a certain time, because this ``temporal
+inconsistency''  can cause fake positives or fake negatives in the protocols of
+the network. For example, after a successful password change request, there can
+be a time when some nodes will have the old user information. If another
+request involving the user credentials is issued while these nodes have not
+synchronized their data, depending in what nodes are used in the request, the
+validation that needs $\frac{L+1}{2}$ identical answers can fail or succeed.
+While the timeframe where the nodes have not undergone synchronization is small,
+it still can lead to problems if is it not considered in the protocols
+construction. In consequence, an added time span is considered for the
+successful completion the user registration and password change operations.
+
+%To mitigate this problem, we propose the use of an active user information store
+%maitenance.  and add consider a timespan of 1 to 2 seconds  
+
+
 \section{Portability}
 
 Although our implementation relies on Pastry as its DHT, our approach can rely
