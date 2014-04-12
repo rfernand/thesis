@@ -79,7 +79,7 @@ overlays. The following system only needs a challenge that fulfill the
 criteria of a computational puzzle, so any kind of puzzle that fits can be chosen for
 that purpose.
 
-\subsection{User Identification Service}
+\subsection{User identification service}
 \label{sec:identificators}
 %%% more message costly version:
 %%A set of $N$ nodes $I_1, I_2, \cdots, I_{N}$ manage the user information
@@ -100,7 +100,7 @@ $K = SHA(U^{username} \bigoplus SHA(U^{username}))$.
 $I_{root}$ is the node closest to $K$ in the DHT, and the quasi-secure identification authority $I =
 {I_1, I_2, \cdots, I_{L+1}}$ for the identification of the user with the
 username $username$ is composed of $I_{root}$ and of its leafset secured
-through DiversityTrustedRoute. These nodes are called identificators of the
+through DiversityTrustedRoute. These nodes are called \textit{identificators} of the
 user $U$ with username $username$.
 
  In order to prevent man-in-the-middle attack, we use an asymmetric key
@@ -137,13 +137,82 @@ replaces one of the original nodes from $I$.
 %%The figure shows a basic structure of the system. There are normal nodes and
 %%trusted nodes. Every trusted nodes maintains a \textit{trustsets}.
 
-\subsection{Lazy User's Information Store Maintenance}
+\subsection{User information store maintenance}
 \label{sec:lazy_node_maintenance}
-Insertions and departures of nodes in the DHT cause modifications of the
-leafsets, and it is therefore crucial to maintain the consistency of the user's
-information $S_{username}$ used for his identification procedures. The user's information
-consists in the user's public keys and salt. This has to be done on every node in the identification service
-$I$.\\
+
+It is important for the system maintains up-to-date the lastest 
+
+As insertions and departures of nodes in the DHT cause modifications of the
+leafset, the system needs to update the information stored in the
+\textit{identificators} nodes. This can lead to performance degradation and inconsistencies in the
+system. If left alone, there can be times where the systems
+fails to provide all the nodes $I_i$ needed for the identification authority
+$I$. We can minimize the risk of this happening using an maitenance scheme for
+the identificators nodes data. They can be different types of maitenance approaches:
+\textit{active}, \textit{lazy} and \textit{opportunistic}.
+
+\paragraph{Active Maintenance}
+  In \textit{active maitenance}, a
+node handles the failure or departure of an existing node in $I$ (or a new
+joining node added to $I$) by sending a copy of its stored user's
+information data to the others nodes in $I$.
+The user's information consists in the user's public keys and salt. This has to be done on every node in the identification service
+$I$, with $card(I) = L+1$, being $L+1$ the size of the $I_{root}$ node leafset.
+
+ This algorithm converges quickly, but each times it uses $O((L+1)^2)$ messages
+for a quasi-identification authority of $L+1$ nodes.
+%% What does pastry do?
+Pastry uses a more complex variant of active maitenance that is
+bandwidth efficient.
+Active maitenance runs the risk of creating a positive feedback cycle as
+follows: Consider the case whereby a node's access link to the network is
+sufficiently lcongeted, which causes timeouts for the node to believe that one
+of its leafset nodes has failed (or left the system). If the peer is recovering
+in an active mode, maitenance operations will begin. This operation will add
+even more packets to its existing congested network link, which will increase
+the likelihood that more other peers will mistakenly deduce that other of its leafset
+nodes has failed in the system. As this process continues, congestion collapse
+on its access link may eventually happen.
+Under low peer churn (rate of which number of nodes are moving in and out of the
+system in a specific period of time), active maintenance is efficient and scalable because
+maintenance messages are only sent in response to actual overlay membership
+change events. As the churn rate increases, however, this process becomes more
+expensive. A peer sees more churn when its leafset gets larger in size.
+
+% pastry
+% pastry basicamente usa mantenimiento activo, agregando un metodo para provar
+% si un nodo se ha ido o falla antes de sacarlo de la lista de nodos del
+%leafset. para evitar sacar un nodo que se encuentra vivo del set, la consulta
+%para comprobar si esta respondiendo se realiza varias veces, utilizando grandes
+%tiempos de timeout.
+% de la misma forma, no agrega un nodo nuevo si este no ha respondido
+% previamente
+% en el peor caso aumenta la cantidad de mensajes en (k(L+1)(L)), donde k es la cantidad de
+% pruebas que se envian para verificar si un nodo esta vivo o no.
+
+\paragraph{Opportunistic Maintenance}
+
+In opportunistic maintenance, an identificator node periodically shares its user information
+data set with each of the members in $I$, which responds in kind with its own
+user information data set. This proccess takes place independently of the peer
+detecting changes in the $I$ set of nodes. A node picks one random member of
+its $I$ set to share .....
+
+\paragraph{Lazy Maintenance}
+
+%Si esto no se trata, pueden haber momentos en que el sistema falla en obtener
+%todos los nodos de la autoridad de identifacion  $I$.
+
+%each time a node leaves or enters the DHT, the system needs to update the
+%information of the User Identification Service.
+%As nodes entering/leaving the leafset of the DHT leads to inconsistency of the
+%information of the User Identification Service stored in each one,
+
+%Insertions and departures of nodes in the DHT cause modifications of the
+%leafsets, and it is therefore crucial to maintain the consistency of the user's
+%information $S_{username}$ used for his identification procedures. The user's information
+%consists in the user's public keys and salt. This has to be done on every node in the identification service
+%$I$.\\
 
 Upon entering a leafset, a node $X$ must update its own view of the user's
 information. Analog to the lazy log consistency maintenance procedure seen
@@ -197,7 +266,7 @@ as responding to a change password request while the user information is not up
 to date may lead to problems in further requests. Therefore, $X$ postpones all
 transactions about the user information until the synchronization is over.
 
-\subsection{Node Failures and Node Departures}
+\subsection{Node failures and node departures}
 \label{sec:node_failures_and_departures}
 Two situations call for the removal of a node. A normal departure corresponds
 to an honest node that notifies its departure to the nodes of its leafset. In a
@@ -225,12 +294,114 @@ uses DiversityTrustedRoute to acquire the leafset of the node it has just
 added. $X$ then synchronizes its stored user's information with the nodes in
 the acquired leafset by means of the scheme described in~\ref{sec:lazy_node_maintenance}.
 
+%%\subsection{Active user information store maintenance}
+%%\label{sec:active_node_maintenance}
+%%
+%%%Insertions and departures of nodes in the DHT cause modifications of the
+%%%leafsets, and it is therefore crucial to maintain the consistency of the user's
+%%%information $S_{username}$ used for his identification procedures. The user's information
+%%%consists in the user's public keys and salt. This has to be done on every node in the identification service
+%%%$I$.\\
+%%
+%%There can be a successful operation that involved only $L+1/2$ nodes. That means
+%%that almost half of the nodes in charge had some kind of problem during the
+%%operation proccess. With a lazy store maitenance, there can be a large amount
+%%of time where the nodes will not be synchronized, so an active store maitenance
+%%is needed.
+%%
+%%Upon a successfully user registration or password change operation,
+%%%To propagate changes in the user information to every node in charge,
+%%every node that participated in the operation sends a
+%%message to every node in his leafset notifying about the changes incurred. If a
+%%node ........
+%%
+%%
+%%Upon entering a leafset, a node $X$ must update its own view of the user's
+%%information. Analog to the lazy log consistency maintenance procedure seen
+%%in~\cite{p2p_certification}, it starts by following the steps below to find
+%%which user's information store must be updated.\\
+%%
+%%\textit{Step 1:} $X$ constructs the set of nodes
+%%$N = \{ X_{-L/2}, X_{-L/2 +1}, \cdots, X, \cdots X_{L/2 -1}, X_{L/2} $
+%%composed of its leafset, and of the $\frac{L}{2} +1$ nodes both on the right
+%%side and on the left of its leafset. 
+%%%% TODO: figure example  of this
+%%In order to build this set of nodes, $X$ can ask the farthest nodes $X_{-L/2}$
+%%and $X_{L/2}$ of its leafset for their own respective leafsets. If one of these
+%%nodes fails to answer in a timely manner, $X$ can ask the second to farthest
+%%node, and so on until its immediate neighbors in the leafset. Having
+%%$\frac{L}{2} +1$ malicious neighbors on both sides is highly improbable, and
+%%practically unfeasible: for more details about this statement, please refer to
+%%our probabilistic evaluation in section~\eqref{sec:eval_lazy_maintenance}. \\
+%%
+%%\textit{Step 2:} $X$ computes interval $L$ such that
+%%$$
+%%L = [ X_{-L/2} - \frac{| X_{-L/2} - X_{-L/2 +1} |}{2}, X_{L/2} +\frac{|
+%%X_{L/2} - X_{L/2 -1} |}{2} ]
+%%$$
+%%
+%%
+%%and sends it to every node in set $N$. Upon reception of this message, every
+%%node replies with a set of all the usernames $U^{username} \in L$ it
+%%stores, along with the last information regarding the user's
+%%information corresponding to each username. Thus the format of a response is a
+%%variable-size set of pairs $\{ U^{username}, S_{username}\}$.\\
+%%
+%%
+%%\textit{Step 3:} $X$ builds set 
+%%$Y =  \{ \{U^{username_i}, S_{username_i}\},\cdots,\{ U^{username_j},
+%%S_{username_j}\} \} $ the union of all received usernames and user's
+%%information. $X$ then discards all pairs $\{ U^{username}, S_{username}\}$ that
+%%appear less than $\frac{L}{2} +1$ times in $Y$, since these may have been
+%%generated by colluding nodes. Once this is done, $X$ synchronizes all the
+%%user's information store whose username matches one of the remaining usernames
+%%in set $Y$.\\
+%%
+%%% checkpoints -> not used in this implementation
+%%%For every file of user information that $X$ must synchronize, $X$ selects a node $Z$ in $N$ that
+%%%holds this user information. If $X$ does not have any entry for this username,
+%%%then $X$ must ask $Z$ for the entire user's information store. Otherwise, $X$
+%%%sends the last $q$ public keys and salts it has of the user.
+%%
+%%It is essential for $X$ to handle the synchronization as an atomic operation,
+%%as responding to a change password request while the user information is not up
+%%to date may lead to problems in further requests. Therefore, $X$ postpones all
+%%transactions about the user information until the synchronization is over.
+%%
+%%\subsection{Node failures and node departures}
+%%\label{sec:node_failures_and_departures}
+%%Two situations call for the removal of a node. A normal departure corresponds
+%%to an honest node that notifies its departure to the nodes of its leafset. In a
+%%crash departure situation, the node fails silently. Pastry exchanges
+%%periodical heartbeats among nodes in the same leafset in order to detect such
+%%failures.\\
+%%
+%%Upon removal of a peer in its leafset, a node $X$ will look for a replacement.
+%%$X$ starts by identifying which side of its leafset it must fix: the left side
+%%or the right side, depending on the nodeId of the node that was removed. Let $N
+%%= {N_{\alpha}, N_{\beta}, \cdots, N_{\omega}}$ be the set of $\frac{L}{2} - 1$
+%%nodes corresponding to the side of the leafset in need of fixing. In order to
+%%find the next node to add to its leafset, $X$ request the leafset of the
+%%farthest node $N_{\omega}$ in set $N$. Upon reception of the answer, $X$ then
+%%inserts in its own leafset the reference to the node closest to $N_{\omega}$
+%%that does not yet belong to $N$. If $N_{\omega}$ remains silent, $X$ must
+%%repeat the operation with the second to farthest node in $N$, and so on until
+%%reaching node $N_{\alpha}$ if no timely answer ever comes back. If $X$ fails to
+%%receive any answer from the nodes in its leafset, then it cannot repair its
+%%leafset.\\
+%%
+%%Once it has successfully fixed its leafset, $X$ must synchronize its user's
+%%information. $X$
+%%uses DiversityTrustedRoute to acquire the leafset of the node it has just
+%%added. $X$ then synchronizes its stored user's information with the nodes in
+%%the acquired leafset by means of the scheme described in~\ref{sec:lazy_node_maintenance}.
+
 
 \section{System Protocols}
 We now describe our protocols based on the system model. 
 %Figure 2 shows the information objects and
 %their storage locations, with arrows for the abstract flow of the
-%login procedure, Table I lists the terms used in the algorithms.
+%sign in procedure, Table I lists the terms used in the algorithms.
 %A. Account Registration
 
 \subsection{Account registration}
@@ -288,7 +459,7 @@ the node $A$ is prompted for a new username.
 
 \subsection{User private key recovery}
 \label{sec:private_key_recovery}
-%\includegraphics[width=14cm]{../img/login_protocol_mockup}\\
+%\includegraphics[width=14cm]{../img/sign in_protocol_mockup}\\
 
 First, the node $A$ looks for the set $I$ set of nodes that will constitute the
 identification service for the user $U$.
@@ -302,7 +473,7 @@ $I$ regarding the user salt, then $A$ assumes that the salt retrieved
 corresponds to the one registered previously by the user ($U^{salt}$). Finally,
 the node proceeds to derive the user private key $U^{priv}$ using his user password $U^{password}$.
 
-\subsection{User Sign-in}
+\subsection{User sign in}
 %\includegraphics[width=14cm]{../img/session_creation_protocol_mockup}\\
 
 Before carrying out a transaction for a client $A$, $S$ proceeds to

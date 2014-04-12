@@ -130,7 +130,7 @@ Later,...
 ... The final goal...
 
  %The main features discussed are (a)
-%the users login, (b) users posts, (c) users contacts list, (d) groups and organizations
+%the users sign in, (b) users posts, (c) users contacts list, (d) groups and organizations
 %among users, (e) privacy settings and (f) integration with other services and
 %applications.
 
@@ -145,7 +145,7 @@ Later,...
 %implementation of a P2P social networking service.
 % We thoroughly investigate the requirements and features of social networks, along with the
 %challenges facing a P2P implementation. The main features discussed are (a)
-%the users login, (b) users posts, (c) users contacts list, (d) groups and organizations
+%the users sign in, (b) users posts, (c) users contacts list, (d) groups and organizations
 %among users, (e) privacy settings and (f) integration with other services and
 %applications.
 %After the analyzis of these features with their current solutions,
@@ -244,7 +244,7 @@ their scenario, although their proposal could be extended to support password
 change using our techniques.
 % passwords in p2p networks
 Also, approachs to handle
-remembered logins, and recovering lost passwords has been
+remembered sign ins, and recovering lost passwords has been
 made~\cite{kreitz2012passwords}.
 
 \subsection{Problem statement}
@@ -253,7 +253,7 @@ Most of existing systems for the user identification in P2P networks only consid
 use of preshared keys to identificate the user in the network. While that can
 be easily implemented, does not provide to the users the flexibility that a
 username-password based identification provides when using different devices to
-log in in the system. As the user needs to transfer manually his keys from one
+sign in in the system. As the user needs to transfer manually his keys from one
 device to another, there are many security issues when they are handled without
 care or the devices (like a cellphone) are lost. 
 
@@ -324,7 +324,7 @@ To register a new user account, the user first
 has to choose a \textit{username} and a \textit{password}.
 
 Considering a key-based authentication, the user creates a \textit{key store file}, containing all the
-keys used by the P2P application the user wants to log in to.
+keys used by the P2P application the user wants to sign in to.
 The user generates a cryptographic key to authenticate the write operations
 that will be made in the file, and store this key along with the others in the
 \textit{key store file}.
@@ -334,7 +334,7 @@ that will be made in the file, and store this key along with the others in the
 The user then creates a \textit{symmetric key $K_{KS}$} ,
 encrypts the file content with this key and puts the ciphertext
 into the storage, obtaining a \textit{file name $f_{KS}$} . Now, the user
-creates a \textit{login information file} by creating a random
+creates a \textit{sign in information file} by creating a random
 byte string \textit{salt}, deriving a \textit{symmetric key $K_{LI}$} from the user
 \textit{password} and the \textit{salt}.
 Using the new \textit{ symmetric key $K_{LI}$}, the user encrypts the
@@ -358,10 +358,10 @@ have succeeded, the user is registered in the system.
 
 
 
-\paragraph{Sign-in}
-The user uses his username to find and retrieve his \textit{login information
+\paragraph{Sign in}
+The user uses his username to find and retrieve his \textit{sign in information
 file}. Then, using his \textit{password} and the \textit{salt} included in the
-\textit{login information file}, obtains the \textit{file name $f_{KS}$} used to
+\textit{sign in information file}, obtains the \textit{file name $f_{KS}$} used to
 route back to where the \textit{key store file} is stored.  Lastly, uses the
 \textit{symmectric key $K_{KS}$} to dencrypt the \textit{key store file} and recover
 his user keys.
@@ -373,19 +373,19 @@ process.
 
 
 \paragraph{Password Change}
-To change the password, the user has to rewrite his \textit{login information
+To change the password, the user has to rewrite his \textit{sign in information
 file}.
 
-Before the user can change the password, she must log in using her password to
+Before the user can change the password, she must sign in using her password to
 obtain $K_{LI}$ . With this information, the password change can be accomplished:
 the user is asked for a new password and a new salt is
 generated. The key-derivation function is used to generate a new key
 $K_{LInew}$
-for the login information file. Then, the content of the key-store file is
+for the sign in information file. Then, the content of the key-store file is
 fetched and decrypted (with the old key). A new key $K_{KSnew}$ is generated and
 used for encrypting the key-store content again before it is saved to the
 storage system, obtaining a new filename $f_{KSnew}$.
-Finally, the login information file
+Finally, the sign in information file
 is updated: $f_{KSnew}$, $K_{KSnew}$, the write credential KW as well as a new empty
 device mapping devmapnew are encrypted with the new key $K_{LInew}$.
   Together with the new salt, this ciphertext is written to the distributed

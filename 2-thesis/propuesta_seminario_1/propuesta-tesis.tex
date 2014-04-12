@@ -206,7 +206,7 @@ in~\cite{kreitz2012passwords}.
 
 % passwords in p2p networks
 At last, an initial proposal for passwords in P2P networks has been presented,
-designed to handle remembered logins, and recovering lost passwords
+designed to handle remembered sign ins, and recovering lost passwords
 in an idealized network~\cite{kreitz2012passwords}, and has not been proved to
 work in a real environment.
 
@@ -216,7 +216,7 @@ Most of existing systems for the user identification in P2P networks only consid
 use of pre-shared keys to identify the user in the network. While that can
 be easily implemented, does not provide to the users the flexibility that a
 username-password based identification provides when using different devices to
-log in in the system. As the user needs to transfer manually his keys from one
+sign in in the system. As the user needs to transfer manually his keys from one
 device to another, there are many security issues when they are handled without
 care or the devices (like a cellphone) are lost. 
 
@@ -287,7 +287,7 @@ To register a new user account, the user first
 has to choose a \textit{username} and a \textit{password}.
 
 Considering a key-based authentication, the user creates a \textit{key store file}, containing all the
-keys used by the P2P application the user wants to log in to.
+keys used by the P2P application the user wants to sign in to.
 The user generates a cryptographic key to authenticate the write operations
 that will be made in the file, and store this key along with the others in the
 \textit{key store file}.
@@ -297,7 +297,7 @@ that will be made in the file, and store this key along with the others in the
 The user then creates a \textit{symmetric key $K_{KS}$} ,
 encrypts the file content with this key and puts the ciphertext
 into the storage, obtaining a \textit{file name $f_{KS}$} . Now, the user
-creates a \textit{login information file} by creating a random
+creates a \textit{sign in information file} by creating a random
 byte string \textit{salt}, deriving a \textit{symmetric key $K_{LI}$} from the user
 \textit{password} and the \textit{salt}.
 Using the new \textit{ symmetric key $K_{LI}$}, the user encrypts the
@@ -321,10 +321,10 @@ have succeeded, the user is registered in the system.
 
 
 
-\paragraph{Sign-in}
-The user uses his username to find and retrieve his \textit{login information
+\paragraph{Sign in}
+The user uses his username to find and retrieve his \textit{sign in information
 file}. Then, using his \textit{password} and the \textit{salt} included in the
-\textit{login information file}, obtains the \textit{file name $f_{KS}$} used to
+\textit{sign in information file}, obtains the \textit{file name $f_{KS}$} used to
 route back to where the \textit{key store file} is stored.  Lastly, uses the
 \textit{symmetric key $K_{KS}$} to decrypt the \textit{key store file} and recover
 his user keys.
@@ -336,19 +336,19 @@ process.
 
 
 \paragraph{Password Change}
-To change the password, the user has to rewrite his \textit{login information
+To change the password, the user has to rewrite his \textit{sign in information
 file}.
 
-Before the user can change the password, he must log in using his password to
+Before the user can change the password, he must sign in using his password to
 obtain $K_{LI}$ . With this information, the password change can be accomplished:
 the user is asked for a new password and a new salt is
 generated. The key-derivation function is used to generate a new key
 $K_{LInew}$
-for the login information file. Then, the content of the key-store file is
+for the sign in information file. Then, the content of the key-store file is
 fetched and decrypted (with the old key). A new key $K_{KSnew}$ is generated and
 used for encrypting the key-store content again before it is saved to the
 storage system, obtaining a new filename $f_{KSnew}$.
-Finally, the login information file
+Finally, the sign in information file
 is updated: $f_{KSnew}$, $K_{KSnew}$, the write credential $K_W$ % as well as a new empty device mapping devmapnew are
 is encrypted with the new key $K_{LInew}$.
   Together with the new salt, this ciphertext is written to the distributed

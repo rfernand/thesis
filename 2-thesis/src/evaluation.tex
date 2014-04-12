@@ -14,10 +14,10 @@ systems~\cite{p2p_certification}.
 
 %%%Theoretical evaluation
 
-\section{Securing the nodes of a Leafset}
+\section{Securing the nodes of a leafset}
 \label{sec:eval_leafset}
   
-  \subsection{\textit{Probability of failure}}
+  \subsection{Probability of failure}
   
   \begin{table}
     \centering
@@ -48,7 +48,7 @@ systems~\cite{p2p_certification}.
     P= p^{\frac{L}{2}}
   \end{equation}
   
-  \subsection{\textit{Message complexity}}
+  \subsection{Message complexity}
 
       %As seen in~\cite{p2p_certification}
       According to the equation~\eqref{eq:p_leafset}, the probability of having
@@ -108,7 +108,7 @@ DHT increases.
     \label{tab:p_account_registration}
   \end{table}
   
-  \subsection{\textit{Probability of failure}}
+  \subsection{Probability of failure}
     The user registration between a node $A$ and $I$ can fail if $I$ does
 not respond (or responds false information) to $A$ during the registration request or during the registration
 progress. In all cases, this corresponds to the probability that more than
@@ -159,7 +159,7 @@ request or responds with a fake registration response is
 between $A$ and $I$, for a leafset size of $L = \{8,16,32\}$.
 
     
-  \subsection{\textit{Message complexity}}
+  \subsection{Message complexity}
     First, $A$ must get the leafset of $I$. The associated cost is $n = 5
 \times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
     The number $n$ of message inherent to the transaction itself is given by
@@ -225,7 +225,7 @@ constant, and $O(log(N))$. In the best case,
     \label{tab:p_lazy_maintenance}
   \end{table}
   
-  \subsection{\textit{Probability of failure}}
+  \subsection{Probability of failure}
 
     We must consider two cases for certificate log maintenance: when a new node
 enters the leafset (case 1) and when a node leaves the leafset (case 2).
@@ -288,7 +288,7 @@ operation will fail, given increasing leafset sizes $L = {8,16,32}$.
     \label{tab:p_private_key_recovery}
   \end{table}
 
-  \subsection{\textit{Probability of failure}}
+  \subsection{Probability of failure}
 
     The user private key recovery between a node $A$ and $I$ can fail (a) if $I$ does
 not respond (or responds fake information) to $A$ during the key recovery
@@ -309,7 +309,7 @@ private key recovery fails is:
 between $A$ and $I$, for a leafset size of $L = \{8,16,32\}$.
 
     
-  \subsection{\textit{Message complexity}}
+  \subsection{Message complexity}
     First, $A$ must get the leafset of $I$. The associated cost is $n = 5
 \times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
     The number $n$ of message inherent to the transaction itself is given by
@@ -333,7 +333,7 @@ constant, and $O(log(N))$. In the best case,
 scalable when the size $N$ of the DHT increases.
 
 
-\section{User Sign-in}
+\section{User Sign in}
 \label{sec:eval_sign_in}
   \begin{table}
     \centering
@@ -355,7 +355,7 @@ scalable when the size $N$ of the DHT increases.
     \label{tab:p_sign_in}
   \end{table}
   
-  \subsection{\textit{Probability of failure}}
+  \subsection{Probability of failure}
     A sign-in request between a node $A$ and the service $S$, can fail (a) if the identification service $I$ does
 not respond (or responds fake information) to $S$ during the user information recovery
 request, or (b) if $S$ does not respond (or responds fake information) to $A$
@@ -377,7 +377,7 @@ information recovery request, or that $S$ not respond to the node $A$ is
     Table~\eqref{tab:p_sign_in} shows the probability of failure
 between $A$, the service $S$ and $I$, for a leafset size of $L = \{8,16,32\}$.
 
-  \subsection{\textit{Message complexity}}
+  \subsection{Message complexity}
     First, $A$ must get the leafset of $S$. The associated cost is $n = 5
 \times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
 Then, every node in $S$ must get the leafset of $I$, with each leafset request
@@ -431,7 +431,7 @@ scalable when the size $N$ of the DHT increases.
     \label{tab:p_logout}
   \end{table}
   
-  \subsection{\textit{Probability of failure}}
+  \subsection{Probability of failure}
     The user logout between a node $A$ and $S$ can fail if $S$ does
 not respond (or responds false information) to $A$ during the logout request.
   In all cases, this corresponds to the probability that more than
@@ -451,7 +451,7 @@ request or responds with a fake logout response is
 between $A$ and $S$, for a leafset size of $L = \{8,16,32\}$.
 
     
-  \subsection{\textit{Message complexity}}
+  \subsection{Message complexity}
     First, $A$ must get the leafset of $S$. The associated cost is $n = 5
 \times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
     The number $n$ of message inherent to the transaction itself is given by
@@ -495,7 +495,7 @@ constant, and $O(log(N))$. In the best case,
     \label{tab:p_password_change}
   \end{table}
   
-  \subsection{\textit{Probability of failure}}
+  \subsection{Probability of failure}
     A password change request between a node $A$, the identification service
 $I$ can fail (a) if $L/2 + 1$ nodes in $I$ does not responds (or responds fake
 information) correctly the password change confirmation message to the nodes 
@@ -518,7 +518,7 @@ information recovery request is
     Table~\eqref{tab:p_password_change} shows the probability of failure
 between $A$, the service $S$ and $I$, for a leafset size of $L = \{8,16,32\}$.
 
-  \subsection{\textit{Message complexity}}
+  \subsection{Message complexity}
     First, $A$ must get the leafset of $I$. The associated cost is $n = 5
 \times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
 %%% not needed, this has to be done in the leafset maintenance

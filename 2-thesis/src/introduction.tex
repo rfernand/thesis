@@ -1,36 +1,40 @@
-P2P networks are conformed by nodes with unique identifiers that map to their
-own IP address. That way is easy to differentiate them between each others, but
-it is not enough to handle user identities. To let an user log in to the
-network using different nodes, a user identity \textit{proof} is needed. That
-is because all nodes the P2P networks shares the same functionalities, so
-anybody can identify as an user if it can prove it for the other peers. For
-this to work, the proof of identity need to be:
+P2P networks are form by nodes with unique identifiers that map to their
+own IP address making it easy to differenciate each node from another, but
+impossible to verify a particular user.
+ To let a user sign in to the
+network using different nodes, a user identity \textit{proof} is needed.
+
+% TODO: REWRITE THIS
+%An user identity proof is something known only by the user what diferenciates one user from another in the network
+ %That %is because all nodes the P2P networks shares the same functionalities, so
+%anybody can identify as an user if it can prove it for the other peers.
+
+For this to work, the proof of identity needs to be:
 \begin{enumerate}[a)]
   \item \textbf{Unique:} The proof and identity has to be unique for each user in the network.
 
     %Unique identifiers can be obtained 
     % HASHES(username) maps to a trusted ring of nodes that determines if the
     % username is taken or not
-  \item \textbf{Verifiable for everyone:}  Each node has to be able to verify the proof
-    handled by other node, making the relation with the corresponding user if it
+  \item \textbf{Verifiable for everyone:}  Each node has to be able to verify proofs
+    handled by other nodes, identifying the relationship with the corresponding user if it
     exists.
     % The information to verify the proof has to be in the p2p network. 
     % Trusted ring of nodes that store the information and give it to the nodes
     % that wants to verify the user.
   \item \textbf{Impossible to guess or break:} They way to obtain the proof should not
-    be guessed by other node or obtained without specific knowledge of the
-    corresponding user.
+    be able to be guessed by other nodes or obtained without specific knowledge
+    provided by the corresponding user.
     % this part is hard. It cannot be impossible, but it can be very very very
     % hard to break without having the right private user knowledge.  Cryptographic proof.
 \end{enumerate}
 
-Traditionally, P2P networks identified the different nodes that compose the
+Traditionally, P2P networks identified the different nodes that composed the
 system, but not the user behind each one of them as a different being.
-As P2P systems grow in functionalities, the need to identify users inside the
+As P2P systems grew in functionalities, the need to identify users inside the
 network arose.\\
 
-While a solution of automatic identification of a node is preferable as long as
-users use a single device, equating a node with a user fails as users
+While a solution of automatic identification of a node is preferable, equating a node with a user fails as users
 increasingly access services from multiple devices.
 %example
 Illustrative is the case of backup systems, where an important-
@@ -38,60 +42,63 @@ Illustrative is the case of backup systems, where an important-
 it was backed up. \\
 
 %%%% This was moved from formalization to the introduction. Seems better placed here.
-Existing systems for the user identification in P2P networks only consider the
+Existing systems of user identification in P2P networks only consider the
 use of pre-shared keys to identify the user in the network. While that can
-be easily implemented, does not provide to the users the flexibility that a
-username-password based identification provides when using different devices to
-log in in the system. As the user needs to transfer manually his keys from one
-device to another, there are many security issues when they are handled without
-care or the devices (like a cellphone) are lost. \\
+be easily implemented, it does not provide the flexibility that a
+username-password based identification provides when 
+users sign in to the system from different devices.
+However, when users manually transfer their keys from one device to another
+many security issues arise, such as the keys being handled carelessly, or the
+devices, like a cellphone, being lost.\\
 
-The use of a username and a password means that the user keys needs to: a) be
+The use of a username and a password means that the user keys need to: a) be
 secured inside the identification system or b) be derived from information
-stored in the identification system. Between  the two options, the first one
-needs a trusted storage with additional use of encryption to secure the
-private keys, and have some issues with offline brute force
-attacks~\cite{kreitz2012passwords}. In the other hand deriving the user private
-keys let us build the identification system with the same desired properties without adding an
-additional complexity, but does support recovery password mechanism for the
+stored in the identification system. The first option
+needs trusted storage with additional use of encryption to secure the
+private keys, and would have some issues with offline brute force
+attacks~\cite{kreitz2012passwords}. The latter option let us build the identification system with the same desired properties without adding
+additional complexity, but does support a password recovery mechanism for the
 user identification system.\\
-Still, to handle the user keys without compromising the users identity, additional
-security layers needs to be placed inside the P2P network.
+
+Still, to handle the user keys without compromising the user's identity, additional
+security layers need to be placed inside the P2P network.
 To secure the stored keys, the proposed system uses encryption, indirection and
-rings of trust inside the network. The system goal is to offer a secure mean to
-identify an user using only his username/password knowledge taking in
-consideration the presence of byzantine nodes. The following work will only
-focus in the registration, sign-in, logout and password change protocols,
-leaving aside the inclusion of password recovery mechanisms in the system. If
-an user lose his password and private key used to sign in the system, the user
-registered identity is lost and a new identity will need to be registered.\\
+rings of trust inside the network. The system goal is to offer a secure means to
+identify a user using only his username/password knowledge, taking into
+consideration the presence of Byzantine nodes. The following work will only
+focus on the registration, sign-in, logout and password change protocols,
+leaving aside the issue of password recovery mechanisms in the system. If
+a user loses his password and private keys used to sign in to the system, the
+user's registered identity is lost and a new identity will need to be registered.\\
 
 As shown in \cite{the_sybil_attack}, it is impossible to get a 100\% reliable
-system over a DHT where malicious nodes are present. The goal of our approach
-is to reduce drastically the probability of a malicious node to impersonate
-another user using the identification system.\\
+system over a DHT where malicious nodes are present. 
+The goal of our approach is to drastically reduce the probability of a
+malicious node impersonating another user who is using the identification
+system.\\
 %%%% This was moved from formalization to the introduction. Seems better placed here.
 
 
 This present work will have the following structure:\\
 
-In Chapter~\ref{sec:soa_p2p} we show the definition of P2P networks, explaining the
-main characteristics of a P2P system, choosing the main base for the
-construction of the identification system. In
-Section~\ref{sec:soa_p2p_user_identification} we will see what we define as a
-user identification system, identifying the existing solutions and their main
-problems. In Section~\ref{sec:soa_p2p_trust} we see the solutions that can
+In Chapter~\ref{sec:soa_p2p} we explain the
+main characteristics of a P2P system and choose the main base for the
+construction of our identification system. In
+Section~\ref{sec:soa_p2p_user_identification}
+we define a user identification system, and discuss proposed solutions for
+improving their security and those solution's main problems.
+ In Section~\ref{sec:soa_p2p_trust} we see the solutions that can
 develop a trusted ring inside a P2P network, allowing the maintenance of
 quasi-trusted services in the system.  
 In Chapter~\ref{sec:formalization} we define the main assumptions and building
 blocks for the
-identification system, formalizing the notations used for the following system's protocols.
-In Chapter~\ref{sec:system}  we will describe the different parts of the system and how the
+identification system, formalizing the notations used for our proposed system's protocols.
+In Chapter~\ref{sec:system}  we describe the different parts of the system and how the
 identification protocols will work.
 In Chapter~\ref{sec:evaluation} we present a probability assessment of
 the algorithms used in our identification system, and show that it is highly
 improbable to fail.
-In Chapter~\ref{sec:validation} we will discuss some security issues and the portability of our
+In Chapter~\ref{sec:validation} we discuss some security issues and the portability of our
 solution.
-In Chapter~\ref{sec:conclusion} we conclude the main achievements of our work
+In Chapter~\ref{sec:conclusion} we conclude with the main achievements of our work
 and depict the next steps for the future.
