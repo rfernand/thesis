@@ -18,8 +18,52 @@ in order to collude against the requester, or it might deny any service by
 remaining silent. Therefore, a simple request to $K_{ROOT}$ will not suffice to
 acquire a reliable leafset associated with $K$.
 
+So, to secure the leafset nodes, redundancy is needed. Redundancy sends multiple copies of
+the same message in order to improve the probability of success, at the cost of
+higher message overheads.
+
+Diversity routing~\cite{castro2002secure}, multiple redundant router
+algorithm~\cite{wallach2003survey} and
+multiple path routing~\cite{artigas2005novel} are some examples of this type
+of approach. Diversity routing sends copies of the message
+along diverse routes to the destination nodes, using different
+neighbours of the source node~\cite{castro2002secure}.
+The Wallash approach~\cite{wallach2003survey}
+also sends multiple copies to all neighbours of the source nodes.
+To avoid attacks based on locality, it uses a constrained routing
+table, allowing only the logically closest nodes to be inserted
+in the tables. The Cyclone multipath routing approach~\cite{castro2002secure}
+increases the number of disjoint paths among the peers in the
+overlay.
+
+
+Also, we will be using a solution build over a reputation system to improve the
+routing process probability of success.
+
+Fetodova and Veltri~\cite{fedotova2009reputation} integrate a
+reputation system with the process of routing and data lookup
+for a DHT structure. The idea is to ignore the nodes with
+bad reputation during the routing and look-up process.  Dewanet al.~\cite{dewan2004using} use reputations based on the history of
+nodes relaying packets to ensure a packet will be successfully
+delivered in a mobile ad hoc network. In this case the next
+hop is sent to the choice with the highest reputation value.
+However, the highest reputation value may not be good enough.
+Our approach builds a ring structure so that all honest nodes are
+linked together, and can contact each other to deliver a trusted
+service.
+
+Huang et al. present RouteGuard~\cite{huang2010routeguard}, a scheme that
+distinguishes between cooperative and uncooperative nodes in
+the routing process. Using a reputation system, the nodes fill
+their routing tables with cooperative nodes, thus isolating the
+uncooperative ones. This approach does not
+allow to find new cooperative nodes. Moreover, this approach
+does not consider the dynamism of peer behaviour, which can
+cause fluctuations of the reputation values.
+
 Our solution for mitigating this issue is to use the DiversityTrustedRoute
-algorithm~\cite{diversity_trusted_route}. DiversityTrustedRoute uses different
+algorithm~\cite{rosas2011corps}. It searches for honest nodes to improve the
+service, and uses different
 nodes as starting points in order to reach the same root node $K_{ROOT}$. The
 diversity of the routing tables on each node guarantees a very high probability
 of reaching root node $K_{ROOT}$ using different paths, and therefore of

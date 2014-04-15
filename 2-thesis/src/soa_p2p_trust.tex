@@ -1,6 +1,35 @@
 \section{Trust in P2P networks}
 \label{sec:trust_in_p2p}
 
+In comparison with centralized approaches, we know that the reliability of a
+centralized identification service depends mostly on the
+supporting host: its availability, its security and its capacity  to handle
+significant amounts of concurrent requests. 
+In practice this entails that a centralized identification service is not
+foolproof: it is as trustworthy as the group of servers it runs on.
+Well-established centralized identification services have been breached.\\ %%%%%%%%% TODO: ADD REFERENCES
+
+
+In a decentralized approach, the main issue is that the supporting hosts are
+not accountable for their decisions and therefore cannot be trusted.
+Since nodes in a P2P network are heterogeneous, some nodes
+might be benevolent in providing services. Some might be 
+buggy or malicious and cannot provide services with the 
+quality that they advertise. Since there is no centralized 
+node to serve as an authority to monitor and punish the 
+nodes that behave badly, malicious nodes have an incentive 
+to provide poor quality services for their benefit because 
+they can get away. Some traditional security techniques, 
+such as service providers requiring access authorization, or 
+consumers requiring server authentication, are used as 
+protection from known malicious nodes. However,
+% relying in centralized services
+%limits the growth of the decentralized network and still
+ they cannot prevent from nodes providing variable-quality 
+service, or nodes that are unknown.
+
+
+\subsection{Trust management in P2P networks}
 At the absence of trusted nodes in a P2P network, additional mechanisms to
 attain certain grade of trust between the participants of a transaction are
 needed. There are reputation systems that grade each node with a reputation
