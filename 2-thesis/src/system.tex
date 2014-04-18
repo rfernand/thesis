@@ -119,9 +119,56 @@ system, making them costly enough to make an attack unfeasible under normal
 circumstances, but computationally affordable for normal operations of a node
 in the system. As an example, in Borisov et al.~\cite{borisov2006computational} described a
 fully decentralized mechanism based on computational puzzles for structured P2P
-overlays. The following system only needs a challenge that fulfill the
+overlays.
+
+
+This solutions rises the computational cost of the transaction in a
+considerable amount.
+
+%%%% TODO Translate to english
+
+%A pesar de que el usar un puzzzle computacional en una trasanccion hace que el
+%costo de esta aumente considerablemente, este debe implementarse de tal forma
+%que no sea un inconveniente para un usuario comun de la plataforma. Para esto,
+%se puede manejar de que el costo computacional aumente exponencialmente por
+%cada consulta adicional que se desee realizar por sobre lo que un usuario
+%normal realizaria. Asi, se logra que el costo para un usuario normal sea lo
+%suficientemente bajo como para ser imperceptible, mientras que si un usuario
+%malintencionado decide abusar del sistema realizando consultas reiteradas al
+%mismo se encontrara con un costo incremental como para que no le salga a
+%cuenta.
+
+%%%%%%% english translation
+
+Although using a computational puzzle in a transaction makes the cost of this
+increase significantly, this can be implemented in a way that does not hinders
+or restrains a common user of the system.
+By increasing exponentially the cost with each additional
+query above what a normal user would conduct, we can manipulate the computational cost that is needed for each
+transaction and make them costly enough to discourage an attacker.
+
+%, depending of the number of transactions that the user wants to do
+%with the system. 
+ %So, it makes the cost for a
+%normal user is sufficiently low as to be imperceptible, while if an attacker
+%decides to abuse the system by performing the same queries repeatedly found an
+%incremental cost as to not leave you account.
+
+
+%%%%%%%%%%%%%%%%%%%%%
+
+
+ The following system only needs a challenge that fulfill the
 criteria of a computational puzzle, so any kind of puzzle that fits can be chosen for
 that purpose.
+
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=14cm]{../img/challenge}\\
+\caption{Service $S$ issuing a  challenge to node $A$}
+\label{fig:sign_in}
+\end{figure}
 
 \subsection{User identification service}
 \label{sec:identificators}
@@ -451,6 +498,13 @@ We now describe our protocols based on the system model.
 \subsection{Account registration}
 %\includegraphics[width=14cm]{../img/registration_protocol_mockup.png}\\
 
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=14cm]{../img/sign_up}\\
+\caption{Account registration.}
+\label{fig:sign_up}
+\end{figure}
+
 To register a new user account ($U$), the node first
 has to choose a \textit{username} and a \textit{password}.
 %The \textit{username} should be unique in the network.
@@ -495,6 +549,9 @@ $A$ receives at least $\frac{L}{2} + 1$ identical affirmative answers from
 $I$ regarding the user registration, then $A$ assumes that the user was
 actually registered.
 
+In~\ref{fig:sign_up} we show the process of a node $A$ doing an user account
+registration with its identificator nodes $I_i \in I$.
+
 %unique username
 In case that the username was taken,
 the node $A$ is prompted for a new username.
@@ -519,6 +576,12 @@ the node proceeds to derive the user private key $U^{priv}$ using his user passw
 
 \subsection{User sign in}
 %\includegraphics[width=14cm]{../img/session_creation_protocol_mockup}\\
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=14cm]{../img/sign_in}\\
+\caption{User sign in: $S$ issues challenge to node $A$.}
+\label{fig:sign_in}
+\end{figure}
 
 Before carrying out a transaction for a client $A$, $S$ proceeds to
 verify the identity of the client from another set $I$ of nodes. At the end of
@@ -531,13 +594,21 @@ message.
 
 Then, client $A$ responds each request with the corresponding answer to the
 challenge encrypted with his user private key $U^{priv}$, generating
-$E^{challenge}_{U^{priv}}$. 
+$E^{challenge}_{U^{priv}}$~\ref{fig:sign_in}. 
 
 Upon reception of the $E^{secret_i}_{U^{priv}}$ message from the client $A$, every node in $S$
 starts looking for the set $I$ of nodes that will constitute the quasi
 identification authority. As seen in user identification service~\ref{sec:identificators}, to
 determine which nodes belong to $I$, $S$ computes
-its key $K$ such that $K = SHA(U^{username})$.
+its key $K$ such that $K = SHA(U^{username})$~\ref{fig:sign_in_2}.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=14cm]{../img/sign_in_2}\\
+\caption{User sign in: Nodes in $S$ requests the user's public key to the
+identificators nodes of the user $U$.}
+\label{fig:sign_in_2}
+\end{figure}
 
 Then each node in $S$ sends a request to every node $I_i$ in $I$ asking for the Username public key $U^{pub}$. When a node
 $S_i$ of $S$ receives at least $\frac{L}{2} + 1$ identical answers from
@@ -549,7 +620,15 @@ user $U$.
 Lastly, each node in $S$ agrees in the generation of the sessions keys for the
 node $A$, which is then sent to the client $A$ by every node $S_i \in S$ using
 the user public key to encrypt it. The session keys are stored in the
-nodes that belong to $S$.
+nodes that belong to $S$~\ref{fig:sign_in_3}.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=14cm]{../img/sign_in_3}\\
+\caption{User sign in: Nodes in $S$ generates the sessions keys for the node
+$A$ identified as the user $U$.}
+\label{fig:sign_in_3}
+\end{figure}
 
 \subsection{Logout}
 The session are maintained by each service the user identified with. To close a
