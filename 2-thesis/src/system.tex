@@ -18,57 +18,139 @@ in order to collude against the requester, or it might deny any service by
 remaining silent. Therefore, a simple request to $K_{ROOT}$ will not suffice to
 acquire a reliable leafset associated with $K$.
 
-So, to secure the leafset nodes, redundancy is needed. Redundancy sends multiple copies of
-the same message in order to improve the probability of success, at the cost of
-higher message overheads.
-
-Diversity routing~\cite{castro2002secure}, multiple redundant router
-algorithm~\cite{wallach2003survey} and
-multiple path routing~\cite{artigas2005novel} are some examples of this type
-of approach. Diversity routing sends copies of the message
+So, if the first query to secure the leafset nodes fails, redundancy is needed.
+Our solution  for mitigating this issue is to obtain and compare the leafsets
+of at least 3 nodes within the leafset of node $K_{ROOT}$.
+To obtain the leafsets of a node we use the Diversity routing algorithm
+proposed in~\cite{castro2002secure}. Diversity routing sends copies of the message
 along diverse routes to the destination nodes, using different
-neighbours of the source node~\cite{castro2002secure}.
-The Wallash approach~\cite{wallach2003survey}
-also sends multiple copies to all neighbours of the source nodes.
-To avoid attacks based on locality, it uses a constrained routing
-table, allowing only the logically closest nodes to be inserted
-in the tables. The Cyclone multipath routing approach~\cite{castro2002secure}
-increases the number of disjoint paths among the peers in the
-overlay.
+neighbours of the source nodes. To avoid attacks based on locality, it uses a
+constrained routing table, allowing only the logically closest nodes to be inserted
+in the tables. 
+%Redundancy sends multiple copies of the same message in order to improve the probability of success, at the cost of
+%higher message overheads.
+
+
+%Diversity routing~\cite{castro2002secure}, multiple redundant router
+%algorithm~\cite{wallach2003survey} and
+%multiple path routing~\cite{artigas2005novel} are some examples of this type
+%of approach. Diversity routing sends copies of the message
+%along diverse routes to the destination nodes, using different
+%neighbours of the source node~\cite{castro2002secure}.
+%The Wallash approach~\cite{wallach2003survey}
+%also sends multiple copies to all neighbours of the source nodes.
+%To avoid attacks based on locality, it uses a constrained routing
+%table, allowing only the logically closest nodes to be inserted
+%in the tables. The Cyclone multipath routing approach~\cite{castro2002secure}
+%increases the number of disjoint paths among the peers in the
+%overlay.
 
 
 Also, we will be using a solution build over a reputation system to improve the
-routing process probability of success.
-
-Fetodova and Veltri~\cite{fedotova2009reputation} integrate a
-reputation system with the process of routing and data lookup
-for a DHT structure. The idea is to ignore the nodes with
-bad reputation during the routing and look-up process.  Dewanet al.~\cite{dewan2004using} use reputations based on the history of
-nodes relaying packets to ensure a packet will be successfully
-delivered in a mobile ad hoc network. In this case the next
-hop is sent to the choice with the highest reputation value.
-However, the highest reputation value may not be good enough.
+routing process probability of success. The idea is to ignore the nodes with
+bad reputation during the routing and look-up process.
 Our approach builds a ring structure so that all honest nodes are
 linked together, and can contact each other to deliver a trusted
 service.
 
-Huang et al. present RouteGuard~\cite{huang2010routeguard}, a scheme that
-distinguishes between cooperative and uncooperative nodes in
-the routing process. Using a reputation system, the nodes fill
-their routing tables with cooperative nodes, thus isolating the
-uncooperative ones. This approach does not
-allow to find new cooperative nodes. Moreover, this approach
-does not consider the dynamism of peer behaviour, which can
-cause fluctuations of the reputation values.
 
-Our solution for mitigating this issue is to use the DiversityTrustedRoute
-algorithm~\cite{rosas2011corps}. It searches for honest nodes to improve the
-service, and uses different
-nodes as starting points in order to reach the same root node $K_{ROOT}$. The
-diversity of the routing tables on each node guarantees a very high probability
+%Fetodova and Veltri~\cite{fedotova2009reputation} integrate a
+%reputation system with the process of routing and data lookup
+%for a DHT structure. The idea is to ignore the nodes with
+%bad reputation during the routing and look-up process.  Dewanet al.~\cite{dewan2004using} use reputations based on the history of
+%nodes relaying packets to ensure a packet will be successfully
+%delivered in a mobile ad hoc network. In this case the next
+%hop is sent to the choice with the highest reputation value.
+%However, the highest reputation value may not be good enough.
+%Our approach builds a ring structure so that all honest nodes are
+%linked together, and can contact each other to deliver a trusted
+%service.
+
+%Huang et al. present RouteGuard~\cite{huang2010routeguard}, a scheme that
+%distinguishes between cooperative and uncooperative nodes in
+%the routing process. Using a reputation system, the nodes fill
+%their routing tables with cooperative nodes, thus isolating the
+%uncooperative ones. This approach does not
+%allow to find new cooperative nodes. Moreover, this approach
+%does not consider the dynamism of peer behaviour, which can
+%cause fluctuations of the reputation values.
+
+As the idea of using a reputation system to improve the routing process is not
+new, we use as a basis the DiversityTrustedRoute
+algorithm~\cite{rosas2011corps}.
+%It searches for honest nodes to improve the service, and uses different
+%nodes as starting points in order to reach the same root node $K_{ROOT}$.
+
+If a node $X$ wants to obtain the leafset of a node $K_{ROOT}$, a node $X$ sends a get\_leafset\_root request.
+Each node that recieves this request checks in its leafset if the $K_{ROOT}$
+node is present. If this condition is met, the node responds with its own
+leafset and ends the request. After obtaining the first leafset, the starting
+node ......
+
+%% translate this
+%%%procesamiento de este mensaje funciona como sigue: Cada nodo que recibe el
+%%%mensaje,
+%%%comprueba si el nodo ra ́ız pertenece a su propio Leaf Set, si esta condici ́
+%%% on se cumple,
+%%%entonces el nodo env ́ıa su propio Leaf Set y termina el mensaje. El algoritmo 2
+%%%muestra
+%%%como procesar este mensaje en Pastry, la funcion forward(m, k, null) forma parte de la
+%%%API de Pastry, y permite detener el mensaje en el nodo local [18].
+%%%
+%%%Luego de obtener el primer Leaf Set, el nodo emisor ejecuta una funci ́
+%%% on de filtro, que extrae $L/2$ nodos cuyo nodeID es inferior a $k$ y $L/2$ nodos cuyo
+%%%nodeID es superior a $k$. Luego, consulta directamente el Leaf Set del nodo del
+%%%extremo que falta para completar el LeafSet del nodo $Y_r$. Si este nodo es
+%%%malicioso y no entrega su LeafSet, el nodo emisor puede intentar recuperar el
+%%%Leaf Set del nodo siguiente en la lista.  
+%%%
+%%%La figura 5.1 muestra un ejemplo de este procedimiento. El nodo X env ́ıa un
+%%%mensaje
+%%%
+%%%de tipo get leaf set root, el cual es recibido por el nodo Y0, que calcula de
+%%%forma
+%%%independiente que Y−2 ≤ k ≤ Yr , es decir que el nodo ra ́ız Yr pertenece a su
+%%%propio
+%%%Leaf Set, y env ́ıa su propio Leaf Set al nodo X. Luego, el nodo X aplica una
+%%%funci ́
+%%% on de
+%%%filtro y determina que el conjunto de nodos L = {Y0, Y1} forman parte del Leaf
+%%%Set del
+%%%nodo Yr , por lo cual solicita directamente el Leaf Set del nodo Y1.
+%%%Finalmente, el nodo X
+%%%solicita el Leaf Set del nodo Y2 y completa el Leaf Set del nodo Yr .
+%%%Note que el peor caso, ocurre cuando el nodo que responde el mensaje get leaf
+%%%set root
+%%%se encuentra en el extremo del Leaf Set del nodo malicioso, y la funci ́
+%%% on de filtro extrae s ́
+%%% olo
+%%%L
+%%% nodos. Si p es la probabilidad que un nodo sea malicioso, la probabilidad que
+%%% L
+%%% nodos
+%%%2
+%%% 2
+%%%L
+%%%sean maliciosos es p 2 , la cual es muy baja para valores modestos de L. El
+%%%algoritmo 2
+%%%muestra como implementar este procedimiento en Pastry.
+%%%
+
+%%%
+
+
+The diversity of the routing tables on each node guarantees a very high probability
 of reaching root node $K_{ROOT}$ using different paths, and therefore of
 entering the leafset of $K_{ROOT}$ via different nodes. This makes for a more
 secure way of acquiring the leafset associated with a key $K$.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=14cm]{../img/secure_routing}\\
+\caption{Node $X$ asking for the leafset of the key $Y$ using only trusted nodes}
+\label{fig:secure_routing}
+\end{figure}
+
 
 \subsection{Normal service request}
 
@@ -162,12 +244,14 @@ transaction and make them costly enough to discourage an attacker.
 criteria of a computational puzzle, so any kind of puzzle that fits can be chosen for
 that purpose.
 
+In~\ref{fig:challenge} we show an example of a challenge being issued by a
+service $S$ to a node $A$.
 
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=14cm]{../img/challenge}\\
 \caption{Service $S$ issuing a  challenge to node $A$}
-\label{fig:sign_in}
+\label{fig:challenge}
 \end{figure}
 
 \subsection{User identification service}
