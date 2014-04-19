@@ -29,6 +29,11 @@ constrained routing table, allowing only the logically closest nodes to be inser
 in the tables. 
 %Redundancy sends multiple copies of the same message in order to improve the probability of success, at the cost of
 %higher message overheads.
+The diversity of the routing tables on each node guarantees a very high probability
+of reaching root node $K_{ROOT}$ using different paths, and therefore of
+entering the leafset of $K_{ROOT}$ via different nodes. This makes for a more
+secure way of acquiring the leafset associated with a key $K$.
+
 
 
 %Diversity routing~\cite{castro2002secure}, multiple redundant router
@@ -78,76 +83,50 @@ service.
 As the idea of using a reputation system to improve the routing process is not
 new, we use as a basis the DiversityTrustedRoute
 algorithm~\cite{rosas2011corps}.
-%It searches for honest nodes to improve the service, and uses different
-%nodes as starting points in order to reach the same root node $K_{ROOT}$.
+It searches for honest nodes to improve the service, and as seen in the
+diversity routing before, uses different nodes as starting points in order to
+reach the same root node $K_{ROOT}$.
 
-If a node $X$ wants to obtain the leafset of a node $K_{ROOT}$, a node $X$ sends a get\_leafset\_root request.
+If a node $X$ wants to obtain the leafset of a node $K_{ROOT}$, the node $X$ sends a get\_leafset\_root request.
 Each node that recieves this request checks in its leafset if the $K_{ROOT}$
 node is present. If this condition is met, the node responds with its own
-leafset and ends the request. After obtaining the first leafset, the starting
-node ......
-
-%% translate this
-%%%procesamiento de este mensaje funciona como sigue: Cada nodo que recibe el
-%%%mensaje,
-%%%comprueba si el nodo ra ́ız pertenece a su propio Leaf Set, si esta condici ́
-%%% on se cumple,
-%%%entonces el nodo env ́ıa su propio Leaf Set y termina el mensaje. El algoritmo 2
-%%%muestra
-%%%como procesar este mensaje en Pastry, la funcion forward(m, k, null) forma parte de la
-%%%API de Pastry, y permite detener el mensaje en el nodo local [18].
-%%%
-%%%Luego de obtener el primer Leaf Set, el nodo emisor ejecuta una funci ́
-%%% on de filtro, que extrae $L/2$ nodos cuyo nodeID es inferior a $k$ y $L/2$ nodos cuyo
-%%%nodeID es superior a $k$. Luego, consulta directamente el Leaf Set del nodo del
-%%%extremo que falta para completar el LeafSet del nodo $Y_r$. Si este nodo es
-%%%malicioso y no entrega su LeafSet, el nodo emisor puede intentar recuperar el
-%%%Leaf Set del nodo siguiente en la lista.  
-%%%
-%%%La figura 5.1 muestra un ejemplo de este procedimiento. El nodo X env ́ıa un
-%%%mensaje
-%%%
-%%%de tipo get leaf set root, el cual es recibido por el nodo Y0, que calcula de
-%%%forma
-%%%independiente que Y−2 ≤ k ≤ Yr , es decir que el nodo ra ́ız Yr pertenece a su
-%%%propio
-%%%Leaf Set, y env ́ıa su propio Leaf Set al nodo X. Luego, el nodo X aplica una
-%%%funci ́
-%%% on de
-%%%filtro y determina que el conjunto de nodos L = {Y0, Y1} forman parte del Leaf
-%%%Set del
-%%%nodo Yr , por lo cual solicita directamente el Leaf Set del nodo Y1.
-%%%Finalmente, el nodo X
-%%%solicita el Leaf Set del nodo Y2 y completa el Leaf Set del nodo Yr .
-%%%Note que el peor caso, ocurre cuando el nodo que responde el mensaje get leaf
-%%%set root
-%%%se encuentra en el extremo del Leaf Set del nodo malicioso, y la funci ́
-%%% on de filtro extrae s ́
-%%% olo
-%%%L
-%%% nodos. Si p es la probabilidad que un nodo sea malicioso, la probabilidad que
-%%% L
-%%% nodos
-%%%2
-%%% 2
-%%%L
-%%%sean maliciosos es p 2 , la cual es muy baja para valores modestos de L. El
-%%%algoritmo 2
-%%%muestra como implementar este procedimiento en Pastry.
+leafset and ends the request.
+After the node $X$ recieves the first leafset it runs a filter to obtain the
+$L/2$ nodes  below $K_{ROOT}$ and the $L/2$ nodes above $K_{ROOT}$. Then
+queries directly for the leafset of the fartest filtered node to complete
+the missing nodes of the leafset of $K_{ROOT}$.  If the queryied node is
+malicious and do not respond,  the node $X$ can try querying the next node of
+the filtered list.
+%%% NOT SURE IS THIS VALIDATION IS DONE OR NOT, does not add much more security
+%%% to the protocol, mainly because the nodes can collude and lie altogether
+%After the node $X$ recieves the first
+%leafset, to avoid having a malicious node lie about the
+%leafset sent, the node $X$ validates if the leafset nodes correspond to the leafset of
+%the node $K_{ROOT}$ making a query to each one for the key $K$.
 %%%
 
-%%%
+An example of this method is shown in~\ref{fig:secure_routing}. The node $X$
+sends a message of the type get\_leafset\_root which reaches the node $K_{-2}$.
+Using a value of $L = 4$, the node $K_{-2}$ checks its leafset for the root
+node $K$ by doing $K_{-4} \le K \le K_{ROOT}$, and after validating that $K_{ROOT}$
+is in its leafset, the node $L_{-2}$ sends his own leafset to the node $X$.
+Then the node $X$ filters the recieved leafset to obtain the set of nodes 
+$L = \{K_{-1}, K_{-2}\}$ that are part of hte leafset of $K_{ROOT}$,  and
+continues to request for the leafset of the node $K_{-1}$. Finally, the node $X$
+requests the leafset of the node $K_{1}$ and completes the leafset of the node
+$K_{ROOT}$. The worst case is when the $K_{ROOT}$ node is malicious and the
+get\_leafset\_root request reaches the farthest node in its leafset. In that
+case, the filtering function returns only $L/2$nodes. Is all $L/2$ nodes in the
+leafset are malicious, the node $X$ fails to recover the leafset. Still, having $L/2$
+malicious nodes, with $p$ being the probability of a node being malicious, is
+$p^{\frac{L}{2}}$, which is very low for modests values of $L$. Further
+analysis of the algorithm probability of failure can be found in~\ref{sec:eval_leafset}.
 
-
-The diversity of the routing tables on each node guarantees a very high probability
-of reaching root node $K_{ROOT}$ using different paths, and therefore of
-entering the leafset of $K_{ROOT}$ via different nodes. This makes for a more
-secure way of acquiring the leafset associated with a key $K$.
 
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=14cm]{../img/secure_routing}\\
-\caption{Node $X$ asking for the leafset of the key $Y$ using only trusted nodes}
+\caption{Node $X$ asking for the leafset of the key $K$ using only trusted nodes}
 \label{fig:secure_routing}
 \end{figure}
 

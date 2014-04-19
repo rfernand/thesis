@@ -1,7 +1,7 @@
 \section{P2P identification schemes}
 
 %% INTRO
-As P2P systems grow in complexity, a way to identify individual users among the
+ As P2P systems grow in complexity, a way to identify individual users among the
 network nodes is needed. To attain this, additional protocols are needed to
 ensure that the identity of a node corresponds truthfully to the user it
 proclaims to be. A basic way to identify a registered user is by the use of
@@ -15,7 +15,7 @@ registration and identification using the user's username and password.
 
 % TODO for revision
 The subject of securely establishing stable identities in P2P
-systems has been previously studied, for instance by Aberer,
+systems has been previously studied, for instance, by Aberer,
 Datta and Hauswirth~\cite{1318567}. The need for identities mainly arose
 from technical concerns, such as handling dynamic IP address
 assignment, or avoiding Sybil attacks~\cite{the_sybil_attack}. Authentication of a
@@ -24,15 +24,15 @@ stored on the node.
 
 Traditionally, P2P networks identified the different nodes that compose the
 system, but not the user behind each one of them as a different being.
-As P2P systems grow in complexity, the need to identify users inside the
+As P2P systems grew in complexity, the need to identify users inside the
 network arose.
 
 % TODO for revision
 Some P2P storage systems also use techniques which are
 related to ours. For example, the DHT-based systems GNUnet
 and Freenet use keyword strings to derive a public-private key
-pair whose private key is used to sign data and the hash of
-the public key to identify the data in the storage. Both of
+pair. The private key is used to sign data and the hash of
+the public key to identify the data in storage. Both of
 these systems use a keyword string as a seed to a pseudo-random number
 generator that produces the key pair~\cite{clarke2010private},~\cite{Bennett03anencoding}.
 Knowing only the memorable keyword string the user can
@@ -42,12 +42,11 @@ store and retrieve information.
 Related to forgotten passwords, recovery of information in a
 P2P scenario has been studied by Vu et al.~\cite{5380695} who proposed
 a combination of threshold-based secret sharing with delegate
-selection and encrypting shares with passwords.
+selection, and encrypting shares with passwords.
 Frykholm and Juels~\cite{Frykholm:2001:EPR:501983.501985} proposed a password-recovery
 mechanism based on security questions very similar to our
-protocol for the same task. They offer better, information-
-theoretic security properties, something not applicable to our
-scenario. We treat the subject of password change, which is not applicable to
+protocol for the same task. They offer better information-theoretic security properties, something not applicable to our
+scenario. We address the subject of password change, which is not applicable to
 their scenario, although their proposal could be extended to support password
 change using our techniques.
 
@@ -55,72 +54,71 @@ change using our techniques.
 %\subsection{Plain PKI scheme}
 \subsection{Peerson username/password scheme}
 
-They present in ~\cite{kreitz2012passwords} a suite of protocols for password
-authentication in P2P networks: account registration, sign in, password change,
-remembered sign ins, logout from a remote device, and password recovery. The
-password authentication is based on standard cryptographic techniques and can
+Kreitz et al.~\cite{kreitz2012passwords} present a suite of protocols for password
+authentication in P2P networks: account registration, login, password change,
+remembered logins, logout from a remote device, and password recovery.
+Password authentication is based on standard cryptographic techniques and can
 be used with standard P2P components. 
 
-It relies in the safe storage, distribution and retrieval of a a)~\textit{sign in information
-file}, a b)~\textit{device sign in info file} and a c)~\textit{key store
+It relies on the safe storage, distribution and retrieval of a a)~\textit{login information
+file}, a b)~\textit{device login info file} and a c)~\textit{key store
 file}~\ref{fig:p2p_peerson}.
 
 \begin{enumerate}[a)]
 
-  \item The sign in information file stores is compose by encrypted files and a
+  \item The login information file stores encrypted files and a
 plain text. The encrypted files are: the user session information (\textit{devmap}), a
-cryptographic key for write authentication ($K_W$), and the filename of the
-\textit{key store file} along with the symmetric key used to encrypt and
-decrypt the key store file ($K_{KS}$). The plain text is a random byte string used as a \textit{salt} to generate the user private key to
+cryptographic key for write authentication ($K_W$), and the \textit{filename of the
+key store file} ($f_{KS}$) along with the \texit{symmetric key} used to encrypt and
+decrypt the \textit{key store file} ($K_{KS}$). The plain text is a random byte string used as a \textit{salt} to generate the user private key to
 decrypt the first bundle of files. 
 
-  \item The key store file stores all the private keys used to identified the
-    user in the system services. This files is stored encrypted by the $K_{KS}$ key.
+  \item The \textit{key store file} ($F_{KS}$) stores all the private keys used to identify the
+    user in the system services. This file is encrypted by the $K_{KS}$ key.
 
-  \item The device sign in information file only stores the filename of the key
-    store file and the $K_{KS}$ key. This is all encrypted by a $K_{DL}$ key
+  \item The device login information file only stores the filename of the key
+    store file and the $K_{KS}$ key, both of which are encrypted by a $K_{DL}$ key
     stored in the \textit{devmap}.
 \end{enumerate}
 
 \begin{figure}
 \center
 \includegraphics[width=12cm]{../img/password_peerson}\\
-\caption{Peerson scheme storage locations (boxes) and sign in procedure (arrows) }
+\caption{Peerson scheme storage locations (boxes) and login procedure (arrows) }
 \label{fig:p2p_peerson}
 \end{figure}
 
-Their protocols are as follow:
+Their protocols are as follows:
 %
 %% introduction of identification schemes. Par 2: proposed username/password identification schemes. Part 3: securing the network protocols. Part 4: Pending issues.
 \subsubsection{Account registration}
 %\includegraphics[width=14cm]{../img/user_registration}\\
+
 To register a new user account, the user first
 has to choose a \textit{username} and a \textit{password}.
-
-% key store file
-Considering a key-based authentication, the user creates a \textit{key store
+In the key-based authentication, the user creates a \textit{key store
 file} $F_{KS}$, containing all the
-keys used by the P2P application the user wants to sign in to.
+keys used by the P2P application the user wants to login to.
 The user generates a cryptographic key to authenticate the write operations
-that will be made in the file, and store this key along with the others in the
-\textit{key store file}.
+that will be made in the file. The cryptographic key is then stored with the
+other keys in the \textit{key store file} $F_{KS}$.
 
 % encryption and store of the key store file
-The user then creates a \textit{symmetric key} $K_{KS}$,
-encrypts the file content with this key and puts the ciphertext
-into the storage, obtaining a \textit{file name} $f_{KS}$. Now, the user
-creates a \textit{sign in information file} $F_{LI}$ by creating a random
-byte string \textit{salt}, deriving a \textit{symmetric key} $K_{LI}$ from the user
+The user then creates a \textit{symmetric key} $K_{KS}$, which is used to
+encrypt the file content. Then the ciphertext
+is put into storage, obtaining a \textit{filename} $f_{KS}$ for it. Now, the user
+creates a \textit{login information file} $F_{LI}$ by creating a random
+byte string, or \textit{salt}, and deriving a \textit{symmetric key} $K_{LI}$ from the user
 \textit{password} and the \textit{salt}.
 Using the new \textit{ symmetric key} $K_{LI}$, the user encrypts the
-\textit{file name} $f_{KS}$,
-the \textit{symmetric key} $K_{KS}$ and the \textit{cryptographic key to
-authenticate the write operations} $K_W$.
- The salt and the three encrypted values are put
-into the storage, obtaining a file name $f_{LI}$ . The salt is stored
-in plaintext, so that the user later can derive the decryption
+filename $f_{KS}$,
+the \textit{symmetric key} $K_{KS}$ and the cryptographic key to
+authenticate the write operations $K_W$.
+ The \textit{salt} and the three encrypted values are put
+into storage, obtaining a filename $f_{LI}$ . The \textit{salt} is stored
+in plaintext, so that the user can later derive the decryption
 key $K_{LI}$ by only providing the password. Finally, the user
-performs the write-once operation put on the DHT with
+performs the write-once operation \textit{put} on the DHT, with
 username as key and $f_{LI}$ as value.
 
 %unique username
@@ -132,36 +130,39 @@ Once all operations
 have succeeded, the user is registered in the system.
 
 
-\subsubsection{Sign in}
-The user uses his username to find and retrieve his \textit{sign in information
+\subsubsection{login}
+
+
+The user uses his username to find and retrieve his \textit{login information
 file} $F_{LI}$. Then, using his \textit{password} and the \textit{salt} included in the
-\textit{sign in information file} $F_{LI}$, obtains the \textit{file name}
+\textit{login information file} $F_{LI}$, obtains the filename
 $f_{KS}$ used to
-route back to where the \textit{key store file} $F_{KS}$ is stored.  Lastly, uses the
+route back to where the \textit{key store file} $F_{KS}$ is stored.  Lastly, he uses the
 \textit{symmetric key} $K_{KS}$ to decrypt the \textit{key store file}
 $F_{KS}$ and recover his user keys.
 
 \subsubsection{Password change}
-%To change the password, the user has to rewrite his \textit{sign in information
+%To change the password, the user has to rewrite his \textit{login information
 %file}.
 
 
-Before the user can change the password, she must sign in using her password to
-obtain $K_{LI}$ . With this information, the password change can be
-accomplished; the user is asked for a new password and a new salt is
+Before the user can change his password, he must login using his password to
+obtain the $K_{LI}$ . With this information, the password change can be
+completed. The user is asked for a new password and a new \textit{salt} is
 generated. The key-derivation function is used to generate a new key
 $K_{LI}^{new}$
-for the sign in information file. Then, the content of the key-store file is
-fetched and decrypted (with the old key). A new key $K_{KS}^{new}$ is generated and
-used for encrypting the key-store content again before it is saved to the
-storage system, obtaining a new filename $f_{KS}^{new}$.
-Finally, the sign in information file
+for the login information file. Then, the content of the \textit{key-store
+file} is
+retrieved and decrypted (with the old key). A new key $K_{KS}^{new}$ is generated and
+used for encrypting the key-store content again before it is saved in the
+storage system. The storage of the key-store content returns a new filename $f_{KS}^{new}$.
+Finally, the \textit{login information file}
 is updated: $f_{KS}^{new}$, $K_{KS}^{new}$, the write credential $K_{W}$ as well as a new empty
-device mapping \textit{devmapnew} are encrypted with the new key $K_{LI}^{new}$.
-  Together with the new salt, this ciphertext is written to the distributed
+device mapping file \textit{devmapnew} are encrypted with the new key $K_{LI}^{new}$.
+  Together with the new \textit{salt}, this ciphertext is written to the distributed
 storage, using the reference $f_{LI}$ and the credential $K_W$, to authenticate the
-write operation. Lastly, the keys stored in the key store should be updated by
-the application using the P2P protocol.  At this point, old device sign in
+write operation. Lastly, the keys stored in the key-store should be updated by
+the application using the P2P protocol.  At this point, old device login
 information files can also be deleted from the
 storage to reclaim space.
 
@@ -170,31 +171,32 @@ storage to reclaim space.
 %to identify an user is by his keys that are obtained by the identification
 %process.
 
-To log out from the system, the user does not have to interact
-with the DHT or the storage system. Simply wiping her local
+To logout from the system, the user does not have to interact
+with the DHT or the storage system. Simply wiping the local
 cache from application data and all key material restores the
-pre-sign in state. If the user chose to remember the sign in on a
-device, the corresponding device sign in information file $F_{DL}$
-can also be deleted from the storage.
+pre-login state. If the user chose to remember the login on a
+device, the corresponding \textit{device login information file} $F_{DL}$
+can also be deleted from storage.
  A problem related to logging out is revoking remembered
 credentials on another device, e. g., a user’s stolen phone. To
 accomplish this, they first run the password change operation,
-which locks out all devices with remembered sign ins, because
-he key store key $K_{KS}$ changed (as well as the filename $f_{KS}$ ).
-Next, we use the device mapping \textit{devmap} to inform all devices
+which locks out all devices with remembered logins, because
+the key store key $K_{KS}$ changed (as well as the filename $f_{KS}$).
+Next, we use the device mapping file \textit{devmap} to inform all devices
 about the new key (and filename), except the device that is to
 be revoked. To inform a device about the change, we update
-the corresponding values in the device’s sign in information file
- FDL which can be accessed from the device by using the
+the corresponding values in the device’s \textit{login information file}
+ $F_{DL}$ which can be accessed from the device by using the
 locally stored credentials.
 
  After running the password change
 operation, all devices that should not be revoked and that have remembered
-sign ins (and therefore are referenced in the devmap) are
-processed. The device sign in information filename $f_{DL}$ and its key $K_{DL}$ are read,
+logins (and therefore are referenced in the \textit{devmap}) are
+processed. The \textit{device login information filename} $f_{DL}$ and its key $K_{DL}$ are read,
 and the new key store key $K_{KS}^{new}$ and filename $f_{KS}^{new}$ are written to the
-device sign in information file $F_{DL}$, encrypted under the device key $K_{DL}$.
-Finally, the modified devmap is saved back to the sign in information file $F_{LI}$.
+\textit{device login information file} $F_{DL}$, encrypted under the device key $K_{DL}$.
+Finally, the modified \textit{devmap} is saved back to the \textit{login
+information file} $F_{LI}$.
 
 
 \subsubsection{Forgotten passwords and password-recovery mechanisms}
@@ -204,7 +206,7 @@ Finally, the modified devmap is saved back to the sign in information file $F_{L
   %shares with passwords
 
 %%%%%%%%%%%%%   Peerson Passwords in P2P networks %%%%%%%%%%%%%
-%An important part of password-based sign ins is the possi-
+%An important part of password-based logins is the possi-
 % bility for users to recover their accounts if they forget their
 % passwords. We refer to this as a password recovery mechanism.
 % The goal of a password recovery mechanism is to provide a
@@ -224,12 +226,12 @@ Finally, the modified devmap is saved back to the sign in information file $F_{L
 %but rather a means to recovering the original password-based
 %authentication mechanism. A basic version of password hints
 %would be straightforward to implement in our system: the
-%hint can be stored in plaintext in the sign in information file.
+%hint can be stored in plaintext in the login information file.
 %Security questions and e-mail based password recovery are
 %more complex to adapt. We described their implementation in
 %detail after listing requirements.
 %
-% As in Section IV for the sign in procedure, we define a set of
+% As in Section IV for the login procedure, we define a set of
 %functional requirements for password recovery, based on the
 %ISO 27002 standard [19] as follows. We also augment the list
 %with requirements of our own (preceded by a star).
@@ -286,7 +288,7 @@ requires small modifications in the protocols seen above.
  required for the user to answer any $k$ out of these $n$ questions
  correctly. The choice of $k$ constitutes an obvious trade-off
  between security and usability. A successful recovery yields
- the key $K_{LI}$ to the sign in information file, allowing the user to
+ the key $K_{LI}$ to the login information file, allowing the user to
 change the password. The implementation
 does not require the user to provide new answers after a regular
  password change. Additionally, the protocol avoids storing the plaintext
@@ -297,8 +299,8 @@ create $n$ shares $qS_1, \cdots, qS_n$ of the
  these shares, it is created a salt $qsalt_i$ , derived a key $qK_i$ from
  this salt and the answer $A_i$, and used it to encrypt the share,
  yielding $qS^{enc}_i$. Furthermore, it is encrypted the key $qK_i$ with
- the sign in information file key $K_{LI}$, for the update procedure
- described later. Finally, the sign in information file is extended
+ the login information file key $K_{LI}$, for the update procedure
+ described later. Finally, the login information file is extended
  with all questions $Q_i$, the salts $qsalt_i$, the encrypted shares
  $qS_i^{enc}$ and the encrypted keys $qK_i^{enc}$. When recovering, the
  user has to reproduce at least $k$ answers, which together with
@@ -311,7 +313,7 @@ create $n$ shares $qS_1, \cdots, qS_n$ of the
  shares. Neither the keys $qK_i$ nor the salts $salt_i$ change, so
  the user can still use the same answers for recovery. Finally,
  the updated shares (and re-encrypted keys, to allow further
- updates) are saved back to the sign in information file.
+ updates) are saved back to the login information file.
 
 \paragraph{Email based.}
 
@@ -340,14 +342,14 @@ create $n$ shares $qS_1, \cdots, qS_n$ of the
  commitment, but with salt $ksalt_i$. A different salt is needed
  so that the peer cannot decrypt the share (before learning the
  address). The commitment and the encrypted share are stored
- at the peer. The sign in information $F_{LI}$ file is extended with a
+ at the peer. The login information $F_{LI}$ file is extended with a
  list of the chosen peers $peer_i$ and the according salts $esalt_i$ ,
  $ksalt_i$, as well as $K_{LI}^{enc}$, encrypted with the recovery key, and
  the recovery key, encrypted with $K_{LI}$ (to allow for password
  changes).
 
  To recover the password, the user looks up the
- available information in the sign in information file, including
+ available information in the login information file, including
  the list of peers to be requested for assistance. Each request is
  authorized by the commitment $C_i$, that the peer can derive
  from the salt $esalt_i$ and the e-mail address that the user
