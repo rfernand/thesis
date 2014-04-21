@@ -585,11 +585,16 @@ has to choose a \textit{username} and a \textit{password}.
 % 
 
 % key store file
-Then, a key derivation process is issued to generate the user Private and
-Public Keys. The
-key derivation utilizes a Salt ($U^{salt}$) and a Password ($U^{password}$) to
+Then, a key derivation process is issued to generate the user private and
+public keys. The
+key derivation utilizes a \textit{salt} ($U^{salt}$) and a password ($U^{password}$) to
 obtain the user's private and public Keys
 ($U^{priv}$ and $U^{pub}$).
+
+The main idea behind the use of a \textit{salt} file is to avoid having a
+situation where two users with the same password have the same private and
+public keys.
+
 The node  looks for the set $I$ set of nodes that will constitute the
 identification service for the user $U$. To obtain the list of nodes that provides the user identification service for
 the username $U^{username}$, the node $A$ computes its key $K$ such that $K =
