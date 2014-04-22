@@ -2,13 +2,37 @@ In this section we present a probability assessment of
 the algorithms used in our quasi identification system, and show that it is highly
 improbable to fail.
 
-In this section, $p$ represents the probability that a single node is
-malicious, and $N$ the total number of nodes in the DHT. We conduct every
-assessment with two different values for $p$, being $p = 0.3$ and $p = 0.05$.
+In this section $p$ represents the probability that a single node is
+malicious, and $N$ the total number of nodes in the DHT.
+As shown in table~\ref{tab:variables_used}, we conduct every
+assessment with two different values for $p$, being $p = \rho = 0.3$ and $p = \varepsilon =  0.05$.
 The former corresponds to the limit above which our relaxed version of the
-byzantine agreement collapses. The latter corresponds to the value most
+byzantine agreement collapses, and is the value most
 commonly found in the literature about malicious attacks in P2P
-systems~\cite{p2p_certification}.
+systems~\cite{p2p_certification}. The latter corresponds to the probability of
+classification error in CORPS (when a malicious node is classified as a trusted node).
+The latter corresponds to the probability of the reputation system making an error $p = \varepsilon$ when classifying a
+node $X$ with a reputation $R(x)$. The last  value that is evaluated is the
+size of the leafset and size of the trustset in CORPS being used ($L$).
+
+
+  \begin{table}
+    \centering
+    \footnotesize
+    \begin{tabular}{|ccc|}
+      \hline
+      \textbf{Parameter} & \textbf{Description} & \textbf{Value} \\
+      \hline
+      $\rho$ &  Probability of a node being malicious  & $0.3$  \\
+      $\varepsilon$& CORPS classification error   & $0.05$ \\
+      L &  Leafset size in the DHT and size of the trustset in CORPS  & $8$, $16$ or $32$  \\
+      \hline
+    \end{tabular}
+    \caption{Parameters used for the evaluation of the protocols}
+    \label{tab:variables_used}
+  \end{table}
+
+
 %, as well as a set of simulations and performance
 %results.
 
@@ -26,7 +50,7 @@ systems~\cite{p2p_certification}.
       \cline{2-3}
       \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
       \hline
-      \textbf{Size of Trusted Set (L)} & \textbf{p = 0,3} & \textbf{p = 0,05} \\
+      \textbf{Size of Trusted Set (L)} & \textbf{$p = \rho$ = 0.3} & \textbf{$p = \varepsilon$ = 0,05} \\
       \hline \hline
       8 &  $0.0081$              & $6.25 \times 10^{-6}$  \\
       \hline
@@ -38,15 +62,27 @@ systems~\cite{p2p_certification}.
     \caption{Probability of failure when securing a leafset}
     \label{tab:p_leafset}
   \end{table}
-  
-  Table~\eqref{tab:p_leafset} shows the probability of failure when securing the
-  nodes of a leafset. The algorithm fails to get the leafset of a given node
+
+  The algorithm fails to get the leafset of a given node
   $K_{root}$ if $\frac{L}{2}$ consecutive nodes are malicious in a leafset. This
   probability is given by
   
   \begin{equation} \label{eq:p_leafset}
     P= p^{\frac{L}{2}}
   \end{equation}
+
+  
+  Table~\eqref{tab:p_leafset} shows the probability of failure when securing the
+  nodes of a leafset. In a system that does not implement a reputation system,
+when $L=8$, the probability of failure is $0.0081$. While this probability seems
+low, means that each $1000$ transactions there will be around $8$ failures. If
+we increase $L=16$, we encounter a lower failure probability, but not enough
+yet to work well in real life systems. At $L=32$ the probability can be lower
+enough for systems to work. If we compare the probabilities with the systems
+using a reputation system, with $L=16$ we already obtain a much lower
+probability than before, being 3 orders of magnitude lower than the best result
+obtained without the reputation system being implemented.
+  
   
   \subsection{Message complexity}
 
@@ -89,7 +125,7 @@ DHT increases.
       \cline{2-3}
       \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
       \hline
-      \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
+      \textbf{Size of Trusted Set (L)} & \textbf{$p = \rho$ = 0.3} & \textbf{p = 0.05} \\
       \hline \hline
       %8 &  $0.0988087$ & $3.32222 \times 10^{-5}$ \\
       %\hline
@@ -156,7 +192,18 @@ request or responds with a fake registration response is
 
 
     Table~\eqref{tab:p_account_registration} shows the probability of failure
-between $A$ and $I$, for a leafset size of $L = \{8,16,32\}$.
+between $A$ and $I$, for a leafset size of $L = \{8,16,32\}$. The probability
+of an node failing in a system that does not implement the reputation system
+is, in the best case with $L=32$, very high ($0.007$). This probability is not
+acceptable for a real life system.  By using a reputation system, the probability greatly
+improved in more than 5 orders of magnitude in comparison with the
+non-reputation system case. With $L=16$, using a reputation system, we attain
+a low probability of the order $10^{-8}$, and by using $L=32$ we get a very low
+probability of $4.118 \times 10^{-14}$. If we calculate the number of
+errors in a million of transactions with a probability of error of $4.118
+\times 10^{-14}$, none of them should fail ($0.0000004118$ failures). This probability
+makes errors almost non-existent, and should be the ideal amount for systems of with
+millions of nodes that wants to prioritize their security.
 
     
   \subsection{Message complexity}
@@ -206,7 +253,7 @@ constant, and $O(log(N))$. In the best case,
       \cline{3-4}
       \multicolumn{2}{c|}{} &  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
       \cline{2-4}
-      \multicolumn{1}{c|}{} & \textbf{L} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
+      \multicolumn{1}{c|}{} & \textbf{L} & \textbf{$p = \rho$ = 0.3} & \textbf{p = 0.05} \\
       \hline
       \multirow{3}{*}{\rotatebox[origin=c]{90}{\textbf{Case 1}}} & 8 & $0.106108$ & $3.9472 \times 10^{-5}$\\
       \cline{2-4}
@@ -265,74 +312,6 @@ Table~\ref{tab:p_lazy_maintenance} computes the probability that a maintenance
 operation will fail, given increasing leafset sizes $L = {8,16,32}$.
 
 
-\section{User private key recovery}
-\label{sec:eval_private_key_recovery}
-% TODO Recalculate table
-  \begin{table}
-    \centering
-    \footnotesize
-    \begin{tabular}{|c|c|c|}
-      \cline{2-3}
-      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
-      \hline
-      \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
-      \hline \hline
-      8 &  $0.098$ & $3.322 \times 10^{-5}$ \\
-      \hline
-      16 & $0.040$ & $3.287 \times 10^{-8}$  \\
-      \hline
-      32 & $0.007$ & $4.118 \times 10^{-14}$  \\
-      \hline
-    \end{tabular}
-    \caption{Probability of failure when recovering user private key}
-    \label{tab:p_private_key_recovery}
-  \end{table}
-
-  \subsection{Probability of failure}
-
-    The user private key recovery between a node $A$ and $I$ can fail (a) if $I$ does
-not respond (or responds fake information) to $A$ during the key recovery
-request. While a response with fake information (like a salt forged by malicious nodes) can be more dangerous for the
-user, the probability remains the same, corresponding to the
-probability that more than $L/2$ nodes of $I$ are malicious.\\
-    The probability that $I$ will not respond to the user private key recovery
-request (or that $I$ responds fake user information) is the probability of
-facing more than $\frac{L}{2} +1$ malicious nodes in $I$. This probability is given by the
-equation~\ref{eq:p_malicious_ge_L_2} and hence the probability that the user
-private key recovery fails is:
-
-\begin{equation} \label{eq:L_2_malicious_A_I}
- P_{AI} = P_{\ge L/2}
-\end{equation}
-
-    Table~\eqref{tab:p_private_key_recovery} shows the probability of failure
-between $A$ and $I$, for a leafset size of $L = \{8,16,32\}$.
-
-    
-  \subsection{Message complexity}
-    First, $A$ must get the leafset of $I$. The associated cost is $n = 5
-\times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
-    The number $n$ of message inherent to the transaction itself is given by
-
-    \begin{align}
-      n &= \underbrace{2(L+1)}_\text{Init} + \underbrace{L+1}_\text{Data} +  \underbrace{L+1}_\text{ACKs}\\
-      n &= 4(L+1)
-    \end{align}
-     The total cost is then
-
-    $$
-      n_{total} = 5 \times O(log_{2b}(N)) + Q + 4 + 4(L+1)
-    $$    
-    The total cost only depends on the size $L$ of the leafset, which is a
-constant, and $O(log(N))$. In the best case, 
-
-    $$
-      n_{total} = O(log_{2b}(N)) + 4(L+1)
-    $$
-    Therefore, the cost of recovering a user private key remains
-scalable when the size $N$ of the DHT increases.
-
-
 \section{User Sign in}
 \label{sec:eval_sign_in}
   \begin{table}
@@ -342,7 +321,7 @@ scalable when the size $N$ of the DHT increases.
       \cline{2-3}
       \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
       \hline
-      \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
+      \textbf{Size of Trusted Set (L)} & \textbf{$p = \rho$ = 0.3} & \textbf{p = 0.05} \\
       \hline \hline
       8 &  $0.188$ & $6.64 \times 10^{-5}$ \\
       \hline
@@ -376,6 +355,12 @@ information recovery request, or that $S$ not respond to the node $A$ is
 
     Table~\eqref{tab:p_sign_in} shows the probability of failure
 between $A$, the service $S$ and $I$, for a leafset size of $L = \{8,16,32\}$.
+    The probability of the protocol failing without using a reputation system
+is very high. If we take the best case with $L=32$, the probability is around
+16 nodes failing out of 1000. On the other hand, using a reputation system we
+get pretty good results, with an order of $10^{-8}$ using $L=16$ and an order
+of $10^{-14}$ with $L=32$, a very low probability. Both of them can be used
+in real life scenario, with $L=32$ being the most secure of them all.
 
   \subsection{Message complexity}
     First, $A$ must get the leafset of $S$. The associated cost is $n = 5
@@ -418,7 +403,7 @@ scalable when the size $N$ of the DHT increases.
       \cline{2-3}
       \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
       \hline
-      \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
+      \textbf{Size of Trusted Set (L)} & \textbf{$p = \rho$ = 0.3} & \textbf{p = 0.05} \\
       \hline \hline
       8 &  $0.098$ & $3.322 \times 10^{-5}$ \\
       \hline
@@ -437,7 +422,7 @@ not respond (or responds false information) to $A$ during the logout request.
   In all cases, this corresponds to the probability that more than
 $L/2$ nodes of $I$ are malicious.
     As seen before, the probability of facing more than $k$ malicious nodes among
-$n$ is given by the equation~\ref{eq:p_k_malicious_nodes}.//
+$n$ is given by the equation~\ref{eq:p_k_malicious_nodes}.\\
 
     Then the probability that $S$ will not respond to the user logout 
 request or responds with a fake logout response is
@@ -449,6 +434,20 @@ request or responds with a fake logout response is
 
     Table~\eqref{tab:p_logout} shows the probability of failure
 between $A$ and $S$, for a leafset size of $L = \{8,16,32\}$.
+  The probability distribution results the same obtained as the registration
+protocol~\ref{sec:eval_account_registration} seen before, and the same analysis
+can be applied to it. The probability
+of an node failing in a system that does not implement the reputation system
+is, in the best case with $L=32$, very high ($0.007$). This probability is not
+acceptable for a real life system.  By using a reputation system, the probability greatly
+improved in more than 5 orders of magnitude in comparison with the
+non-reputation system case. With $L=16$, using a reputation system, we attain
+a low probability of the order $10^{-8}$, and by using $L=32$ we get a very low
+probability of $4.118 \times 10^{-14}$. If we calculate the number of
+errors in a million of transactions with a probability of error of $4.118
+\times 10^{-14}$, none of them should fail ($0.0000004118$ failures). This probability
+makes errors almost non-existent, and should be the ideal amount for systems of with
+millions of nodes that wants to prioritize their security.
 
     
   \subsection{Message complexity}
@@ -482,7 +481,7 @@ constant, and $O(log(N))$. In the best case,
       \cline{2-3}
       \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
       \hline
-      \textbf{Size of Trusted Set (L)} & \textbf{p = 0.3} & \textbf{p = 0.05} \\
+      \textbf{Size of Trusted Set (L)} & \textbf{$p = \rho$ = 0.3} & \textbf{p = 0.05} \\
       \hline \hline
       8 &  $0.098$ & $3.322 \times 10^{-5}$ \\
       \hline
@@ -505,7 +504,7 @@ user, the event of that happening is the same as when there is no response:
 when more than $L/2$ nodes of $I$ are malicious.
 
     As seen before, the probability of facing more than $k$ malicious nodes among
-$n$ is given by the equation~\ref{eq:p_k_malicious_nodes}.//
+$n$ is given by the equation~\ref{eq:p_k_malicious_nodes}.\\
 
     Then the probability that $I$ will not respond to the service user
 information recovery request is
@@ -517,6 +516,9 @@ information recovery request is
 
     Table~\eqref{tab:p_password_change} shows the probability of failure
 between $A$, the service $S$ and $I$, for a leafset size of $L = \{8,16,32\}$.
+Maintains the same distribution as the user registration
+protocol~\ref{sec:eval_account_registration} and the
+logout protocol seen before~\ref{sec:eval_logout}.
 
   \subsection{Message complexity}
     First, $A$ must get the leafset of $I$. The associated cost is $n = 5
@@ -548,11 +550,11 @@ constant, and $O(log(N))$. In the best case,
 scalable when the size $N$ of the DHT increases.
 
 %We suppose in the following that the underlying
-%reputation system makes an error $\varepsilon$ when classifying a
-%node $X$ with a reputation $R(x) \geq \rho$, where $\rho \in [ 0 \cdots 1 ]$,
-%and $ \varepsilon = f ( \rho )$. In other words, classifying a node $X$ as
-%honest because its reputation is greater than $\rho$ has a
-%probability of error $\varepsilon$.
+%reputation system makes an error $p = \varepsilon$ when classifying a
+%node $X$ with a reputation $R(x) \geq p = \rho$, where $p = \rho \in [ 0 \cdots 1 ]$,
+%and $ p = \varepsilon = f ( p = \rho )$. In other words, classifying a node $X$ as
+%honest because its reputation is greater than $p = \rho$ has a
+%probability of error $p = \varepsilon$.
 %Let $n$ be the size of the Trusted Ring. The probability
 %to have $k$ misclassified nodes in the Trusted Ring, that
 %is $k$ malicious nodes is:
@@ -564,7 +566,7 @@ scalable when the size $N$ of the DHT increases.
 %                            k
 %                          \end{array}
 %                    \!\right)              
-%                    \varepsilon^{n-k} ( 1 - \varepsilon )^k
+%                    p = \varepsilon^{n-k} ( 1 - p = \varepsilon )^k
 %$$
 %
 %Then, the probability to have at most $k$ malicious
@@ -577,7 +579,7 @@ scalable when the size $N$ of the DHT increases.
 %                                    k
 %                                  \end{array}
 %                            \!\right)              
-%                    \varepsilon^{n-i} ( 1 - \varepsilon )^i
+%                    p = \varepsilon^{n-i} ( 1 - p = \varepsilon )^i
 %$$
 %
 %Therefore, the probability to have $k$ or more malicious
@@ -590,7 +592,7 @@ scalable when the size $N$ of the DHT increases.
 %                                    i
 %                                  \end{array}
 %                            \!\right)              
-%                    \varepsilon^{n-i} ( 1 - \varepsilon )^i
+%                    p = \varepsilon^{n-i} ( 1 - p = \varepsilon )^i
 %$$
 %
 %The user identification fails when:
@@ -617,3 +619,76 @@ scalable when the size $N$ of the DHT increases.
 %of malicious node decreases. The less malicious nodes
 %there are in the system, the easier it is to discriminate
 %against them.
+
+\section{User private key recovery (Discarded protocol A)}
+\label{sec:eval_private_key_recovery}
+% TODO Recalculate table
+  \begin{table}
+    \centering
+    \footnotesize
+    \begin{tabular}{|c|c|c|}
+      \cline{2-3}
+      \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
+      \hline
+      \textbf{Size of Trusted Set (L)} & \textbf{$p = \rho$ = 0.3} & \textbf{p = 0.05} \\
+      \hline \hline
+      8 &  $0.098$ & $3.322 \times 10^{-5}$ \\
+      \hline
+      16 & $0.040$ & $3.287 \times 10^{-8}$  \\
+      \hline
+      32 & $0.007$ & $4.118 \times 10^{-14}$  \\
+      \hline
+    \end{tabular}
+    \caption{Probability of failure when recovering user private key}
+    \label{tab:p_private_key_recovery}
+  \end{table}
+
+  \subsection{Probability of failure}
+
+    The user private key recovery between a node $A$ and $I$ can fail (a) if $I$ does
+not respond (or responds fake information) to $A$ during the key recovery
+request. While a response with fake information (like a salt forged by malicious nodes) can be more dangerous for the
+user, the probability remains the same, corresponding to the
+probability that more than $L/2$ nodes of $I$ are malicious.\\
+    The probability that $I$ will not respond to the user private key recovery
+request (or that $I$ responds fake user information) is the probability of
+facing more than $\frac{L}{2} +1$ malicious nodes in $I$. This probability is given by the
+equation~\ref{eq:p_malicious_ge_L_2} and hence the probability that the user
+private key recovery fails is:
+
+\begin{equation} \label{eq:L_2_malicious_A_I}
+ P_{AI} = P_{\ge L/2}
+\end{equation}
+
+    Table~\eqref{tab:p_private_key_recovery} shows the probability of failure
+between $A$ and $I$, for a leafset size of $L = \{8,16,32\}$.
+Maintains the same distribution as the user registration
+protocol~\ref{sec:eval_account_registration}, the
+logout protocol~\ref{sec:eval_logout} and the password change
+protocol~\ref{sec:eval_password_change} seen before.
+
+    
+  \subsection{Message complexity}
+    First, $A$ must get the leafset of $I$. The associated cost is $n = 5
+\times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
+    The number $n$ of message inherent to the transaction itself is given by
+
+    \begin{align}
+      n &= \underbrace{2(L+1)}_\text{Init} + \underbrace{L+1}_\text{Data} +  \underbrace{L+1}_\text{ACKs}\\
+      n &= 4(L+1)
+    \end{align}
+     The total cost is then
+
+    $$
+      n_{total} = 5 \times O(log_{2b}(N)) + Q + 4 + 4(L+1)
+    $$    
+    The total cost only depends on the size $L$ of the leafset, which is a
+constant, and $O(log(N))$. In the best case, 
+
+    $$
+      n_{total} = O(log_{2b}(N)) + 4(L+1)
+    $$
+    Therefore, the cost of recovering a user private key remains
+scalable when the size $N$ of the DHT increases.
+
+

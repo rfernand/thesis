@@ -1,12 +1,8 @@
 In this chapter we will discuss some security issues and the portability of our
 solution.% and our decision about not having a password recovery mechanism
 
-\section{Security issues}
-%Regarding P2P networks and identification systems, there are many issues that
-%hand that need to be accounted for when building the system. 
-% objectives achieved?
-% what L? (L=32)
-\subsection{Trustworthiness}
+\section{System validation}
+
 In comparison with centralized approaches, we know that the reliability of a
 centralized identification service depends mostly on the
 supporting host: its availability, its security and its capacity  to handle
@@ -19,20 +15,92 @@ not accountable for their decisions and therefore cannot be trusted.\\
 
 Because of this, as other P2P systems, a 100\% secure implementation cannot be achieved
 (section~\ref{sec:pseudo-secure}).
-Having account of that, because even a trusted node is not accountable on its
-own, we rely in sets of nodes to cooperate for the verification of the
-integrity of the operation.
+%  Is the system valid?  fue demostrada la hipotesis?
+Having that in account, The goal of our approach was to drastically reduce the probability of a
+malicious node impersonating another user who is using the identification
+system. This was done using of a reputation system and trusted node management
+to mitigate the effectivity of malicious nodes on identity usurpation attacks.
 
-With our solution, with a leafset size of $L = 32$ nodes and a
+%% Then... the hypotesis was valid or not?
+% cual es la peor probabilidad del sistema?
+Our analysis shows that the highest probability of a protocol failing is of
+with $L=8$, without using trusted nodes $0.188$, and using trusted nodes $6.64
+\times 10^{-5}$. With $L=32$ the probabilities seems better, but without the use
+of a trustset the probabilities remain too high being $0.016$. That means that
+in a system with $1000000$ users, $16000$ of the users will have problems with
+the protocols of the system. Then, a solution without the use of trusted nodes
+is not acceptable. In comparison, using
+only trusted nodes with $L=32$ we obtain a probability of $8.24 \times
+10^{-14}$, meaning that in a system with $1000000$ users,
+only $0.00000000824$ would fail.
+% es aceptable o no? 
+Then, using the trusted nodes for the system protocols we can be sure that failures in the
+system's identification protocols are very unlikely to happen, being a valid
+solution for solving the problem at hand.
+% las probabilidades y evaluaciones ahcen el sistema valido o no?...IS VALID OR NOT??
+With that, we can conclude that present solution is acceptable to be
+used in real life applications.
+
+
+% Al aumentar L, aumenta la cantidad de mensajes (n^2), es aceptable?
+While a higher $L$ value rises the amount of messages in $O(n^2)$ during the
+user sign in and user registration protocols, this order can be acceptable
+or not depending in the rate which this protocols are used in comparison with
+the number of messages traded by an user after using them. Considering that a
+user stays connected in the system after signing in  for a long period of time, the
+number of message sent while being identified will be much lower than the messages
+sent while using a service, case in which the cost of $O(n^2)$ in those
+protocols can be justified. In contrary, if the user-service interaction
+is made in short periods of time, the number of messages sent during the register and
+sign in protocols will be huge in comparison of the others transactions being
+made in the system. 
+
+% cual seria el valor de L?
+So, with our solution, with a leafset size of $L = 32$ nodes and a
 $5\%$ proportion of malicious nodes distributed uniformly in the P2P system, the resulting probability of a false
 positive, where a decision made by malicious nodes is adopted, is of the order
 of $10^{-14}$. 
 This value is far lower than any we have encountered in the
-literature about decentralized identification systems.Also the system maintains a cost scalable when the size of nodes $N$ of the DHT
-increases, and remains very affordable in terms of communications overhead. 
-We think that probability is acceptable for a user identification system to be
-used in real life applications.
+literature about decentralized identification systems. Also the system
+maintains a cost scalable when the size of nodes $N$ of the DHT
+increases. In terms of communications overhead, there is a trade off between its
+cost and the security provided by the protocols. Using values of
+$L = 16$ reduces the message overhead in the system and still provides a decent
+probability of error of order $10^-8$, which in systems with a low presence of
+malicious node can be acceptable. But if the users of the system
+will have long user sessions, and the high message cost of the identification
+protocols should are not an issue in comparison with the traffic of the others
+system's transactions, a value of $L = 32$ is highly recommended. 
 
+
+\section{Portability}
+
+%% DHT -> Chord u otro?
+Although our implementation relies on Pastry as its DHT, our approach can rely
+on other building block implementations. For example it is very simple to
+switch the underlying DHT from Pastry to Chord, as it maintains structures
+that are equivalent to the leafset and the routing table in Pastry, like using
+the $r$ successors of Chord instead of the leafset of Pastry.
+
+%% WTR -> Por otro? que valores necesita?
+Our implementation can be build over any trust management service that
+provides a way to find trusted nodes based on a reputation system
+that provides a value $R(X)$, value that represents the probability of a node
+$X$ being honest, and maintains the structural properties of the underling
+DHT. For example, WTR~\cite{bonnaire2009wtr} and
+PeerTrust~\cite{xiong2004peertrust} are reputations systems that fulfill our
+system requirements.
+
+%system with the same properties explained
+%in Section~\ref{sec:building_blocks}  is also required, but can be easily
+%supported by any type of DHT, as long as it provides some type of key lookup
+%service and.
+%% CORPS -> explicar por que se usa la probabilidad 0,3 y 0,... en la parte de evaluacion
+
+
+\section{Security issues}
+%Regarding P2P networks and identification systems, there are many issues that
+%hand that need to be accounted for when building the system. 
 
 \subsection{Sybil attacks}
 \label{sec:sybil_attacks}
@@ -172,13 +240,3 @@ successful completion the user registration and password change operations.
 %maitenance.  and add consider a timespan of 1 to 2 seconds  
 
 
-\section{Portability}
-
-Although our implementation relies on Pastry as its DHT, our approach can rely
-on other building block implementations. For example it is very simple to
-switch the underlying DHT from Pastry to Chord, as it maintains structures
-that are equivalent to the leafset and the routing table in Pastry. An
-underlying reputation system with the same properties explained
-in Section~\ref{sec:building_blocks}  is also required, but can be easily
-supported by any type of DHT, as long as it provides some type of key lookup
-service and.

@@ -88,13 +88,13 @@ diversity routing before, uses different nodes as starting points in order to
 reach the same root node $K_{ROOT}$.
 
 If a node $X$ wants to obtain the leafset of a node $K_{ROOT}$, the node $X$ sends a get\_leafset\_root request.
-Each node that recieves this request checks in its leafset if the $K_{ROOT}$
+Each node that receives this request checks in its leafset if the $K_{ROOT}$
 node is present. If this condition is met, the node responds with its own
 leafset and ends the request.
-After the node $X$ recieves the first leafset it runs a filter to obtain the
+After the node $X$ receives the first leafset it runs a filter to obtain the
 $L/2$ nodes  below $K_{ROOT}$ and the $L/2$ nodes above $K_{ROOT}$. Then
-queries directly for the leafset of the fartest filtered node to complete
-the missing nodes of the leafset of $K_{ROOT}$.  If the queryied node is
+queries directly for the leafset of the farthest filtered node to complete
+the missing nodes of the leafset of $K_{ROOT}$.  If the queried node is
 malicious and do not respond,  the node $X$ can try querying the next node of
 the filtered list.
 %%% NOT SURE IS THIS VALIDATION IS DONE OR NOT, does not add much more security
@@ -110,8 +110,8 @@ sends a message of the type get\_leafset\_root which reaches the node $K_{-2}$.
 Using a value of $L = 4$, the node $K_{-2}$ checks its leafset for the root
 node $K$ by doing $K_{-4} \le K \le K_{ROOT}$, and after validating that $K_{ROOT}$
 is in its leafset, the node $L_{-2}$ sends his own leafset to the node $X$.
-Then the node $X$ filters the recieved leafset to obtain the set of nodes 
-$L = \{K_{-1}, K_{-2}\}$ that are part of hte leafset of $K_{ROOT}$,  and
+Then the node $X$ filters the received leafset to obtain the set of nodes 
+$L = \{K_{-1}, K_{-2}\}$ that are part of the leafset of $K_{ROOT}$,  and
 continues to request for the leafset of the node $K_{-1}$. Finally, the node $X$
 requests the leafset of the node $K_{1}$ and completes the leafset of the node
 $K_{ROOT}$. The worst case is when the $K_{ROOT}$ node is malicious and the
@@ -119,7 +119,7 @@ get\_leafset\_root request reaches the farthest node in its leafset. In that
 case, the filtering function returns only $L/2$nodes. Is all $L/2$ nodes in the
 leafset are malicious, the node $X$ fails to recover the leafset. Still, having $L/2$
 malicious nodes, with $p$ being the probability of a node being malicious, is
-$p^{\frac{L}{2}}$, which is very low for modests values of $L$. Further
+$p^{\frac{L}{2}}$, which is very low for modest values of $L$. Further
 analysis of the algorithm probability of failure can be found in~\ref{sec:eval_leafset}.
 
 
@@ -294,35 +294,36 @@ replaces one of the original nodes from $I$.
 \subsection{User information store maintenance}
 \label{sec:lazy_node_maintenance}
 
-It is important for the system maintains up-to-date the lastest 
+It is important for the system maintains up-to-date the latest 
 
 As insertions and departures of nodes in the DHT cause modifications of the
 leafset, the system needs to update the information stored in the
 \textit{identificators} nodes. This can lead to performance degradation and inconsistencies in the
 system. If left alone, there can be times where the systems
 fails to provide all the nodes $I_i$ needed for the identification authority
-$I$. We can minimize the risk of this happening using an maitenance scheme for
-the identificators nodes data. They can be different types of maitenance approaches:
+$I$. We can minimize the risk of this happening using an maintenance scheme for
+the identificators nodes data. They can be different types of maintenance approaches:
 \textit{active}, \textit{lazy} and \textit{opportunistic}.
 
 \paragraph{Active Maintenance}
-  In \textit{active maitenance}, a
+  In \textit{active maintenance}, a
 node handles the failure or departure of an existing node in $I$ (or a new
 joining node added to $I$) by sending a copy of its stored user's
 information data to the others nodes in $I$.
-The user's information consists in the user's public keys and salt. This has to be done on every node in the identification service
+The user's information consists in the user's public keys. This has to be done on every node in the identification service
+%The user's information consists in the user's public keys and salt. This has to be done on every node in the identification service
 $I$, with $card(I) = L+1$, being $L+1$ the size of the $I_{root}$ node leafset.
 
  This algorithm converges quickly, but each times it uses $O((L+1)^2)$ messages
 for a quasi-identification authority of $L+1$ nodes.
 %% What does pastry do?
-Pastry uses a more complex variant of active maitenance that is
+Pastry uses a more complex variant of active maintenance that is
 bandwidth efficient.
-Active maitenance runs the risk of creating a positive feedback cycle as
+Active maintenance runs the risk of creating a positive feedback cycle as
 follows: Consider the case whereby a node's access link to the network is
-sufficiently lcongeted, which causes timeouts for the node to believe that one
+sufficiently connected, which causes timeouts for the node to believe that one
 of its leafset nodes has failed (or left the system). If the peer is recovering
-in an active mode, maitenance operations will begin. This operation will add
+in an active mode, maintenance operations will begin. This operation will add
 even more packets to its existing congested network link, which will increase
 the likelihood that more other peers will mistakenly deduce that other of its leafset
 nodes has failed in the system. As this process continues, congestion collapse
@@ -348,7 +349,7 @@ expensive. A peer sees more churn when its leafset gets larger in size.
 
 In opportunistic maintenance, an identificator node periodically shares its user information
 data set with each of the members in $I$, which responds in kind with its own
-user information data set. This proccess takes place independently of the peer
+user information data set. This process takes place independently of the peer
 detecting changes in the $I$ set of nodes. A node picks one random member of
 its $I$ set to share .....
 
@@ -601,14 +602,18 @@ the username $U^{username}$, the node $A$ computes its key $K$ such that $K =
 SHA(U^{username})$. 
 
 Then the node $A$ sends a request to every node $I_i$ in $I$ to register the
-$U^{salt}$ and $U^{Pub}$ under the chosen  username  $U^{username}$.
+$U^{Pub}$ under the chosen  username  $U^{username}$.
+
+%Then the node $A$ sends a request to every node $I_i$ in $I$ to register the
+%$U^{salt}$ and $U^{Pub}$ under the chosen  username  $U^{username}$.
 
 Each node in $I$ agrees in generating a random challenge~\ref{sec:challenges_puzzles}, which is then sent to the
 client $A$ by every node $I_i \in I$ using the node public key to encrypt the
 message.
 
 If the node $A$ succeeds in answering correctly to the challenge, each node $I_i \in I$ then sends a user registration confirmation message to all nodes
-in $I$ containing the new user public key and salt. If a node $I_i$ receives at
+in $I$ containing the new user public key. If a node $I_i$ receives at
+%in $I$ containing the new user public key and salt. If a node $I_i$ receives at
 least $\frac{L}{2} + 1$ identical user registration confirmation messages from
 the others nodes in $I$, it sends a affirmative answer to the node $A$.
 
@@ -626,37 +631,21 @@ the node $A$ is prompted for a new username.
 
 
 
-\subsection{User private key recovery}
-\label{sec:private_key_recovery}
-%\includegraphics[width=14cm]{../img/sign in_protocol_mockup}\\
-
-First, the node $A$ looks for the set $I$ set of nodes that will constitute the
-identification service for the user $U$.
-To obtain the list of nodes $I$ that provides the user identification service for
-the username $U^{username}$, the node $A$ computes its key $K$ such that $K =
-SHA(U^{username})$. 
-Then the node $A$ sends a request to every node $I_i$ in $I$ to obtain the user
-salt $U^{salt}$ needed to derive the user private key $U^{priv}$.
- When the node $A$ receives at least $\frac{L}{2} + 1$ identical affirmative answers from
-$I$ regarding the user salt, then $A$ assumes that the salt retrieved
-corresponds to the one registered previously by the user ($U^{salt}$). Finally,
-the node proceeds to derive the user private key $U^{priv}$ using his user password $U^{password}$.
-
 \subsection{User sign in}
 %\includegraphics[width=14cm]{../img/session_creation_protocol_mockup}\\
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=14cm]{../img/sign_in}\\
-\caption{User sign in: $S$ issues challenge to node $A$.}
+\caption{User sign in: A service $S$ issues challenge to node $A$.}
 \label{fig:sign_in}
 \end{figure}
 
-Before carrying out a transaction for a client $A$, $S$ proceeds to
+Before carrying out a transaction for a client $A$, a service $S$ proceeds to
 verify the identity of the client from another set $I$ of nodes. At the end of
 the identification process, the objective is to return a session key to $A$
 and to store the created session on the nodes that belong $S$.
 
-Each node in $S$ agrees in generating a random challenge~\ref{sec:challenges_puzzles}, which is then sent to the
+Each node $S_i \in S$ agrees in generating a random challenge~\ref{sec:challenges_puzzles}, which is then sent to the
 client $A$ by every node $S_i \in S$ using the user public key to encrypt the
 message.
 
@@ -712,13 +701,88 @@ First, the node $A$ needs to recover his actual private key using the process
 in~\ref{sec:private_key_recovery}. Then the node $A$ generates a new private/public
 key pair using the new password.  With this, the node $A$ request a
 password change to every node $I_i$ in $I$. The request is signed with the
-actual user private keys, and includes the new user public key $U^{pub}_{new}$
-and salt used to derive his new private key $U^{salt}_{new}$. 
+actual user private keys, and includes the new user public key $U^{pub}_{new}$.
+%and salt used to derive his new private key $U^{salt}_{new}$. 
 Each node $I_i \in I$ then sends a password change confirmation message to all nodes
-in $I$ containing the new user public key and salt. If a node $I_i$ receives at
+in $I$ containing the new user public key. If a node $I_i$ receives at
 least $\frac{L}{2} + 1$ identical password change confirmation messages from
 the others nodes in $I$, it sends a affirmative answer to the node $A$.
  When the node $A$ receives at least $\frac{L}{2} + 1$ identical affirmative
 answers from $I$ regarding the user password change, then $A$ assumes that the
 user keys (and password) were updated.
 
+\subsection{User private key recovery (Discarded protocol)}
+\label{sec:private_key_recovery}
+%\includegraphics[width=14cm]{../img/sign in_protocol_mockup}\\
+\paragraph{Why was discarded?}
+This protocol was discarded because it offers a weak security for the user's
+private keys, which are used to identify the user in the system.  While the main idea
+of this protocol is to let users sign in without the need to
+manage a copy of the user's private key, it is prone to offline attacks. In
+offline attacks, a malicious user tries different password to generate the
+public and private key till getting the same that is published in the network
+for an specific user.
+
+\paragraph{Protocol A}
+
+First, the node $A$ looks for the set $I$ of nodes that will constitute the
+identification service for the user $U$.
+To obtain the list of nodes $I$ that provides the user identification service for
+the username $U^{username}$, the node $A$ computes its key $K$ such that $K =
+SHA(U^{username})$. 
+Then the node $A$ sends a request to every node $I_i$ in $I$ to obtain the user
+salt $U^{salt}$ needed to derive the user private key $U^{priv}$.
+ When the node $A$ receives at least $\frac{L}{2} + 1$ identical affirmative answers from
+$I$ regarding the user salt, then $A$ assumes that the salt retrieved
+corresponds to the one registered previously by the user ($U^{salt}$). Finally,
+the node proceeds to derive the user private key $U^{priv}$ using his user password $U^{password}$.
+
+
+\subsubsection{Changes to the other protocols}
+\paragraph{User registration}
+The node $A$ needs to also register the \textit{salt} $U^{salt}$ used to
+generate its private key. This is stored alongside the user's public keys $U^{Pub}$ under the
+chosen username $U^{username}$.
+
+%Then the node $A$ sends a request to every node $I_i$ in $I$ to register the
+%$U^{salt}$ and $U^{Pub}$ under the chosen  username  $U^{username}$.
+
+\paragraph{Password Change}
+When re-registering the user's public key, the node $A$ needs to also register the \textit{salt} $U^{salt}$ used to
+re-generate its private key. This is stored alongside the new user's public keys $U^{Pub}$ under the
+chosen username $U^{username}$.
+
+%actual user private keys, and includes the new user public key $U^{pub}_{new}$
+%and salt used to derive his new private key $U^{salt}_{new}$. 
+
+\paragraph{Protocol B}
+
+This protocol use indirection and anonymity layers to hide the user's
+\textit{salt} and obscure their whereabouts in the storage service.
+To made this possible, we mount another storage service called secret storage
+on top of the storage service used in the P2P network. The secret storage is conformed
+by the same nodes that serve the storage system for the DHT, but the function
+used to route a keyword to a node differs. The main idea of the secret storage
+is to put the user's \textit{salt} used to generate his private keys in a
+path only known for him. The function used to know in what node the
+\textit{salt} will be stored is $SHA(SHA(username)+SHA(password))$, and the
+filename of the stored \textit{salt} will be
+$SHA(SHA(password)+SHA(username))$. The secret storage is of public access for
+the network, and is used to recreate the user's private key using the user's
+\textit{salt} and the user's password. Also, to obfuscate the node identity that
+stored the file, the query to store it uses the onion network route protocol to
+send it.
+
+%Then, when the user needs to recover his private key, the system uses his
+%username and password to know where is stored and how is the filename that
+%needs to retrieve.  First, the node $A$ looks for the nodes forming the secret storage ($SS$) set of nodes that will constitute the
+%identification service for the user $U$.
+%To obtain the list of nodes $I$ that provides the user identification service for
+%the username $U^{username}$, the node $A$ computes its key $K$ such that $K =
+%SHA(U^{username})$. 
+%Then the node $A$ sends a request to every node $I_i$ in $I$ to obtain the user
+%salt $U^{salt}$ needed to derive the user private key $U^{priv}$.
+% When the node $A$ receives at least $\frac{L}{2} + 1$ identical affirmative answers from
+%$I$ regarding the user salt, then $A$ assumes that the salt retrieved
+%corresponds to the one registered previously by the user ($U^{salt}$). Finally,
+%the node proceeds to derive the user private key $U^{priv}$ using his user password $U^{password}$.

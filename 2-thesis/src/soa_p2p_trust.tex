@@ -30,56 +30,56 @@ service, or nodes that are unknown.
 
 
 \subsection{Trust management in P2P networks}
-At the absence of trusted nodes in a P2P network, additional mechanisms to
-attain certain grade of trust between the participants of a transaction are
-needed. There are reputation systems that grade each node with a reputation
-that can be used to decide if a operation will or not will be made with them,
-and accountability systems that detects malicious behavior analyzing the
-behavior of the nodes in the network. While  detecting malicious behavior with
-accountability systems can ward off a variety of attacks, they need to follow
-each transaction done in the system, with a high cost associated to them.
- In the following section we are going to
-detail a reputation system and a trust model to be of used by the proposed
+In the absence of trusted nodes in a P2P network, additional mechanisms are
+needed to attain a certain level of trust between the participants of a transaction.
+ There are reputation systems that grade each node to determine if an
+operation. There are also accountability systems that detects malicious
+behavior in the nodes in the network. While  detecting malicious behavior with
+accountability systems can ward off a variety of attacks, they need to
+constantly follow along for each step of the transaction as it happens, with
+high message and computational costs.
+ In the following section we will 
+detail a reputation system and a trust model that will be used in the proposed
 solution.
 
 
 \subsection{Reputation systems}
 \label{sec:reputation_systems}
 Reputation systems mitigate the problem of malicious nodes in
-P2P networks, trying to build trust among the nodes. The key
+P2P networks, by building trust among the nodes. The key
 idea of a reputation system is to predict the future behaviour
 of nodes based on feedback about their past
 transactions~\cite{Resnick:2000:RS:355112.355122}. A
-transaction is application dependent, for example forwarding a
+transaction is application dependent, for example, forwarding a
 message in the network, buying an item in e-commerce services,
-share or store files, etc. After a transaction, the client node emits
+sharing or storing files, etc. After a transaction, the client node emits
 a recommendation that evaluates the behaviour of the other peer.
 The aggregation of these recommendations leads to a reputation
 value.
-A reputation system built on top of a DHT has the ability
-to compute a global reputation value for every node. Indeed
+A reputation system built on a DHT has the ability
+to compute a global reputation value for every node. Indeed,
 all the recommendations about a single node can be handled
 consistently at a common location: either by a specific node
 or by a set of nodes. Among existing reputation systems for
-DHTs, we can cite: PeerTrust~\cite{xiong2004peertrust}, WTR~\cite{bonnaire2009wtr},
-Eigentrust~\cite{kamvar2003eigentrust},
-PowerTrust~\cite{rahbar2007powertrust} and CORPS~\cite{rosas2011corps}
+DHTs we can cite: PeerTrust~\cite{xiong2004peertrust}, WTR~\cite{bonnaire2009wtr},
+Eigentrust~\cite{kamvar2003eigentrust} and
+PowerTrust~\cite{rahbar2007powertrust}.
 
-Reputation systems have to deal with malicious nodes that:
-do not participate, collude with other malicious nodes and
+Reputation systems deal with malicious nodes that:
+do not participate, collude with other malicious nodes, and
 emit false recommendations. Nevertheless, to our knowledge,
 none of the existing solutions to promote trust in P2P can be
 $100\%$ effective in detecting and blocking these attacks.
 
-It's assumed an $5\%$ error in the classification of trusted nodes.
+There is a $5\%$ error assumed in the classification of trusted nodes.
 
 \subsubsection{WTR}
 \label{sec:wtr}
-WTR~\cite{bonnaire2009wtr} is a reputation system over a DHT like Pastry~\cite{pastry} and
+WTR~\cite{bonnaire2009wtr} is a reputation system built on a DHT like Pastry~\cite{pastry} and
 Chord~\cite{chord}. The probability that a node $X$ is honest is determined by
 $R(X)$, with $0 \leq R(X) \leq 1$. WTR calculates the node reputation $R(X)$
 using the \textit{recommendations} of the node $X$. When a node $Y$ makes a transaction with
-node $X$, the node $Y$ issues a recommendation about the behavior of the node
+node $X$, node $Y$ issues a recommendation about the behavior of node
 $X$. The recommendations table~\ref{table:wtr_recomendations} shows how each
 transaction is evaluated.
  
@@ -106,23 +106,23 @@ transaction is evaluated.
     \label{table:wtr_recomendations}
   \end{table}
 
-A set of $M$ nodes manage the reputation and the risk associated to node $X$.
+A set of $M$ nodes manage the reputation and the risk associated with node $X$.
 The node ID of the manager $i$ of the node $X$ is
 obtained by the function $m_i = SHA^{i}(X)$. Each manager of the node $X$
-stores the lists of recommendations emitted about $X$. When a manager receives a
+stores the list of recommendations emitted about $X$. When a manager receives a
 new request for node $X$, it computes the new reputation value and the risk
 value for $X$.
 Each manager $m_i$ administers a number of $L$ replicas of the reputation information. In Pastry,
 the replicas are stored in the leafset of each node, while in Chord the $r$
 successors of each node are used.
-The reputation and the risk associated to node $X$ are probabilities. The
-reputation of $X$ is the probability for $X$ to be trusted. The risk of node
-$X$ represents the risk to make a transaction with node $X$. A risk of $1$
-means that doing a transaction with $X$ is really risky, even if $X$ has a very
+The reputation and the risk associated with node $X$ are probabilities. The
+reputation of $X$ is the probability that $X$ can be trusted. The risk of node
+$X$ represents the risk of making a transaction with node $X$. A risk of $1$
+means that making a transaction with $X$ is really risky, even if $X$ has a very
 good reputation.
 
 The reputation of a node in WTR is influenced by the credibility of the nodes
-that emitted the recommendations about $X$. The credibility of a node $K$ at a
+that emitted the recommendations about node $X$. The credibility of a node $K$ at a
 moment $t$ is denoted by $C_t (K)$:%~\ref{eq:credibility_of_a_node}.
 
 \begin{equation}
@@ -136,35 +136,34 @@ moment $t$ is denoted by $C_t (K)$:%~\ref{eq:credibility_of_a_node}.
 %\label{eq:credibility_of_a_node}
 \end{equation}
 
-To calculate the reputation of a node, the system only takes in consideration
+To calculate the reputation of a node, the system only takes into consideration
 the last $m$ recommendations in its recommendations list. This window size $m$ is
-a fixed parameter of the reputation system. Also, more weight is given to the
-more recent recommendations. 
-Being $F_i^k (X)$ the recommendation $i$, emitted by the node $K$ to the node
-$X$. Then, the reputation of the node $X$ at the time $t$ is defined by:
+a fixed parameter of the reputation system. If the recommendation  $i$ emitted
+by the node $K$ to the node $X$ is represented by $F_i^k (X)$, then the
+reputation of the node $X$ at the time $t$ is defined by:
 
 \begin{equation}
   R_t(X) = \frac{\sum_{i=0}^{m-1}  log(m-i+1) \cdot F_i^k(X) \cdot C_t(K)}{
 \sum_{i=0}^{m-1} log(m-i+1) \cdot C_t(K)}
-\end{equation}
+\end{equation}\\
 
 
-The problem with only considering the reputation of a node when doing a
+The problem with only considering the reputation of a node when making a
 transaction is that:
 \begin{enumerate}
   \item A node with a number $n$ of good recommendations, with $n \ll m$ (very
-few recommendations), can have a very similar reputation than a node with at
+few recommendations), can have a very similar reputation to a node with at
 least $m$ recommendations. However, an application could really prefer a node
 with a larger history as its reputation is computed with more information, and
 is therefore more reliable.
   \item A node that makes good and bad transactions in turns can have a very
-similar reputation compared to a node with a more regular behavior. It then can
-more interesting for an application to choose a node with a more regular
+similar reputation to a node with more regular behavior. It can then be
+preferable for an application to choose a node with more regular
 behavior than a very irregular one.
 
 \end{enumerate}
 
-For these reason is that the \textit{risk} of a node is considered. $J_t(X)$ is
+It is for these reason that the \textit{risk} of a node is considered. $J_t(X)$ is
 the risk to make a transaction with a node $X$ at time $t$. A risk of 0
 means that the reputation for node $X$ is fully reliable.
 
@@ -180,76 +179,77 @@ where
     T_1 = \alpha \cdot (1-\frac{r}{m}\\
     T_2 = 4 * (1- \alpha) \cdot (1-\frac{\sum_{i=0}^{k} (F_i(X)-\bar{F_i(X))^2})}{r}
   \end{array}\right.
-\end{equation}
+\end{equation}\\
 
 Where $r$ is the number of available recommendations in the sliding window of
-size $m$ for node $X$. $\alpha$ is a dynamic parameter within of range
+size $m$ for node $X$. $\alpha$ is a dynamic parameter within the range of
 $[0\cdots 1]$ that allows an application to give more weight to $T_1$ versus
-$T_2$ for the computation of the risk. $T_1$ is used to evaluate the risk
-associated to the number of recommendations taken in account to compute the
+$T_2$ for the computation of risk. $T_1$ is used to evaluate the risk
+associated with the number of recommendations taken into account when computing the
 reputation of the node $X$. $T_2$ corresponds to the variance of the
 recommendations emitted by others nodes. The role of the factor $4$ is to
-normalize $T_2$ to obtain a value in $[0\cdots 1]$
+normalize $T_2$ to obtain a value within the range of $[0\cdots 1]$
 
-Experimental results shows that WTR works well under $30\%$ of malicious nodes,
-becoming unstable with more malicious nodes. Is resistant to DDOS attacks
+Experimental results show that WTR works well when malicious nodes make up less
+than $30\%$ of the network, but becomes unstable with more malicious nodes.
+It is also resistant to DDOS attacks
 thanks to the recursive replication used~\cite{recursive_replication}.
 
 % revise this
 \subsubsection{CORPS}
 \label{sec:corps}
-While reputation systems lets you to know how much a node can be
-``trusted'', they don't provide a way to find them to build trusted services on
-them. CORPS~\cite{rosas2011corps} consider a probabilistic model of trust based on
+While reputation systems let you to know how much a node can be
+``trusted'', they don't provide a way to find nodes to build trusted services
+on. CORPS~\cite{rosas2011corps} considers a probabilistic model of trust based on
 reputation to build trusted infrastructure inside a DHT. CORPS builds a double
 ring inside inside a DHT. Over this trusted ring a routing algorithm is supplied to
-find the most trust node closest to a key $k$.
+find the most trustworthy node closest to a key $k$.
 To be part of the trusted ring, a node needs to have a reputation $R(X) \ge
 \rho$, where $\rho$ is a parameter of the system. 
 
 Each node maintains a \textit{trustset} composed by it's $D$ closest trusted
-nodes, $\frac{D}{2}$ to it's left and $\frac{D}{2}$ nodes to it's right.
-The root node of the trustset is called \textit{manager} of the nodes that are
-in it's trustset.
+nodes, $\frac{D}{2}$ nodes to it's left and $\frac{D}{2}$ nodes to it's right.
+The root node of the trustset is called the \textit{manager} of the nodes that are
+in its trustset.
 
-When a new node enters the DHT, gathers a trustset from the nodes in its own
-leafset. If there is not a Trust Set available, the node stays temporarily
-isolated. The node can recover a trustset later on through transactions done with
-another nodes of the ring.
+When a new node enters the DHT, the node gathers a trustset from the nodes in its own
+leafset. If there is not a trustset available, the node stays temporarily
+isolated. The node can recover a trustset later through transactions done with
+other nodes in the ring.
 
 When the reputation of a node $R(X)$ gets higher than the system parameter
 $\rho$, the node $X$ sends a JOIN message to all nodes in its trustset. Each
-node of the trustset verifies that the condition $R(X) \ll \rho$. In case that
-the condition  applies, each node in the trustset adds $X$ to its own trustset
-and forwards this information to all the nodes on its leafset, making them the
+node of the trustset verifies that the condition $R(X) \ll \rho$ has been met.
+If the condition  applies, each node in the trustset adds $X$ to its own trustset
+and forwards this information to all the nodes in its leafset, making them the
 \textit{followers} of $X$.
-If the condition is not met, $X$ does not enters the trustset and continues
+If the condition is not met, $X$ does not enter the trustset and continues
 being a normal node.
 
-Normal nodes does not register when a node enters the trustset. It is the
+Normal nodes does not register when they enter the trustset. It is the
 responsibility of the new trusted node to notify each node in its leafset about
 the new trustset.
 
-Each $\delta T$, the managers nodes checks their trusted nodes reputation. If
+Each $\delta T$, the manager's nodes, checks its trusted node's reputation. If
 the reputation of a trusted node changes to $R(X) \in [\rho -\alpha, 1]$, then
 a REMOVE\_MESSAGE is sent to the followers of $X$. $\alpha$ is a parameter
 representing the tolerance of the system. It prevents a yo-yo effect, where the nodes keeps entering and
 leaving the trusted ring generating high message costs.
 
-As the system needs a minimum history about the behavior in the transactions
-done in the network, an initialization period is needed. In this period, there
-can be various locally trusted rings that coexist. The system stabilizes after
-approximately 5 transactions per node, when the trusted ring is fully connected.
+As the system needs a minimum history of the behavior of the nodes transactions
+done in the network, an initialization period is needed. During this period,
+various locally trusted rings can coexist.
+The system stabilizes after approximately five transactions per node, at which
+point the trusted ring is fully connected.
 
-To route messages in the ring, CORPS develop a pseudo-trusted routing. The
-pseudo-trusted routing returns the closest trusted node of a given key $k$.
+To route messages in the ring, CORPS developed pseudo-trusted routing. Pseudo-trusted routing returns the closest trusted node of a given key $k$.
 
-As a way of encouraging nodes to participate in the Trusted Ring, CORPS gives
-priority to those nodes when using the pseudo-trusted services.
-Also, if a new node enter the system with a reputation value of $R(X) =
+As a way of encouraging nodes to participate in the trusted ring, CORPS gives
+priority to those nodes using the pseudo-trusted services.
+Also, if a new node enters the system with a reputation value of $R(X) =
 \beta$, it needs $R(X) > \beta$ to use the trusted ring services. This is
-made to ensure that new nodes use the services of the trusted ring only if has done
-good actions to raise his reputation. $\beta$ is a static parameter of the
+done to ensure that new nodes use the services of the trusted ring only if they
+have made good transactions to raise their reputation. $\beta$ is a static parameter of the
 system. 
 
 
