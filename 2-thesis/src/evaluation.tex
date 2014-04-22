@@ -237,79 +237,79 @@ constant, and $O(log(N))$. In the best case,
     in the network and should not affect the performance of the
     service.
 
-\section{Lazy User's Information Store Maintenance}
-\label{sec:eval_lazy_maintenance}
-
-      %8 &  $0.0988087$ & $3.32222 \times 10^{-5}$ \\
-      %\hline
-      %16 & $0.0402769$ & $3.28714 \times 10^{-8}$  \\
-      %\hline
-      %32 & $0.00782066$ & $4.11893 \times 10^{-14}$  \\
-
-  \begin{table}
-    \centering
-    \footnotesize
-    \begin{tabular}{|c|c|c|c|}
-      \cline{3-4}
-      \multicolumn{2}{c|}{} &  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
-      \cline{2-4}
-      \multicolumn{1}{c|}{} & \textbf{L} & \textbf{$p = \rho$ = 0.3} & \textbf{p = 0.05} \\
-      \hline
-      \multirow{3}{*}{\rotatebox[origin=c]{90}{\textbf{Case 1}}} & 8 & $0.106108$ & $3.9472 \times 10^{-5}$\\
-      \cline{2-4}
-      \multicolumn{1}{|c|}{} & 16 & $0.0403399$ & $3.29105 \times 10^{-8}$ \\
-      \cline{2-4}
-      \multicolumn{1}{|c|}{} & 32 & $0.00782066$ & $4.11893 \times 10^{-14}$ \\
-      \hline
-      \multirow{3}{*}{\rotatebox[origin=c]{90}{\textbf{Case 2}}} & 8 & $0.123141$ & $1.58218 \times 10^{-4}$ \\
-      \cline{2-4}
-      \multicolumn{1}{|c|}{} & 16 & $0.0404868$ & $3.36526 \times 10^{-8}$ \\
-      \cline{2-4}
-      \multicolumn{1}{|c|}{} & 32 & $0.00782067$ & $4.11893 \times 10^{-14}$ \\
-      \hline
-    \end{tabular}
-    \caption{Probability of failure when performing the user's information store maintenance}
-    \label{tab:p_lazy_maintenance}
-  \end{table}
-  
-  \subsection{Probability of failure}
-
-    We must consider two cases for certificate log maintenance: when a new node
-enters the leafset (case 1) and when a node leaves the leafset (case 2).
-
-    \paragraph{\textbf{Case 1}} A new node enters the leafset. The maintenance
-of the user information fails if it encounters $\frac{L}{2}$ consecutive
-malicious nodes when building the node interval to retrieve the logs, or if
-more than $\frac{L}{2}$ nodes are malicious (impossibility to have more than
-$\frac{L}{2} +1$ identical answers).\\
-    The probability $P_1$ of having $\frac{L}{2}$ consecutive malicious nodes
-is given by equation~\ref{eq:p_k_malicious_nodes}: $P_1 = p^{L/2}$, and the
-probability $P_2$ of not being able to retrieve at least $\frac{L}{2} +1$
-identical answers is given by equation~\ref{eq:p_malicious_ge_L_2}: $P_2 =
-P_{\ge L/2}$.\\
- Hence the total probability that this maintenance operation will
-fail is
-
-$$
-  P_{total} = P_1 + (1-P_1) P_2
-$$
-
-
-    \paragraph{\textbf{Case 2}} A node is leaving the leafset. The user
-information cannot be repaired if the node cannot repair its leafset (adding a
-node on the left or right side), or if it is impossible to find at least
-$\frac{L}{2} +1$ identical answers to retrieve the user information.
-
-A node cannot repair its leafset if $\frac{L}{2} -1$ consecutive nodes are
-malicious with a probability $P_1 = p^{L/2 - 1}$ and the user information
-retrieval fails with a probability $P_2 = P_{\ge L/2}$.\\
-Hence the total probability of failure is
-$$
-  P_{total} = P_1 + (1-P_1)P_2
-$$
-
-Table~\ref{tab:p_lazy_maintenance} computes the probability that a maintenance
-operation will fail, given increasing leafset sizes $L = {8,16,32}$.
+%\section{Lazy User's Information Store Maintenance}
+%\label{sec:eval_lazy_maintenance}
+%
+%      %8 &  $0.0988087$ & $3.32222 \times 10^{-5}$ \\
+%      %\hline
+%      %16 & $0.0402769$ & $3.28714 \times 10^{-8}$  \\
+%      %\hline
+%      %32 & $0.00782066$ & $4.11893 \times 10^{-14}$  \\
+%
+%  \begin{table}
+%    \centering
+%    \footnotesize
+%    \begin{tabular}{|c|c|c|c|}
+%      \cline{3-4}
+%      \multicolumn{2}{c|}{} &  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
+%      \cline{2-4}
+%      \multicolumn{1}{c|}{} & \textbf{L} & \textbf{$p = \rho$ = 0.3} & \textbf{p = 0.05} \\
+%      \hline
+%      \multirow{3}{*}{\rotatebox[origin=c]{90}{\textbf{Case 1}}} & 8 & $0.106108$ & $3.9472 \times 10^{-5}$\\
+%      \cline{2-4}
+%      \multicolumn{1}{|c|}{} & 16 & $0.0403399$ & $3.29105 \times 10^{-8}$ \\
+%      \cline{2-4}
+%      \multicolumn{1}{|c|}{} & 32 & $0.00782066$ & $4.11893 \times 10^{-14}$ \\
+%      \hline
+%      \multirow{3}{*}{\rotatebox[origin=c]{90}{\textbf{Case 2}}} & 8 & $0.123141$ & $1.58218 \times 10^{-4}$ \\
+%      \cline{2-4}
+%      \multicolumn{1}{|c|}{} & 16 & $0.0404868$ & $3.36526 \times 10^{-8}$ \\
+%      \cline{2-4}
+%      \multicolumn{1}{|c|}{} & 32 & $0.00782067$ & $4.11893 \times 10^{-14}$ \\
+%      \hline
+%    \end{tabular}
+%    \caption{Probability of failure when performing the user's information store maintenance}
+%    \label{tab:p_lazy_maintenance}
+%  \end{table}
+%  
+%  \subsection{Probability of failure}
+%
+%    We must consider two cases for certificate log maintenance: when a new node
+%enters the leafset (case 1) and when a node leaves the leafset (case 2).
+%
+%    \paragraph{\textbf{Case 1}} A new node enters the leafset. The maintenance
+%of the user information fails if it encounters $\frac{L}{2}$ consecutive
+%malicious nodes when building the node interval to retrieve the logs, or if
+%more than $\frac{L}{2}$ nodes are malicious (impossibility to have more than
+%$\frac{L}{2} +1$ identical answers).\\
+%    The probability $P_1$ of having $\frac{L}{2}$ consecutive malicious nodes
+%is given by equation~\ref{eq:p_k_malicious_nodes}: $P_1 = p^{L/2}$, and the
+%probability $P_2$ of not being able to retrieve at least $\frac{L}{2} +1$
+%identical answers is given by equation~\ref{eq:p_malicious_ge_L_2}: $P_2 =
+%P_{\ge L/2}$.\\
+% Hence the total probability that this maintenance operation will
+%fail is
+%
+%$$
+%  P_{total} = P_1 + (1-P_1) P_2
+%$$
+%
+%
+%    \paragraph{\textbf{Case 2}} A node is leaving the leafset. The user
+%information cannot be repaired if the node cannot repair its leafset (adding a
+%node on the left or right side), or if it is impossible to find at least
+%$\frac{L}{2} +1$ identical answers to retrieve the user information.
+%
+%A node cannot repair its leafset if $\frac{L}{2} -1$ consecutive nodes are
+%malicious with a probability $P_1 = p^{L/2 - 1}$ and the user information
+%retrieval fails with a probability $P_2 = P_{\ge L/2}$.\\
+%Hence the total probability of failure is
+%$$
+%  P_{total} = P_1 + (1-P_1)P_2
+%$$
+%
+%Table~\ref{tab:p_lazy_maintenance} computes the probability that a maintenance
+%operation will fail, given increasing leafset sizes $L = {8,16,32}$.
 
 
 \section{User Sign in}
