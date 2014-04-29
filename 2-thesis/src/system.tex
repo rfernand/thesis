@@ -135,17 +135,17 @@ analysis of the algorithm probability of failure can be found in~\ref{sec:eval_l
 
 Based on the services seen on~\cite{p2p_certification}, to find the nodes associated with a given
 service, node $A$ computes the hash
-of the service name: $K_s = SHA(ServiceName)$. Let $S_{root} $ be the node that
+of the service name $K_s = SHA(NameofS)$. Let $S_{root} $ be the node that
 is closest to $K_s$ in the DHT. $A$ uses DiversityTrustedRoute to acquire the
-leafset of $S_{root}$. $A$ thus obtains access to the set $S$ of nodes that
-process requests for service $ServiceName$. Let $L$ be the number of nodes in a
+leafset of $S_{root}$. $A$ thus obtains access to the set of nodes $S$ that
+process requests for service $NameofS$. Let $L$ be the number of nodes in a
 leafset: $card(S) = L + 1$.
 
 Once $A$ has acquired $S$, it proceeds to the inception of its service request
 by sending a $RequestInit$ message to every node in $S$. A $RequestInit$
 message contains a public key $A^{pub}$ of client $A$. In reply to such a
 message, every node $S_i$ sends its own public key $S^{pub}_i$. In order to
-avoid man-in-the-middle attack, all the ensuing communications between $A$ and
+avoid man-in-the-middle attacks, all the ensuing communications between $A$ and
 nodes that belong to $S$ will use a public/private key encryption scheme to
 ensure that no other node can read the content of the messages.
 % later the node will use his user private key & public key in this exchange
@@ -153,32 +153,32 @@ ensure that no other node can read the content of the messages.
 If $A$ receives at least $\frac{L}{2} + 1$ answers from the nodes in $S$, then
 $A$ considers that the transaction will proceed. Since $S$ is composed of
 common nodes from the DHT, it is possible for some of these nodes to be
-malicious. However, as explained in our evaluation of the quasi identification
+malicious. However, as explained in our evaluation of the quasi-identification
 protocol~\ref{sec:evaluation}, a situation where $S$ contains more than
 $\frac{L}{2}$ malicious nodes is highly improbable.
 
 A combination of network failures and/or malicious nodes that choose to remain
 silent may prevent $A$ from receiving at least $\frac{L}{2} + 1$ answers. Since
 $S$ retains the properties of Pastry's leafset, the numerical closeness of its
-nodes in the DHT implies that they will very likely be geographically far on
-the Internet. Therefore, the probability of $\frac{L}{2} + 1 $ simultaneous IP
-routing failures or node failures, that is the probability for more than
+nodes in the DHT implies that they will very likely be geographically far.
+Therefore, the probability of $\frac{L}{2} + 1 $ simultaneous IP
+routing failures or node failures, that is, the probability for more than
 $\frac{L}{2}$ answers to not reach $A$, is very close to zero. To account for
 this type of situation, $A$ aborts the transaction if it has not received a
-sufficient amount of identical answers after a timeout $\delta t$. this is a
+sufficient amount of identical answers after a timeout $\delta t$. This is a
 very rare and highly improbable case, as shown by our evaluation
 in~\ref{sec:evaluation}.
 
 
 \subsection{Challenges and computational puzzles}
 \label{sec:challenges_puzzles}
-A challenge or computational puzzle involve a node $X$ posing a challenge to
-$A$ that requires a large amount of computation to solve, but is easy to verify
-by the node $X$ that sent the challenge. The idea behind the use of
+A challenge, or computational puzzle, involves a node $X$ posing a challenge to
+$A$ that requires a large amount of computation to solve, but is easy for node
+$X$ to verify. The idea behind the use of
 computational puzzles is to restrict the abuse of certain operations in the
 system, making them costly enough to make an attack unfeasible under normal
 circumstances, but computationally affordable for normal operations of a node
-in the system. As an example, in Borisov et al.~\cite{borisov2006computational} described a
+in the system. As an example, Borisov et al.~\cite{borisov2006computational} described a
 fully decentralized mechanism based on computational puzzles for structured P2P
 overlays.
 
@@ -219,8 +219,8 @@ transaction and make them costly enough to discourage an attacker.
 %%%%%%%%%%%%%%%%%%%%%
 
 
- The following system only needs a challenge that fulfill the
-criteria of a computational puzzle, so any kind of puzzle that fits can be chosen for
+ The following system only needs a challenge that fulfills the
+criteria for a computational puzzle, so any puzzle that fits can be chosen for
 that purpose.
 
 In~\ref{fig:challenge} we show an example of a challenge being issued by a
@@ -234,39 +234,39 @@ service $S$ to a node $A$.
 \end{figure}
 
 \subsection{User identification service}
-\label{sec:identificators}
+\label{sec:identifiers}
 %%% more message costly version:
 %%A set of $N$ nodes $I_1, I_2, \cdots, I_{N}$ manage the user information
 %%needed for his identification.
 %%The node ID of the identificator $i$ of the user $U$ with username $username$ is
 %%obtained by the function $I_i = SHA^{i}(username)$.
-%%The identificators $I_i$ of the username $username$ forms the identification service $I$ for the user with username $username$.
+%%The identifiers $I_i$ of the username $username$ forms the identification service $I$ for the user with username $username$.
 %%Each identificator $I_i$ administers a number of $L$ replicas of the user information. In Pastry,
 %%the replicas are stored in the leafset of each node, while in Chord the $r$
 %%successors of each node are used.
 
-Every user registered has a set $I$ of nodes that
+Every user registered has a set of nodes $I$ that
 will constitute the quasi-secure identification authority for the
 identification service.
-To determine which  nodes belong to $I$, a node computes its key $K$ such that
+To determine which  nodes belong to set $I$, a node computes its key $K$ such that
 $K = SHA(U^{username} \bigoplus SHA(U^{username}))$. 
 
 $I_{root}$ is the node closest to $K$ in the DHT, and the quasi-secure identification authority $I =
 {I_1, I_2, \cdots, I_{L+1}}$ for the identification of the user with the
 username $username$ is composed of $I_{root}$ and of its leafset secured
-through DiversityTrustedRoute. These nodes are called \textit{identificators} of the
+through DiversityTrustedRoute. These nodes are called \textit{identifiers} of the
 user $U$ with username $username$.
 
- In order to prevent man-in-the-middle attack, we use an asymmetric key
-encryption scheme for the communications between a node $A$ and $I$. This
-induces that every node in $I$ must exchange public keys with every node that
+ In order to prevent a man-in-the-middle attack, we use an asymmetric key
+encryption scheme for the communications between a node $A$ and set $I$. This
+requires that every node in set $I$ must exchange public keys with every node that
 makes a request for the user information. The initial cost expressed in number
-of messages is $2(L+1)$, but this exchange only occurs the first time a
-node $A$ requests the user identification service from $I$, as the node $A$
+of messages is $2(L+1)$, but this exchange only occurs the first time 
+node $A$ requests the user identification service from set $I$ since node $A$
 maintains a local cache with the public keys of the nodes $I_i \in I$. Also,
 every node $I_i \in I$ maintains a local cache with the public keys of ${I_1,
 I_2, \cdots, I_{L+1}}$, and key exchanges only occur again if a new node
-replaces one of the original nodes from $I$.
+replaces one of the original nodes from set $I$.
 
 %%%%%%% ---- OLD, NOT APPLICABLE TODAY ----
 %%%The general view of the system consists in a multi-layered network based in trusted rings.
@@ -298,22 +298,23 @@ replaces one of the original nodes from $I$.
 
 As insertions and departures of nodes in the DHT cause modifications of the
 leafset, the system needs to update the information stored in the
-\textit{identificators} nodes. This can lead to performance degradation and inconsistencies in the
-system. If left alone, there can be times where the systems
+\textit{identifier} nodes. This can lead to performance degradation and inconsistencies in the
+system. If left alone, there can be times when the system
 fails to provide all the nodes $I_i$ needed for the identification authority
 $I$.
 
- %We can minimize the risk of this happening using an maintenance scheme for the identificators nodes data.
+ %We can minimize the risk of this happening using an maintenance scheme for the identifiers nodes data.
 
  %They can be different types of maintenance approaches: \textit{active}, \textit{lazy} and \textit{opportunistic}.
 
-\paragraph{Active Maintenance}
+\paragraph{Active maintenance}
   In \textit{active maintenance}, a
-node handles the failure or departure of an existing node in $I$ (or a new
-joining node added to $I$) by sending a copy of its stored user's
-information data to the others nodes in $I$.
-The user's information consists in the user's public keys. This has to be done on every node in the identification service
-%The user's information consists in the user's public keys and salt. This has to be done on every node in the identification service
+node handles the failure or departure of an existing node in set $I$ (or a new
+node joining set $I$) by sending a copy of its stored user
+information data to the other nodes in set $I$.
+The user information consists of the user's public keys. This has to be done on
+every node in the identification service of set
+%The user's information consists of the user's public keys and salt. This has to be done on every node in the identification service of set
 $I$, with $card(I) = L+1$, being $L+1$ the size of the $I_{root}$ node leafset.
 
  This algorithm converges quickly, but each times it uses $O((L+1)^2)$ messages
@@ -330,8 +331,8 @@ even more packets to its existing congested network link, which will increase
 the likelihood that more other peers will mistakenly deduce that other of its leafset
 nodes has failed in the system. As this process continues, congestion collapse
 on its access link may eventually happen.
-Under low peer churn (rate of which number of nodes are moving in and out of the
-system in a specific period of time), active maintenance is efficient and scalable because
+Under low peer churn (rate at which nodes are moving in and out of the
+system during a specific period of time), active maintenance is efficient and scalable because
 maintenance messages are only sent in response to actual overlay membership
 change events. As the churn rate increases, however, this process becomes more
 expensive. A peer sees more churn when its leafset gets larger in size.
@@ -339,10 +340,11 @@ expensive. A peer sees more churn when its leafset gets larger in size.
 For the distributed storage service, any implementation that maintains an
 active maitenance for their storage and provides a write and read operation on
 it has the capabilities needed to support our identification system. For
-example, PAST~\cite{druschel2001past} is a large-scale persistent p2p storage
-utility build in Pastry that can be used to provide storage for our system
+example, PAST~\cite{druschel2001past} is a large-scale persistent P2P storage
+utility built into Pastry that can be used to provide storage for our system
 protocols.
 
+% TODO
 (.... section in development .....)
 
 % pastry
@@ -356,7 +358,7 @@ protocols.
 % en el peor caso aumenta la cantidad de mensajes en (k(L+1)(L)), donde k es la cantidad de
 % pruebas que se envian para verificar si un nodo esta vivo o no.
 
-%\paragraph{Opportunistic Maintenance}
+%\paragraph{Opportunistic maintenance}
 %
 %In opportunistic maintenance, an identificator node periodically shares its user information
 %data set with each of the members in $I$, which responds in kind with its own
@@ -364,7 +366,7 @@ protocols.
 %detecting changes in the $I$ set of nodes. A node picks one random member of
 %its $I$ set to share .....
 
-%\paragraph{Lazy Maintenance}
+%\paragraph{Lazy maintenance}
 %
 %%Si esto no se trata, pueden haber momentos en que el sistema falla en obtener
 %%todos los nodos de la autoridad de identifacion  $I$.
@@ -387,15 +389,14 @@ protocols.
 %
 %\textit{Step 1:} $X$ constructs the set of nodes
 %$N = \{ X_{-L/2}, X_{-L/2 +1}, \cdots, X, \cdots X_{L/2 -1}, X_{L/2} $
-%composed of its leafset, and of the $\frac{L}{2} +1$ nodes both on the right
-%side and on the left of its leafset. 
+%composed of its leafset, and of the $\frac{L}{2} +1$ nodes  to the right and left of its leafset.
 %%% TODO: figure example  of this
 %In order to build this set of nodes, $X$ can ask the farthest nodes $X_{-L/2}$
 %and $X_{L/2}$ of its leafset for their own respective leafsets. If one of these
 %nodes fails to answer in a timely manner, $X$ can ask the second to farthest
 %node, and so on until its immediate neighbors in the leafset. Having
 %$\frac{L}{2} +1$ malicious neighbors on both sides is highly improbable, and
-%practically unfeasible: for more details about this statement, please refer to
+%practically unfeasible. For more details about this statement, please refer to
 %our probabilistic evaluation in section~\eqref{sec:eval_lazy_maintenance}. \\
 %
 %\textit{Step 2:} $X$ computes interval $L$ such that
@@ -471,7 +472,7 @@ protocols.
 %%%
 %%%There can be a successful operation that involved only $L+1/2$ nodes. That means
 %%%that almost half of the nodes in charge had some kind of problem during the
-%%%operation proccess. With a lazy store maitenance, there can be a large amount
+%%%operation process. With a lazy store maitenance, there can be a large amount
 %%%of time where the nodes will not be synchronized, so an active store maitenance
 %%%is needed.
 %%%
@@ -489,15 +490,14 @@ protocols.
 %%%
 %%%\textit{Step 1:} $X$ constructs the set of nodes
 %%%$N = \{ X_{-L/2}, X_{-L/2 +1}, \cdots, X, \cdots X_{L/2 -1}, X_{L/2} $
-%%%composed of its leafset, and of the $\frac{L}{2} +1$ nodes both on the right
-%%%side and on the left of its leafset. 
+%%%composed of its leafset, and of the $\frac{L}{2} +1$ nodes to the right and left of its leafset. 
 %%%%% TODO: figure example  of this
 %%%In order to build this set of nodes, $X$ can ask the farthest nodes $X_{-L/2}$
 %%%and $X_{L/2}$ of its leafset for their own respective leafsets. If one of these
-%%%nodes fails to answer in a timely manner, $X$ can ask the second to farthest
-%%%node, and so on until its immediate neighbors in the leafset. Having
+%%%nodes fails to answer in a timely manner, $X$ can ask the second farthest
+%%%node and so on, until its immediate neighbors in the leafset. Having
 %%%$\frac{L}{2} +1$ malicious neighbors on both sides is highly improbable, and
-%%%practically unfeasible: for more details about this statement, please refer to
+%%%practically unfeasible. For more details about this statement, please refer to
 %%%our probabilistic evaluation in section~\eqref{sec:eval_lazy_maintenance}. \\
 %%%
 %%%\textit{Step 2:} $X$ computes interval $L$ such that
@@ -582,6 +582,10 @@ We now describe our protocols based on the system model.
 
 To register a new user account ($U$), the node first
 has to choose a \textit{username} and a \textit{password}.
+% key store file
+Then, a key derivation process is initiated to generate the user private and
+public keys. The key derivation utilizes a \textit{salt} ($U^{salt}$) and a password ($U^{password}$) to
+obtain the user's private and public keys ($U^{priv}$ and $U^{pub}$).
 %The \textit{username} should be unique in the network.
 % The user checks if the username exists by sending a
 % REGISTER(username, identity_file: [[c(user_keys_file), salt]).
@@ -596,41 +600,33 @@ has to choose a \textit{username} and a \textit{password}.
 % DETAILS OF THE COUNCIL MEETING --> Explain before, in trusted node part 
 % 
 
-% key store file
-Then, a key derivation process is issued to generate the user private and
-public keys. The
-key derivation utilizes a \textit{salt} ($U^{salt}$) and a password ($U^{password}$) to
-obtain the user's private and public Keys
-($U^{priv}$ and $U^{pub}$).
-
 The main idea behind the use of a \textit{salt} file is to avoid having a
 situation where two users with the same password have the same private and
 public keys.
 
-The node  looks for the set $I$ set of nodes that will constitute the
+The node  looks for the set of nodes $I$ that will constitute the
 identification service for the user $U$. To obtain the list of nodes that provides the user identification service for
 the username $U^{username}$, the node $A$ computes its key $K$ such that $K =
 SHA(U^{username})$. 
 
-Then the node $A$ sends a request to every node $I_i$ in $I$ to register the
+Node $A$ sends a request to every node $I_i$ in set $I$ to register the
 $U^{Pub}$ under the chosen  username  $U^{username}$.
 
 %Then the node $A$ sends a request to every node $I_i$ in $I$ to register the
 %$U^{salt}$ and $U^{Pub}$ under the chosen  username  $U^{username}$.
 
-Each node in $I$ agrees in generating a random challenge~\ref{sec:challenges_puzzles}, which is then sent to the
+Each node in set $I$ agrees to generating a random challenge~\ref{sec:challenges_puzzles}, which is then sent to the
 client $A$ by every node $I_i \in I$ using the node public key to encrypt the
 message.
 
-If the node $A$ succeeds in answering correctly to the challenge, each node $I_i \in I$ then sends a user registration confirmation message to all nodes
-in $I$ containing the new user public key. If a node $I_i$ receives at
+If node $A$ succeeds in answering the challenge correctly, each node $I_i \in I$ then sends a user registration confirmation message to all nodes
+in set $I$ containing the new user public key. If a node $I_i$ receives at
 %in $I$ containing the new user public key and salt. If a node $I_i$ receives at
 least $\frac{L}{2} + 1$ identical user registration confirmation messages from
-the others nodes in $I$, it sends a affirmative answer to the node $A$.
+the other nodes in set $I$, it sends an affirmative answer to node $A$.
 
-When the node
-$A$ receives at least $\frac{L}{2} + 1$ identical affirmative answers from
-$I$ regarding the user registration, then $A$ assumes that the user was
+When node $A$ receives at least $\frac{L}{2} + 1$ identical affirmative answers
+from set $I$ regarding the user registration, then $A$ assumes that the user was
 actually registered.
 
 In~\ref{fig:sign_up} we show the process of a node $A$ doing an user account
@@ -638,7 +634,7 @@ registration with its identificator nodes $I_i \in I$.
 
 %unique username
 In case that the username was taken,
-the node $A$ is prompted for a new username.
+node $A$ is prompted for a new username.
 
 
 
@@ -651,43 +647,43 @@ the node $A$ is prompted for a new username.
 \label{fig:sign_in}
 \end{figure}
 
-Before carrying out a transaction for a client $A$, a service $S$ proceeds to
-verify the identity of the client from another set $I$ of nodes. At the end of
+Before carrying out a transaction for a client $A$, a service formed by a set of nodes $S$ proceeds to
+verify the identity of the client from another set of nodes $I$. At the end of
 the identification process, the objective is to return a session key to $A$
-and to store the created session on the nodes that belong $S$.
+and to store the created session on the nodes that belong to $S$.
 
-Each node $S_i \in S$ agrees in generating a random challenge~\ref{sec:challenges_puzzles}, which is then sent to the
+Each node $S_i \in S$ agrees to generating a random challenge~\ref{sec:challenges_puzzles}, which is then sent to
 client $A$ by every node $S_i \in S$ using the user public key to encrypt the
 message.
 
-Then, client $A$ responds each request with the corresponding answer to the
+Client $A$ then responds to each request with the corresponding answer to the
 challenge encrypted with his user private key $U^{priv}$, generating
 $E^{challenge}_{U^{priv}}$~\ref{fig:sign_in}. 
 
-Upon reception of the $E^{secret_i}_{U^{priv}}$ message from the client $A$, every node in $S$
-starts looking for the set $I$ of nodes that will constitute the quasi
-identification authority. As seen in user identification service~\ref{sec:identificators}, to
-determine which nodes belong to $I$, $S$ computes
+Upon reception of the $E^{secret_i}_{U^{priv}}$ message from client $A$, every node in $S$
+starts looking for the set of nodes $I$ that will constitute the
+quasi-identification authority. As seen in user identification
+service~\ref{sec:identifiers}, to determine which nodes belong to set $I$, $S$ computes
 its key $K$ such that $K = SHA(U^{username})$~\ref{fig:sign_in_2}.
 
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=14cm]{../img/sign_in_2}\\
 \caption{User sign in: Nodes in $S$ requests the user's public key to the
-identificators nodes of the user $U$.}
+identifiers nodes of the user $U$.}
 \label{fig:sign_in_2}
 \end{figure}
 
-Then each node in $S$ sends a request to every node $I_i$ in $I$ asking for the Username public key $U^{pub}$. When a node
-$S_i$ of $S$ receives at least $\frac{L}{2} + 1$ identical answers from
-$I$ regarding the $U^{pub}$, then $S_i$ assumes that the public key received
-actually corresponds to the Username being identified. Each node $S_i$ in $S$
+Then each node in $S$ sends a request to every node $I_i$ in set $I$ asking for the username public key $U^{pub}$. When a node
+$S_i$ of set $S$ receives at least $\frac{L}{2} + 1$ identical answers from
+set $I$ regarding the $U^{pub}$, then $S_i$ assumes that the public key received
+actually corresponds to the username being identified. Each node $S_i$ in set $S$
 uses the $U^{pub}$ to decrypt $E^{secret_i}_{U^{priv}}$. If the result matches
-the shared random secret $S^{secret}_i$, $S_i$ recognizes the node $A$ as the
+the shared random secret $S^{secret}_i$, $S_i$ recognizes node $A$ as the
 user $U$.
-Lastly, each node in $S$ agrees in the generation of the sessions keys for the
-node $A$, which is then sent to the client $A$ by every node $S_i \in S$ using
-the user public key to encrypt it. The session keys are stored in the
+Lastly, each node in $S$ agrees to the generation of the session key for 
+node $A$, which is then sent to client $A$ by every node $S_i \in S$ using
+the user public key to encrypt it. Session keys are stored in the
 nodes that belong to $S$~\ref{fig:sign_in_3}.
 
 \begin{figure}[!htb]
@@ -699,26 +695,26 @@ $A$ identified as the user $U$.}
 \end{figure}
 
 \subsection{Logout}
-The session are maintained by each service the user identified with. To close a
+The sessions are maintained by each service the user identified with. To close a
 session, the node identified as the user $U$ sends a session close request to
-the service $S$ using the session keys for the transaction. Also, the sessions
-keys are issued for a certain time. After that time is passed, the node needs
+the service $S$ using the session keys for the transaction. Also, the session
+keys are only issued for a certain length of time. After that time has passed, the node needs
 to ask for a new session key with the service.
 
 
 \subsection{Password Change}
 
-First, the node $A$ needs to recover his actual private key using the process
-in~\ref{sec:private_key_recovery}. Then the node $A$ generates a new private/public
-key pair using the new password.  With this, the node $A$ request a
-password change to every node $I_i$ in $I$. The request is signed with the
-actual user private keys, and includes the new user public key $U^{pub}_{new}$.
-%and salt used to derive his new private key $U^{salt}_{new}$. 
+First, the node $A$ needs to recover its actual private key using the process
+in~\ref{sec:private_key_recovery}. Then node $A$ generates a new private/public
+key pair using the new password.  With this, node $A$ requests a
+password change for every node $I_i$ in set $I$. The request is signed with the
+actual user private key, and includes the new user public key $U^{pub}_{new}$.
+%and salt used to derive its new private key $U^{salt}_{new}$. 
 Each node $I_i \in I$ then sends a password change confirmation message to all nodes
-in $I$ containing the new user public key. If a node $I_i$ receives at
+in set $I$ containing the new user public key. If a node $I_i$ receives at
 least $\frac{L}{2} + 1$ identical password change confirmation messages from
-the others nodes in $I$, it sends a affirmative answer to the node $A$.
- When the node $A$ receives at least $\frac{L}{2} + 1$ identical affirmative
+the other nodes in set $I$, it sends an affirmative answer to node $A$.
+ When node $A$ receives at least $\frac{L}{2} + 1$ identical affirmative
 answers from $I$ regarding the user password change, then $A$ assumes that the
 user keys (and password) were updated.
 
@@ -736,17 +732,17 @@ for an specific user.
 
 \paragraph{Protocol A}
 
-First, the node $A$ looks for the set $I$ of nodes that will constitute the
+First, the node $A$ looks for the set of nodes $I$ that will constitute the
 identification service for the user $U$.
 To obtain the list of nodes $I$ that provides the user identification service for
-the username $U^{username}$, the node $A$ computes its key $K$ such that $K =
+the username $U^{username}$, node $A$ computes its key $K$ such that $K =
 SHA(U^{username})$. 
-Then the node $A$ sends a request to every node $I_i$ in $I$ to obtain the user
+Then the node $A$ sends a request to every node $I_i$ in set $I$ to obtain the user
 salt $U^{salt}$ needed to derive the user private key $U^{priv}$.
- When the node $A$ receives at least $\frac{L}{2} + 1$ identical affirmative answers from
-$I$ regarding the user salt, then $A$ assumes that the salt retrieved
+ When node $A$ receives at least $\frac{L}{2} + 1$ identical affirmative answers from
+set $I$ regarding the user salt, then $A$ assumes that the salt retrieved
 corresponds to the one registered previously by the user ($U^{salt}$). Finally,
-the node proceeds to derive the user private key $U^{priv}$ using his user password $U^{password}$.
+the node proceeds to derive the user private key $U^{priv}$ using the user password $U^{password}$.
 
 
 \subsubsection{Changes to the other protocols}

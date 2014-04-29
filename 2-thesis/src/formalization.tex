@@ -1,37 +1,35 @@
 %% TODO: introduction about the chapter
-Next, we define the main assumptions and building blocks for the
-identification system, formalizing the notations used for the following system's protocols.
+Next, we define the main assumptions and building blocks for our proposed
+identification system, and formalize the notations used for its protocols.
 
 
 \section{A pseudo-secure identification service}
 \label{sec:pseudo-secure}
 As shown in \cite{the_sybil_attack}, it is impossible to get a 100\% reliable
 system over a DHT where malicious nodes are present. The goal of our approach
-is to reduce drastically the probability of a malicious node to impersonate
+is to drastically reduce the probability of a malicious node being able to impersonate
 another user using the identification system.
 
-While the probability can always exist, it should be highly unlikely to happen
-if we consider a very very low probability, like of the order of $10^{-14}$. The objective of of
-the system is obtain probability of error lower than $10^{-14}$, while
+While the ability can always exist, it would be highly unlikely to happen
+if we consider a very low probability, on the order of $10^{-14}$ for instance. The objective of 
+the system is to obtain a probability of error lower than $10^{-14}$, while
 maintaining an acceptable cost in system messages.
 
 \section{Building blocks}
 \label{sec:building_blocks}
 
-For simplicity, we assume in the following that the underling DHT is
-Pastry~\cite{pastry} seen in the section~\ref{sec:pastry}. We suppose that
+For simplicity, we assume in the following that the underlying DHT is
+Pastry~\cite{pastry}, as seen in section~\ref{sec:pastry}. We suppose that
 every node in the DHT self-generates its own pair of public and privates keys
 ($X^{pub}$, $X^{priv}$) to be used with an asymmetrical encryption
-algorithm~\cite{asymmetrical_encryption_algorithm}. The size of the keys used
-in the whole system is both fixed and large enough to make it computationally
-unfeasible to decrypt an information without knowing the corresponding private
-keys. We will assume that an User is identified by the cryptographic proof of
-his private key. 
+algorithm.%~\cite{asymmetrical_encryption_algorithm}.
 
-SHA stands for the Secure Hash Algorithm One (SHA-1 - 160 bits hash). We also
+ The size of the keys used in the whole system is both fixed and large enough to make it computationally
+unfeasible to decrypt any information without knowing the corresponding private
+keys. We will also assume that a user is identified by the cryptographic proof of
+his private key. SHA stands for the Secure Hash Algorithm One (SHA-1 - 160 bits hash). We also
 assume that all communications among nodes are made using the TCP protocol, and
-that all transmissions errors are handled at the transport level.
-
+that all transmission errors are handled at the transport level.
 A simple storage system is needed.
 %% TODO:
 %The \textit{trustsets} are in charge of the storage of the user keys that are
@@ -60,7 +58,7 @@ The protocols assumes a reputation system in the overlay structure with the foll
   \item $R(X)$ is computed using the recommendations emitted
   by nodes that have completed a transaction with $X$. Bad
   recommendations have a stronger effect on $R(X)$ than
-  good ones. It should be more difficult for node to
+  good ones because it should be more difficult for node to
   increase its reputation value than to decrease it.
   \item For every node $X$, $R(X)$ is highly available in the DHT.
 \end{enumerate}
@@ -70,25 +68,24 @@ be honest in the future. This reputation value is computed
 according to a list of recommendations emitted by nodes that
 have already carried out transactions with $X$.
 After each transaction, a node emits a recommendation
-about its peer. A node may lie: it may emit negative
+about its peer. A node may lie: It may emit negative
 recommendations about a peer that behaves correctly, or
 positive recommendations about a malicious peer. Several nodes
 may collude to increase or decrease the reputation value of
 another node. These problems generate a deviation between
-the computed reputation of the node and its real behaviour. It is
-considered that this deviation depends on the function used to
+the computed reputation of the node and its real behavior. This deviation
+depends on the function used to
 compute the reputation value and on the percentage of malicious
 nodes within the system.
 
-To avoid nodes that lie about a reputation value, it considers a reputation
-system that computes the reputation of nodes concurrently on different nodes,
-as seen before in WTR~\ref{sec:wtr}.
+To avoid nodes that lie about a reputation value, our system uses a reputation
+system that computes the reputation of nodes concurrently on different nodes, as seen before in WTR~\ref{sec:wtr}.
 They decide individually if that node is reputable or not, using a voting
-scheme in case of disagreement. On the whole, assuming that there is a smaller
+scheme in cases of disagreement. On the whole, assuming that there is a small
 percentage of malicious nodes in the network, the result avoids
 false statements about reputation.
 
-To maintain the same nomenclature seen in CORPS~\ref{sec:corps}, in all the following sections,
+To maintain the same nomenclature seen in CORPS~\ref{sec:corps}, in all the following sections
 we call a node $n_i \in TS$ a trusted node, even if there still remains a
 probability that this node's actual reputation is smaller than the threshold
 $\rho$.
@@ -96,12 +93,12 @@ $\rho$.
 \section{Notation}
 % definition of a node and a service that is going to identify with it
 
-Let A be a node of the DHT, and $S = \{S_1, S_2, \cdots, S_n\}$ a set of $n$
-nodes that cooperate to provide a service. Let $NameofS$ be the name of service
-$S$; every node that needs to use the service knows $NameofS$. $K_s =
-SHA(NameofS)$ is the key that identifies $S$ in DHT, and $S_{root}$ is the node
+Let $A$ be a node of the DHT, and $S = \{S_1, S_2, \cdots, S_n\}$ a set of $n$
+nodes that cooperate to provide a service. Let $NameofS$ be the name of the service
+$S$ provides. Every node that needs to use the service knows $NameofS$. $K_s =
+SHA(NameofS)$ is the key that identifies $S$ in the DHT, and $S_{root}$ is the node
 closest to $K_s$ in the DHT. It follows that $S = \{S_1, S_2, \cdots, S_n\}$ is
-composed of node $S_{root}$ and of all the nodes in its leafset. Let $I$ be a
+composed of node $S_{root}$ and of all the nodes in its leafset. Let $I$ be an
 identification service such that $I = \{ I_1, I_2, \cdots, I_n\}$ is a group of
 $n$ nodes belonging to the DHT. Let $L$ be the number of nodes in a
 leafset: $card(S) = L + 1$.
@@ -110,5 +107,5 @@ leafset: $card(S) = L + 1$.
 % interaction between A, S & I, Figure and such
 
 We suppose that the number of nodes that compose a service $S$ is fixed and does
-not change over time. We also suppose that the same stands for any
+not change over time. We also suppose that the same holds true for any
 quasi-identification service $I$.

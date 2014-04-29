@@ -78,7 +78,7 @@ There is a $5\%$ error assumed in the classification of trusted nodes.
 WTR~\cite{bonnaire2009wtr} is a reputation system built on a DHT like Pastry~\cite{pastry} and
 Chord~\cite{chord}. The probability that a node $X$ is honest is determined by
 $R(X)$, with $0 \leq R(X) \leq 1$. WTR calculates the node reputation $R(X)$
-using the \textit{recommendations} of the node $X$. When a node $Y$ makes a transaction with
+using the \textit{recommendations} for the node $X$. When a node $Y$ makes a transaction with
 node $X$, node $Y$ issues a recommendation about the behavior of node
 $X$. The recommendations table~\ref{table:wtr_recomendations} shows how each
 transaction is evaluated.
@@ -163,7 +163,7 @@ behavior than a very irregular one.
 
 \end{enumerate}
 
-It is for these reason that the \textit{risk} of a node is considered. $J_t(X)$ is
+It is for these reasons that the \textit{risk} of a node is considered. $J_t(X)$ is
 the risk to make a transaction with a node $X$ at time $t$. A risk of 0
 means that the reputation for node $X$ is fully reliable.
 
@@ -256,18 +256,18 @@ system.
 \subsection{Accountability systems}
 Accountability systems detect and expose malicious actions.
 To do this, they review each transaction done by the nodes in the system. They
-put in disposition of honest nodes the information needed to detect and test
+inform honest nodes with the information needed to detect and test
 malicious behavior of other nodes. PeerReview~\cite{haeberlen2007peerreview} is a system that
-use secure records of the messages sent and received by each node to identify
+uses secure records of the messages sent and received by each node to identify
 malicious actions and verify the behavior of a node.
 
 \subsubsection{PeerReview}
 \label{sec:peerreview}
-PeerReview~\cite{haeberlen2007peerreview} uses the records of the transactions
-to detect if a node behavior is malicious or not. It stores secure records with
-a list of entries of all the Input/Output made by a node. All this is stored in
-a log, which is an append-only list that contains all the inputs and outputs of a
-particular node's in chronological order. Each log entry $e_k = (s_k, t_k,
+PeerReview~\cite{haeberlen2007peerreview} uses these records 
+to detect if a node's behavior is malicious or not. It stores secure records with
+a list of entries of all the input and ouput made by a node. All this is stored in
+a log, which is an append-only list that contains all the input and output of a
+particular node in chronological order. Each log entry $e_k = (s_k, t_k,
 c_k)$ has a sequence number $s_k$, a type $t_k$ and a content $c_k$.
 Additionally, each record includes a recursively defined hash value $h_k =
 H(h_{k-1} || s_k|| t_k || H(c_k))$; $||$ stands for concatenation. The base
@@ -276,11 +276,11 @@ hash $h_{-1}$ is a well-known value.
 
 The resultant hash chain, along with a set of authenticators, makes the log tamper-evident. An authenticator
 $\alpha^j_k= \sigma_j(s_k , h_k )$ is a signed statement by node $j$ that its log
-entry $e_k$ has hash value $h_k$; $\sigma_j (\cdot)$ means that the argument is
+entry $e_k$ has hash value $h_k$. $\sigma_j (\cdot)$ means that the argument is
 signed with $j$'s private key.
 
-By sending $\alpha^j_k$ to node $i$, a node $j$ commits to having
- logged entry $e_k$ and to the contents of its log before $e_k$. If $j$
+By sending $\alpha^j_k$ to node $i$, node $j$ commits to having
+ logged entry $e_k$ and the contents of its log before $e_k$. If $j$
  subsequently cannot produce a prefix of its log that matches
  the hash value in $\alpha^j_k$, then $i$ has verifiable evidence that $j$
 has tampered with its log and is therefore faulty.
@@ -291,15 +291,15 @@ Moreover, node $i$ can use $\alpha^j_k$ as verifiable evidence to convince
  $e_{k - (x-1)}, \cdots , e_k$ and $h_{k - x}$. If node $j$ responds, node $i$ calculates the
 hash value $h_k$ from the response and compares it with the
  value in the authenticator. If node $j$ has not returned the correct
- log entries in the correct order, the hash values will differ. In
-this case, node $i$ has evidence that node $j$ is faulty. 
+ log entries in the correct order, the hash values will differ and node $i$
+will have evidence that node $j$ is faulty. 
  
 
 A problem with this type of systems, is that the actions that can be detected
-directly depends of the protocol used. If a malicious node executes an action
-that is not specified in the protocol, it will pass undetected. Also, it only
-detects and label nodes with malicious behaviors; it does not proportionate a
-way to find honest nodes in the network.
+directly depend on the protocol used. If a malicious node executes an action
+that is not specified in the protocol it will pass undetected. Also, this type
+of system only detects and labels nodes with malicious behaviors; it does not
+have a way to find honest nodes in the network.
 Given that transactions must be periodically verified, this mechanism can have a high
 CPU cost if the protocol is computationally complex.
  

@@ -26,6 +26,7 @@ size of the leafset and size of the trustset in CORPS being used ($L$).
       $\rho$ &  Probability of a node being malicious  & $0.3$  \\
       $\varepsilon$& CORPS classification error   & $0.05$ \\
       L &  Leafset size in the DHT and size of the trustset in CORPS  & $8$, $16$ or $32$  \\
+      N &  Number of nodes in the DHT & $100000$  \\
       \hline
     \end{tabular}
     \caption{Parameters used for the evaluation of the protocols}
@@ -111,6 +112,14 @@ node $K_{root}$ is honest. Thus, the message complexity of the chosen leafset
 securing algorithm~\cite{p2p_certification} easily scales when the size of the
 DHT increases.
 
+%\begin{figure}[!htb]
+%\centering
+%\includegraphics[width=14cm]{../plots/secure_routing_messages}\\
+%\caption{Message overhead of the secure trusted routing with various sizes of Q}
+%\label{fig:secure_routing_messages}
+%\end{figure}
+
+
 
 
 %\input{src/eval_transaction_service}
@@ -125,7 +134,7 @@ DHT increases.
       \cline{2-3}
       \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
       \hline
-      \textbf{Size of Trusted Set (L)} & \textbf{$p = \rho$ = 0.3} & \textbf{p = 0.05} \\
+      \textbf{Size of Trusted Set (L)} & \textbf{$p = \rho$ = 0.3} & \textbf{$p = \varepsilon$ = 0.05} \\
       \hline \hline
       %8 &  $0.0988087$ & $3.32222 \times 10^{-5}$ \\
       %\hline
@@ -207,6 +216,7 @@ millions of nodes that wants to prioritize their security.
 
     
   \subsection{Message complexity}
+
     First, $A$ must get the leafset of $I$. The associated cost is $n = 5
 \times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
     The number $n$ of message inherent to the transaction itself is given by
@@ -231,11 +241,26 @@ constant, and $O(log(N))$. In the best case,
     $$
       n_{total} = O(log_{2b}(N)) + 2L^2 + 8L + 6
     $$
+
+    We show in~\ref{fig:registration_messages} the number of messages sent at
+    the account registration protocol with differents values of $L$. In a DHT with
+    $L = 16$, our system sends $671$ messages, with a failure probability of
+    order $3.287 \times 10^{-8}$. If we increase the leafset size $L$ to $32$, the amount of
+    messages goes up to $2335$ with a failure probability of $4.118 \times 10^{-14}$.
+  
     Therefore, the cost user registration operation remains scalable when the
     size $N$ of the DHT increases, but there is a high constant cost that
     depends of the number of $L$. Still, this operation is not made frequently
     in the network and should not affect the performance of the
     service.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=14cm]{../plots/account_registration_messages}\\
+\caption{Message overhead of the registration protocol with various sizes of L}
+\label{fig:registration_messages}
+\end{figure}
+
 
 %\section{Lazy User's Information Store Maintenance}
 %\label{sec:eval_lazy_maintenance}
@@ -321,7 +346,7 @@ constant, and $O(log(N))$. In the best case,
       \cline{2-3}
       \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
       \hline
-      \textbf{Size of Trusted Set (L)} & \textbf{$p = \rho$ = 0.3} & \textbf{p = 0.05} \\
+      \textbf{Size of Trusted Set (L)} & \textbf{$p = \rho$ = 0.3} &  \textbf{$p = \varepsilon$ = 0.05} \\
       \hline \hline
       8 &  $0.188$ & $6.64 \times 10^{-5}$ \\
       \hline
@@ -363,6 +388,7 @@ of $10^{-14}$ with $L=32$, a very low probability. Both of them can be used
 in real life scenario, with $L=32$ being the most secure of them all.
 
   \subsection{Message complexity}
+
     First, $A$ must get the leafset of $S$. The associated cost is $n = 5
 \times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
 Then, every node in $S$ must get the leafset of $I$, with each leafset request
@@ -391,8 +417,23 @@ constant, and $O(log(N))$. In the best case,
     $$
       n_{total} = (L +2)O(log_{2b}(N)) + 4L^2 +12L + 8 
     $$
+
     Therefore, the cost of a user sign in operation remains
 scalable when the size $N$ of the DHT increases.
+
+    We show in~\ref{fig:sign_in_messages} the number of messages sent at
+the sign in protocol with differents values of $L$. In a DHT with
+$L = 16$, our system sends $1890$ messages, with a failure probability of
+ $6.57 \times 10^{-8}$. If we increase the leafset size $L$ to $32$, the amount of
+messages goes up to $5746$ with a failure probability of $8.24 \times 10^{-14}$.
+
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=14cm]{../plots/sign_in_messages}\\
+\caption{Message overhead of the sign in protocol with various sizes of L}
+\label{fig:sign_in_messages}
+\end{figure}
 
 \section{Logout}
   \label{sec:eval_logout}
@@ -403,7 +444,7 @@ scalable when the size $N$ of the DHT increases.
       \cline{2-3}
       \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
       \hline
-      \textbf{Size of Trusted Set (L)} & \textbf{$p = \rho$ = 0.3} & \textbf{p = 0.05} \\
+      \textbf{Size of Trusted Set (L)} & \textbf{$p = \rho$ = 0.3} &  \textbf{$p = \varepsilon$ = 0.05} \\
       \hline \hline
       8 &  $0.098$ & $3.322 \times 10^{-5}$ \\
       \hline
@@ -472,6 +513,20 @@ constant, and $O(log(N))$. In the best case,
     $$
     Therefore, the cost of a user logout operation remains scalable when the size $N$ of the DHT increases.
 
+    We show in~\ref{fig:logout_messages} the number of messages sent at
+the logout protocol with differents values of $L$. In a DHT with
+$L = 16$, our system sends $105$ messages, with a failure probability of
+ $3.287 \times 10^{-8}$. If we increase the leafset size $L$ to $32$, the amount of
+messages goes up to $169$ with a failure probability of $4.118 \times 10^{-14}$.
+
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=14cm]{../plots/logout_messages}\\
+\caption{Message overhead of the logout protocol with various sizes of L}
+\label{fig:logout_messages}
+\end{figure}
+
 \section{Password Change}
   \label{sec:eval_password_change}
   \begin{table}
@@ -481,7 +536,7 @@ constant, and $O(log(N))$. In the best case,
       \cline{2-3}
       \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
       \hline
-      \textbf{Size of Trusted Set (L)} & \textbf{$p = \rho$ = 0.3} & \textbf{p = 0.05} \\
+      \textbf{Size of Trusted Set (L)} & \textbf{$p = \rho$ = 0.3} &  \textbf{$p = \varepsilon$ = 0.05}  \\
       \hline \hline
       8 &  $0.098$ & $3.322 \times 10^{-5}$ \\
       \hline
@@ -521,6 +576,7 @@ protocol~\ref{sec:eval_account_registration} and the
 logout protocol seen before~\ref{sec:eval_logout}.
 
   \subsection{Message complexity}
+
     First, $A$ must get the leafset of $I$. The associated cost is $n = 5
 \times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
 %%% not needed, this has to be done in the leafset maintenance
@@ -548,6 +604,19 @@ constant, and $O(log(N))$. In the best case,
     $$
     Therefore, the cost of a password change operation remains
 scalable when the size $N$ of the DHT increases.
+
+    We show in~\ref{fig:password_change_messages} the number of messages sent at
+the password change protocol with differents values of $L$. In a DHT with
+$L = 16$, our system sends $360$ messages, with a failure probability of
+ $3.287 \times 10^{-8}$. If we increase the leafset size $L$ to $32$, the amount of
+messages goes up to $1192$ with a failure probability of $4.118 \times 10^{-14}$.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=14cm]{../plots/password_change_messages}\\
+\caption{Message overhead of the password change protocol with various sizes of L}
+\label{fig:password_change_messages}
+\end{figure}
 
 %We suppose in the following that the underlying
 %reputation system makes an error $p = \varepsilon$ when classifying a
@@ -630,7 +699,7 @@ scalable when the size $N$ of the DHT increases.
       \cline{2-3}
       \multicolumn{1}{c|}{}&  \multicolumn{2}{c|}{\textbf{Probability to fail}} \\ \cline{2-3}
       \hline
-      \textbf{Size of Trusted Set (L)} & \textbf{$p = \rho$ = 0.3} & \textbf{p = 0.05} \\
+      \textbf{Size of Trusted Set (L)} & \textbf{$p = \rho$ = 0.3} &  \textbf{$p = \varepsilon$= 0.05} \\
       \hline \hline
       8 &  $0.098$ & $3.322 \times 10^{-5}$ \\
       \hline
@@ -691,4 +760,15 @@ constant, and $O(log(N))$. In the best case,
     Therefore, the cost of recovering a user private key remains
 scalable when the size $N$ of the DHT increases.
 
+    We show in~\ref{fig:private_key_recovery_a_messages} the number of messages sent at
+the private key recovery (A) protocol with differents values of $L$. In a DHT with
+$L = 16$, our system sends $105$ messages, with a failure probability of
+ $3.287 \times 10^{-8}$. If we increase the leafset size $L$ to $32$, the amount of
+messages goes up to $169$ with a failure probability of $4.118 \times 10^{-14}$.
 
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=14cm]{../plots/private_key_recovery_a_messages}\\
+\caption{Message overhead of the private key recovery protocol A with various sizes of L}
+\label{fig:private_key_recovery_a_messages}
+\end{figure}

@@ -172,25 +172,25 @@ without faults, it adds an additional layer of security against Sybil attacks.
 
 \subsection{Collusion of nodes}
 
-A collusion of nodes consists in an agreement made among various nodes to make
-a combined attack, like artificially increase or decrease the reputation of a
-set of nodes by colluding nodes of the reputation system. Some existing
-reputations systems like WTR can efficiently mitigate the effect of this kind
-of attack. Moreover, colluded nodes should be able to sustain the attack
-permanently in order to maintain a good reputation and remain the Trusted Ring.
-This will have a significant cost for the attackers, and being able to manage a
-great number of attackers is very unlikely. 
+A collusion of nodes consists of an agreement made between various nodes to make
+a combined attack, like the nodes of the reputation sytem colluding to artificially increase or decrease the reputation of a
+set of nodes. Some existing
+reputation systems, like WTR, can efficiently mitigate the effect of this kind
+of attack. However, colluding nodes are able to sustain the attack
+permanently in order to maintain a good reputation and remain in the trusted ring.
+This will have a significant cost for the attackers, and for them to being able to manage a
+great number of nodes in the trusted ring is very unlikely. 
 
 \subsection{Offline attacks}
-As our solution relies in a public/private key scheme to identify the user,
-using derived keys from a public salt stored in the network, a malicious node
-could try to guess the password of an user. If the function use to derive the
+As our solution relies on a public/private key scheme to identify the user,
+using derived keys from a public salt stored in the network a malicious node
+could try to guess the password of a user. If the function used to derive the
 private key has a low computation cost, a brute force attack that tries
-different passwords and test the derived private key with the user public key
+different passwords and tests the derived private key with the user public key
 can succeed if the attacker has the computational resources to do so. We
 assumed that the key derivation function (e.g., bcrypt) is slow enough to make
-unfeasible for a computer to guess the password of an user in a certain
-amount of time (like more than 20 years).
+it unfeasible for a computer to guess a user password in a reasonable 
+amount of time. (more than 20 years)
 
 \subsection{Passwords}
 The traditional view is that passwords should be replaced by some better
@@ -200,9 +200,9 @@ Reasons for their prevalence include simplicity, price, and very strong user
 familiarity.
 It is known that the average user tends to use the
 same password in more than one service, presenting serious security problems
-for the user identity integrity. A definitive solution to this problem have not
-been found yet, but a strict password creation policy can seems to mitigate this
-problem (but at the same time this can increase the cases of forgotten passwords)
+for user identity integrity. A definitive solution to this problem has not
+been found yet, but a strict password creation policy can mitigate this
+problem. At the same time, this can also increase cases of forgotten passwords.
 
 %\section{Password recovery}
 %While the system does not allow password recovery operations...
@@ -221,20 +221,20 @@ problem (but at the same time this can increase the cases of forgotten passwords
 \subsection{Node data inconsistency}
 Synchronization between nodes does not happen instantly. Also, thanks to
 the different routes used in the network, simultaneous messages can reach a
-destination at different times. So, differently to centralized systems, P2P
-networks have a certain time where the data in some nodes are inconsistent.
+destination at different times. So, as opposed to centralized systems, P2P
+networks have certain times when the data in some nodes are inconsistent.
 This is relevant for functions that need a
 group of nodes to be synchronized at a certain time, because this ``temporal
 inconsistency''  can cause fake positives or fake negatives in the protocols of
 the network. For example, after a successful password change request, there can
 be a time when some nodes will have the old user information. If another
-request involving the user credentials is issued while these nodes have not
-synchronized their data, depending in what nodes are used in the request, the
+request involving the user credentials is issued before these nodes have
+synchronized their data, depending on what nodes are used in the request, the
 validation that needs $\frac{L+1}{2}$ identical answers can fail or succeed.
-While the timeframe where the nodes have not undergone synchronization is small,
-it still can lead to problems if is it not considered in the protocols
+While the timeframe when the nodes have not undergone synchronization is small,
+it can still lead to problems if it is not considered in a protocol's
 construction. In consequence, an added time span is considered for the
-successful completion the user registration and password change operations.
+successful completion of the user registration and password change operations.
 
 %To mitigate this problem, we propose the use of an active user information store
 %maitenance.  and add consider a timespan of 1 to 2 seconds  
