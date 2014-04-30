@@ -217,7 +217,7 @@ millions of nodes that wants to prioritize their security.
     
   \subsection{Message complexity}
 
-    First, $A$ must get the leafset of $I$. The associated cost is $n = 5
+    First, $A$ must get the leafset of $I$. The associated cost is $5
 \times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
     The number $n$ of message inherent to the transaction itself is given by
 
@@ -389,7 +389,7 @@ in real life scenario, with $L=32$ being the most secure of them all.
 
   \subsection{Message complexity}
 
-    First, $A$ must get the leafset of $S$. The associated cost is $n = 5
+    First, $A$ must get the leafset of $S$. The associated cost is $5
 \times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
 Then, every node in $S$ must get the leafset of $I$, with each leafset request
 having the same associated cost as before $n = (L+1)(5 \times O(log_{2b}(N)) + Q + 4)$~\ref{sec:eval_leafset}.
@@ -492,7 +492,7 @@ millions of nodes that wants to prioritize their security.
 
     
   \subsection{Message complexity}
-    First, $A$ must get the leafset of $S$. The associated cost is $n = 5
+    First, $A$ must get the leafset of $S$. The associated cost is $5
 \times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
     The number $n$ of message inherent to the transaction itself is given by
 
@@ -577,7 +577,7 @@ logout protocol seen before~\ref{sec:eval_logout}.
 
   \subsection{Message complexity}
 
-    First, $A$ must get the leafset of $I$. The associated cost is $n = 5
+    First, $A$ must get the leafset of $I$. The associated cost is $5
 \times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
 %%% not needed, this has to be done in the leafset maintenance
 %Then, every node in $I$ must get the leafset of $I$, with each leafset request
@@ -689,7 +689,7 @@ messages goes up to $1192$ with a failure probability of $4.118 \times 10^{-14}$
 %there are in the system, the easier it is to discriminate
 %against them.
 
-\section{User private key recovery (Discarded protocol A)}
+\section{User private key recovery}
 \label{sec:eval_private_key_recovery}
 % TODO Recalculate table
   \begin{table}
@@ -714,23 +714,25 @@ messages goes up to $1192$ with a failure probability of $4.118 \times 10^{-14}$
 
   \subsection{Probability of failure}
 
-    The user private key recovery between a node $A$ and $I$ can fail (a) if $I$ does
+    The user private key recovery between a node $A$ and the leafset of the
+node $T$ can fail (a) if the leafset of $T$ does
 not respond (or responds fake information) to $A$ during the key recovery
-request. While a response with fake information (like a salt forged by malicious nodes) can be more dangerous for the
+request, where $T$ is the node in charge of the storage of the key $K=
+SHA(U^{username}) + SHA(U^{password})$. While a response with fake information (like a salt forged by malicious nodes) can be more dangerous for the
 user, the probability remains the same, corresponding to the
-probability that more than $L/2$ nodes of $I$ are malicious.\\
-    The probability that $I$ will not respond to the user private key recovery
-request (or that $I$ responds fake user information) is the probability of
-facing more than $\frac{L}{2} +1$ malicious nodes in $I$. This probability is given by the
+probability that more than $L/2$ nodes of $T$ are malicious.\\
+    The probability that the leafset of $T$ will not respond to the user private key recovery
+request (or that the leafset of $T$ responds fake user information) is the probability of
+facing more than $\frac{L}{2} +1$ malicious nodes in the leafset of $T$. This probability is given by the
 equation~\ref{eq:p_malicious_ge_L_2} and hence the probability that the user
 private key recovery fails is:
 
 \begin{equation} \label{eq:L_2_malicious_A_I}
- P_{AI} = P_{\ge L/2}
+ P_{AT} = P_{\ge L/2}
 \end{equation}
 
     Table~\eqref{tab:p_private_key_recovery} shows the probability of failure
-between $A$ and $I$, for a leafset size of $L = \{8,16,32\}$.
+between $A$ and the leafset of $T$, for a leafset size of $L = \{8,16,32\}$.
 Maintains the same distribution as the user registration
 protocol~\ref{sec:eval_account_registration}, the
 logout protocol~\ref{sec:eval_logout} and the password change
@@ -738,7 +740,7 @@ protocol~\ref{sec:eval_password_change} seen before.
 
     
   \subsection{Message complexity}
-    First, $A$ must get the leafset of $I$. The associated cost is $n = 5
+    First, $A$ must get the leafset of $T$. The associated cost is $5
 \times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
     The number $n$ of message inherent to the transaction itself is given by
 
@@ -761,7 +763,7 @@ constant, and $O(log(N))$. In the best case,
 scalable when the size $N$ of the DHT increases.
 
     We show in~\ref{fig:private_key_recovery_a_messages} the number of messages sent at
-the private key recovery (A) protocol with differents values of $L$. In a DHT with
+the private key recovery protocol with differents values of $L$. In a DHT with
 $L = 16$, our system sends $105$ messages, with a failure probability of
  $3.287 \times 10^{-8}$. If we increase the leafset size $L$ to $32$, the amount of
 messages goes up to $169$ with a failure probability of $4.118 \times 10^{-14}$.

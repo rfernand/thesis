@@ -576,7 +576,8 @@ We now describe our protocols based on the system model.
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=14cm]{../img/sign_up}\\
-\caption{Account registration.}
+\caption{Account registration: Node $A$ register the user public key in the
+identifiers nodes of the user $U$}
 \label{fig:sign_up}
 \end{figure}
 
@@ -611,10 +612,6 @@ SHA(U^{username})$.
 
 Node $A$ sends a request to every node $I_i$ in set $I$ to register the
 $U^{Pub}$ under the chosen  username  $U^{username}$.
-
-%Then the node $A$ sends a request to every node $I_i$ in $I$ to register the
-%$U^{salt}$ and $U^{Pub}$ under the chosen  username  $U^{username}$.
-
 Each node in set $I$ agrees to generating a random challenge~\ref{sec:challenges_puzzles}, which is then sent to the
 client $A$ by every node $I_i \in I$ using the node public key to encrypt the
 message.
@@ -628,6 +625,17 @@ the other nodes in set $I$, it sends an affirmative answer to node $A$.
 When node $A$ receives at least $\frac{L}{2} + 1$ identical affirmative answers
 from set $I$ regarding the user registration, then $A$ assumes that the user was
 actually registered.
+
+Then the node $A$ needs to also register the \textit{salt} $U^{salt}$ used to
+generate its private key. The \textit{salt} is first encrypted by a simmetric encryption algorithm
+using the user' s password $Crypt(salt, SHA(password)) = E_{U^{salt}}$
+To obtain the node $T$ that provides the storage of the encrypted \textit{salt},
+node $A$ computes its key $K$ such that $K = SHA(U^{username})+SHA(U^{password})$.
+Then the node $A$ sends a request to the node $T$ to register the
+encrypted salt $E_{U^{salt}}$ under the node $T$.
+The storage maintains a high availability of the encrypted \textit{salt} by
+replicating the file in the leafset of the node $T$.
+
 
 In~\ref{fig:sign_up} we show the process of a node $A$ doing a user account
 registration with its identificator nodes $I_i \in I$.
@@ -717,68 +725,97 @@ the other nodes in set $I$, it sends an affirmative answer to node $A$.
  When node $A$ receives at least $\frac{L}{2} + 1$ identical affirmative
 answers from $I$ regarding the user password change, then $A$ assumes that the
 user keys (and password) were updated.
+Then the node $A$ needs to also register the \textit{salt} $U^{salt}$ used to
+re-generate its private key. The \textit{salt} is first encrypted by a simmetric encryption algorithm
+using the user' s password $Crypt(salt, SHA(password)) = E_{U^{salt}}$
+To obtain the node $T$ that provides the storage of the encrypted \textit{salt},
+node $A$ computes its key $K$ such that $K = SHA(U^{username})+SHA(U^{password})$.
+Then the node $A$ sends a request to the node $T$ to register the
+encrypted salt $E_{U^{salt}}$ under the node $T$.
 
-\subsection{User private key recovery (Discarded protocol)}
+\subsection{User private key recovery}
 \label{sec:private_key_recovery}
 %\includegraphics[width=14cm]{../img/sign in_protocol_mockup}\\
-\paragraph{Why was discarded?}
-This protocol was discarded because it offers a weak security for the user's
-private keys, which are used to identify the user in the system.  While the main idea
-of this protocol is to let users sign in without the need to
-manage a copy of the user's private key, it is prone to offline attacks. In
-offline attacks, a malicious user tries different password to generate the
-public and private key till getting the same that is published in the network
-for an specific user.
+%\paragraph{Why was discarded?}
+%This protocol was discarded because it offers a weak security for the user's
+%private keys, which are used to identify the user in the system.  While the main idea
+%of this protocol is to let users sign in without the need to
+%manage a copy of the user's private key, it is prone to offline attacks. In
+%offline attacks, a malicious user tries different password to generate the
+%public and private key till getting the same that is published in the network
+%for an specific user.
 
-\paragraph{Protocol A}
+%\paragraph{Protocol A}
+This protocol use indirection to hide the user's
+\textit{salt} and obscure their whereabouts in the storage service.
+The main idea is to put the user's \textit{salt} used to generate his private keys in a
+path only known for him. To do this, the user will store \textit{salt} using
+$SHA(U^{username})+SHA(U^{password})$ as its key.  The \textit{salt} its stored encrypted
+by a simmetric encryption algorithm like 3DES by doing $Cypt(salt,
+SHA(password)) = E_{U^{salt}}$
 
-First, the node $A$ looks for the set of nodes $I$ that will constitute the
-identification service for the user $U$.
-To obtain the list of nodes $I$ that provides the user identification service for
-the username $U^{username}$, node $A$ computes its key $K$ such that $K =
-SHA(U^{username})$. 
-Then the node $A$ sends a request to every node $I_i$ in set $I$ to obtain the user
-salt $U^{salt}$ needed to derive the user private key $U^{priv}$.
+The storage maintains a high availability of the encrypted \textit{salt} by
+replicating the file in the leafset of the node $T$.
+
+First, the node $A$ looks for the leafset of the node $T$ in charge of the storage
+of the user's \textit{salt}.
+To obtain the node that provides the storage of the encrypted \textit{salt},
+node $A$ computes its key $K$ such that $K =
+SHA(U^{username})+SHA(U^{password})$.
+The node $A$ then queries for the leafset of the node $T$ obtained by doing
+$get\_leafset\_root(K)$.
+
+Then the node $A$ sends a request to every node $T_i$ in the leafset of the
+node $T$ to obtain the encrypted user
+salt $E_{U^{salt}}$ needed to derive the user private key $U^{priv}$.
  When node $A$ receives at least $\frac{L}{2} + 1$ identical affirmative answers from
-set $I$ regarding the user salt, then $A$ assumes that the salt retrieved
-corresponds to the one registered previously by the user ($U^{salt}$). Finally,
-the node proceeds to derive the user private key $U^{priv}$ using the user password $U^{password}$.
+set $T$ regarding the user encrypted salt, then $A$ assumes that the encrypted salt retrieved
+corresponds to the one registered previously by the user ($E_{U^{salt}}$). Finally,
+the node decrypts the \textit{salt} and proceeds to derive the user private key $U^{priv}$ using the user password $U^{password}$.
 
 
-\subsubsection{Changes to the other protocols}
-\paragraph{User registration}
-The node $A$ needs to also register the \textit{salt} $U^{salt}$ used to
-generate its private key. This is stored alongside the user's public keys $U^{Pub}$ under the
-chosen username $U^{username}$.
+%\subsubsection{Changes to the other protocols}
+%\paragraph{User registration}
+%The node $A$ needs to also register the \textit{salt} $U^{salt}$ used to
+%generate its private key. The \textit{salt} is first encrypted by a simmetric encryption algorithm
+%using the user' s password $Crypt(salt, SHA(password)) = E_{U^{salt}}$
+%To obtain the node $T$ that provides the storage of the encrypted \textit{salt},
+%node $A$ computes its key $K$ such that $K = SHA(U^{username})+SHA(U^{password})$.
+%Then the node $A$ sends a request to the node $T$ to register the
+%encrypted salt $E_{U^{salt}}$ under the node $T$.
+%The storage maintains a high availability of the encrypted \textit{salt} by
+%replicating the file in the leafset of the node $T$.
+%
+%\paragraph{Password Change}
+%When re-registering the user's public key, the node $A$ needs to also register the \textit{salt} $U^{salt}$ used to
+%re-generate its private key. The \textit{salt} is first encrypted by a simmetric encryption algorithm
+%using the user' s password $Crypt(salt, SHA(password)) = E_{U^{salt}}$
+%To obtain the node $T$ that provides the storage of the encrypted \textit{salt},
+%node $A$ computes its key $K$ such that $K = SHA(U^{username})+SHA(U^{password})$.
+%Then the node $A$ sends a request to the node $T$ to register the
+%encrypted salt $E_{U^{salt}}$ under the node $T$.
 
-%Then the node $A$ sends a request to every node $I_i$ in $I$ to register the
-%$U^{salt}$ and $U^{Pub}$ under the chosen  username  $U^{username}$.
-
-\paragraph{Password Change}
-When re-registering the user's public key, the node $A$ needs to also register the \textit{salt} $U^{salt}$ used to
-re-generate its private key. This is stored alongside the new user's public keys $U^{Pub}$ under the
-chosen username $U^{username}$.
 
 %actual user private keys, and includes the new user public key $U^{pub}_{new}$
 %and salt used to derive his new private key $U^{salt}_{new}$. 
 
-\paragraph{Protocol B}
-
-This protocol use indirection and anonymity layers to hide the user's
-\textit{salt} and obscure their whereabouts in the storage service.
-To made this possible, we mount another storage service called secret storage
-on top of the storage service used in the P2P network. The secret storage is conformed
-by the same nodes that serve the storage system for the DHT, but the function
-used to route a keyword to a node differs. The main idea of the secret storage
-is to put the user's \textit{salt} used to generate his private keys in a
-path only known for him. The function used to know in what node the
-\textit{salt} will be stored is $SHA(SHA(username)+SHA(password))$, and the
-filename of the stored \textit{salt} will be
-$SHA(SHA(password)+SHA(username))$. The secret storage is of public access for
-the network, and is used to recreate the user's private key using the user's
-\textit{salt} and the user's password. Also, to obfuscate the node identity that
-stored the file, the query to store it uses the onion network route protocol to
-send it.
+%\paragraph{Protocol B}
+%
+%This protocol use indirection and anonymity layers to hide the user's
+%\textit{salt} and obscure their whereabouts in the storage service.
+%To made this possible, we mount another storage service called secret storage
+%on top of the storage service used in the P2P network. The secret storage is conformed
+%by the same nodes that serve the storage system for the DHT, but the function
+%used to route a keyword to a node differs. The main idea of the secret storage
+%is to put the user's \textit{salt} used to generate his private keys in a
+%path only known for him. The function used to know in what node the
+%\textit{salt} will be stored is $SHA(SHA(username)+SHA(password))$, and the
+%filename of the stored \textit{salt} will be
+%$SHA(SHA(password)+SHA(username))$. The secret storage is of public access for
+%the network, and is used to recreate the user's private key using the user's
+%\textit{salt} and the user's password. Also, to obfuscate the node identity that
+%stored the file, the query to store it uses the onion network route protocol to
+%send it.
 
 %Then, when the user needs to recover his private key, the system uses his
 %username and password to know where is stored and how is the filename that

@@ -77,18 +77,18 @@ system's transactions, a value of $L = 32$ is highly recommended.
 
 %% DHT -> Chord u otro?
 Although our implementation relies on Pastry as its DHT, our approach can rely
-on other building block implementations. For example it is very simple to
-switch the underlying DHT from Pastry to Chord, as it maintains structures
+on other building block implementations. For example, it is very simple to
+switch the underlying DHT from Pastry to Chord, as Chord maintains structures
 that are equivalent to the leafset and the routing table in Pastry, like using
 the $r$ successors of Chord instead of the leafset of Pastry.
 
 %% WTR -> Por otro? que valores necesita?
-Our implementation can be build over any trust management service that
+Our implementation can be built over any trust management service that
 provides a way to find trusted nodes based on a reputation system
-that provides a value $R(X)$, value that represents the probability of a node
+that provides a value $R(X)$, the value that represents the probability of a node
 $X$ being honest, and maintains the structural properties of the underling
 DHT. For example, WTR~\cite{bonnaire2009wtr} and
-PeerTrust~\cite{xiong2004peertrust} are reputations systems that fulfill our
+PeerTrust~\cite{xiong2004peertrust} are reputation systems that fulfill our
 system requirements.
 
 %system with the same properties explained
@@ -106,67 +106,69 @@ system requirements.
 \label{sec:sybil_attacks}
 
 The Sybil attack~\cite{the_sybil_attack} is a major concern if obtaining
-network identities is cheap (NodeIDs). Such an attack allows to tamper the ratio of
+network identities is cheap (NodeIDs). Such an attack allows to tampers with the ratio of
 malicious nodes in the system as a single node acts under multiple identities:
 the ratio can rise above the $30\%$ upper threshold. \\
 
-A common practise of the Sybil attack has a single malicious user create
+A common feature of the Sybil attack is a single malicious user creating 
 several identities with numerically close nodeIDs to be able to control a
 substantial part of the DHT. We assume that the generation of the nodeIDs can
 be verified by any node in the network, for instance the bootstrapping node or
 the node with the closest nodeID. Our proposition assumes that nodeIDs are
-computed from a public key, generated with a well-known public/private key
+computed from a public key and generated with a well-known public/private key
 algorithm. We also suppose that the number of bits of these keys is sufficient
-to avoid a brute force attack to reverse the SHA-1 function. During the join
-procedure to the DHT, a node $A$ must provide several pieces of information to
-the verifier node $X$: its public key $key_{pub}$, and the associated nodeID computed using
-$nodeID = SHA1(key_{pub}$. $X$ can easily verify the correctness of the nodeID
-with the public key. IF they do not match, then $X$ prevents $A$ from joining
+to avoid a brute force attack to reverse the SHA-1 function. During the
+procedure to join the DHT, a node $A$ must provide several pieces of information to
+the verifier node $X$: its public key $key_{pub}$, and the associated nodeID
+are computed using
+$nodeID = SHA1(key_{pub})$. $X$ can easily verify the correctness of the nodeID
+with the public key. If they do not match, then $X$ prevents $A$ from joining
 the ring.\\
 
 Due to the mathematical properties of the SHA-1 hash function, it is
-practically impossible for a node to find two keys $key_{pub1}$ and
-$key_{pub2}$ such that $SHA1(key_{pub1}) = SHA1(key_{pub2}$. Therefore, it is
-also practically impossible for a node to find several public keys that give
-numerically close nodeIDs in the ring. Thus it is practically unfeasible for a
+improbable that a node will find two keys $key_{pub1}$ and
+$key_{pub2}$ such that $SHA1(key_{pub1}) = SHA1(key_{pub2})$. Therefore, it is
+also doubtful that a node will find several public keys that give
+numerically close nodeIDs in the ring. Thus, it is nearly impossible for a
 node to control a substantial sector of the ring.\\
 
 However, a single node can still generate several nodeIDs distributed over the
-ring. This kind of Sybil attack does not allow to control a sector of the ring,
-but will increase failures in the DHT (Routing failures, etc.).  Reputation
-systems can efficiently mitigate the Sybil attack, but will collapse if the
+ring. This kind of Sybil attack does not allow a node to control a sector of the ring,
+but it will increase failures in the DHT (routing failures, etc.).  Reputation
+systems can efficiently mitigate Sybil attacks, but will collapse if the
 ratio of malicious nodes is too high ($> 30\%$). To our knowledge, no existing reputation system can control a large
-number of Sybil attacks in a DHT, and this is still a difficult topic within
+number of Sybil attacks in a DHT. For this reason, this is still a much
+discussed topic within
 the P2P research community.\\
 
 As seen before in section~\ref{sec:challenges_puzzles}, other solutions to
-mitigate the presence of sybils is to make obtaining nodeIDs
+mitigate the presence of Sybils is to make obtaining nodeIDs
 exponentially difficult when a node needs a new
 one. Existing solutions usually
 rely on a set of servers to provide the nodeIDs, and are therefore not very
 scalable.\\
 
-The impact of a Sybil attack over the Trusted ring of the reputation system
+The impact of a Sybil attack over the trusted ring of the reputation system
 would mainly be at the level of its \textit{trustsets}. The main idea is to be
 able to control various nodeIDs in a \textit{trustset}. This is not an easy
-task; as shown above is practically unfeasible to obtain numerically close
+task: as shown above it is unfeasible to obtain numerically close
 nodeIDs that belong to the same \textit{trustset}. Moreover, controlling a very
-large number of trustsets is practically impossible, as it will require to
-control a very large number of nodeIDs. This is unfeasible due to the number of
+large number of trustsets is practically impossible, as it will require 
+control of a very large number of nodeIDs. This is unfeasible due to the number of
 transactions required from an attacker in order to establish a good reputation
 for all of its nodeIDs, and then insert them into the Trusted
 Ring~\cite{rosas2011corps}.\\
 
 Analog to the problem of Sybil attacks to control multiple nodeIDs, an attacker
-would like to try to control a large amount of user accounts in the
-identification system. Having registered a large amount of usernames used, a new
-user could have difficulties to find an unused username when registering in the
+would likely try to control a large amount of user accounts in the
+identification system. Having registered a large amount of usernames, a new
+user could have difficulties in finding an unused username when registering in the
 network. Also, having a large amount of identities through the services in the
 network can be used to exploit some of their functionalities.
 In our solution, we use computational challenges to mitigate the problem of a
-node registering multiple amount of users among the system. Other solutions to
+node registering multiple users with the system. Another solution to
 this problem is the use of CAPTCHA~\cite{von2003captcha} as an additional
-challenge for the user registration. While this type of challenge is not
+challenge for user registration. While this type of challenge is not
 without faults, it adds an additional layer of security against Sybil attacks.
 
 
