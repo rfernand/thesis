@@ -338,7 +338,7 @@ change events. As the churn rate increases, however, this process becomes more
 expensive. A peer sees more churn when its leafset gets larger in size.
 
 For the distributed storage service, any implementation that maintains an
-active maitenance for their storage and provides a write and read operation on
+active maintenance for their storage and provides a write and read operation on
 it has the capabilities needed to support our identification system. For
 example, PAST~\cite{druschel2001past} is a large-scale persistent P2P storage
 utility built into Pastry that can be used to provide storage for our system
@@ -627,7 +627,7 @@ from set $I$ regarding the user registration, then $A$ assumes that the user was
 actually registered.
 
 Then the node $A$ needs to also register the \textit{salt} $U^{salt}$ used to
-generate its private key. The \textit{salt} is first encrypted by a simmetric encryption algorithm
+generate its private key. The \textit{salt} is first encrypted by a symmetric encryption algorithm
 using the user' s password $Crypt(salt, SHA(password)) = E_{U^{salt}}$
 To obtain the node $T$ that provides the storage of the encrypted \textit{salt},
 node $A$ computes its key $K$ such that $K = SHA(U^{username})+SHA(U^{password})$.
@@ -726,7 +726,7 @@ the other nodes in set $I$, it sends an affirmative answer to node $A$.
 answers from $I$ regarding the user password change, then $A$ assumes that the
 user keys (and password) were updated.
 Then the node $A$ needs to also register the \textit{salt} $U^{salt}$ used to
-re-generate its private key. The \textit{salt} is first encrypted by a simmetric encryption algorithm
+re-generate its private key. The \textit{salt} is first encrypted by a symmetric encryption algorithm
 using the user' s password $Crypt(salt, SHA(password)) = E_{U^{salt}}$
 To obtain the node $T$ that provides the storage of the encrypted \textit{salt},
 node $A$ computes its key $K$ such that $K = SHA(U^{username})+SHA(U^{password})$.
@@ -751,7 +751,7 @@ This protocol use indirection to hide the user's
 The main idea is to put the user's \textit{salt} used to generate his private keys in a
 path only known for him. To do this, the user will store \textit{salt} using
 $SHA(U^{username})+SHA(U^{password})$ as its key.  The \textit{salt} its stored encrypted
-by a simmetric encryption algorithm like 3DES by doing $Cypt(salt,
+by a symmetric encryption algorithm like 3DES by doing $Cypt(salt,
 SHA(password)) = E_{U^{salt}}$
 
 The storage maintains a high availability of the encrypted \textit{salt} by
@@ -771,7 +771,7 @@ salt $E_{U^{salt}}$ needed to derive the user private key $U^{priv}$.
  When node $A$ receives at least $\frac{L}{2} + 1$ identical affirmative answers from
 set $T$ regarding the user encrypted salt, then $A$ assumes that the encrypted salt retrieved
 corresponds to the one registered previously by the user ($E_{U^{salt}}$). Finally,
-the node decrypts the \textit{salt} and proceeds to derive the user private key $U^{priv}$ using the user password $U^{password}$.
+the node decrypt the \textit{salt} and proceeds to derive the user private key $U^{priv}$ using the user password $U^{password}$.
 
 
 %\subsubsection{Changes to the other protocols}
