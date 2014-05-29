@@ -248,18 +248,37 @@ constant, and $O(log(N))$. In the best case,
     order $3.287 \times 10^{-8}$. If we increase the leafset size $L$ to $32$, the amount of
     messages goes up to $2335$ with a failure probability of $4.118 \times 10^{-14}$.
   
-    Therefore, the cost user registration operation remains scalable when the
-    size $N$ of the DHT increases, but there is a high constant cost that
-    depends of the number of $L$. Still, this operation is not made frequently
+    As $L$ is a fixed value, independent of the network size $N$, the cost user
+    registration operation remains scalable when the
+    size $N$ of the DHT increases. While there is a high constant cost that
+    depends of the number of $L$, this operation is not made frequently
     in the network and should not affect the performance of the
     service.
 
-\begin{figure}[!htb]
-\centering
-\includegraphics[width=14cm]{../plots/account_registration_messages}\\
-\caption{Message overhead of the registration protocol with various sizes of L}
-\label{fig:registration_messages}
-\end{figure}
+%\begin{figure}[!htb]
+%\centering
+%\includegraphics[width=14cm]{../plots/account_registration_messages}\\
+%\caption{Message overhead of the registration protocol with various sizes of L}
+%\label{fig:registration_messages}
+%\end{figure}
+
+\begin{table}
+  \centering
+  \footnotesize
+  \begin{tabular}{|c|c|}
+    \hline
+     \textbf{Leafset size L} & \textbf{Message overhead}\\
+    \hline
+      $L = 8$ & $223$\\
+    \hline
+      $L = 16$ & $671$\\
+    \hline
+      $L = 32$ & $2335$\\
+    \hline
+  \end{tabular}
+  \caption{Message overhead of the registration protocol with various sizes of L}
+  \label{tab:registration_messages}
+\end{table}
 
 
 %\section{Lazy User's Information Store Maintenance}
@@ -428,12 +447,31 @@ $L = 16$, our system sends $1890$ messages, with a failure probability of
 messages goes up to $5746$ with a failure probability of $8.24 \times 10^{-14}$.
 
 
-\begin{figure}[!htb]
-\centering
-\includegraphics[width=14cm]{../plots/sign_in_messages}\\
-\caption{Message overhead of the sign in protocol with various sizes of L}
-\label{fig:sign_in_messages}
-\end{figure}
+%\begin{figure}[!htb]
+%\centering
+%\includegraphics[width=14cm]{../plots/sign_in_messages}\\
+%\caption{Message overhead of the sign in protocol with various sizes of L}
+%\label{fig:sign_in_messages}
+%\end{figure}
+
+\begin{table}
+  \centering
+  \footnotesize
+  \begin{tabular}{|c|c|}
+    \hline
+     \textbf{Leafset size L} & \textbf{Message overhead}\\
+    \hline
+      $L = 8$ & $730$\\
+    \hline
+      $L = 16$ & $1890$\\
+    \hline
+      $L = 32$ & $5746$\\
+    \hline
+  \end{tabular}
+  \caption{Message overhead of the sign in protocol with various sizes of L}
+  \label{tab:sign_in_messages}
+\end{table}
+
 
 \section{Logout}
   \label{sec:eval_logout}
@@ -520,12 +558,30 @@ $L = 16$, our system sends $105$ messages, with a failure probability of
 messages goes up to $169$ with a failure probability of $4.118 \times 10^{-14}$.
 
 
-\begin{figure}[!htb]
-\centering
-\includegraphics[width=14cm]{../plots/logout_messages}\\
-\caption{Message overhead of the logout protocol with various sizes of L}
-\label{fig:logout_messages}
-\end{figure}
+%\begin{figure}[!htb]
+%\centering
+%\includegraphics[width=14cm]{../plots/logout_messages}\\
+%\caption{Message overhead of the logout protocol with various sizes of L}
+%\label{fig:logout_messages}
+%\end{figure}
+
+\begin{table}
+  \centering
+  \footnotesize
+  \begin{tabular}{|c|c|}
+    \hline
+     \textbf{Leafset size L} & \textbf{Message overhead}\\
+    \hline
+      $L = 8$ & $73$\\
+    \hline
+      $L = 16$ & $105$\\
+    \hline
+      $L = 32$ & $169$\\
+    \hline
+  \end{tabular}
+  \caption{Message overhead of the logout protocol with various sizes of L}
+  \label{tab:logout_messages}
+\end{table}
 
 \section{Password Change}
   \label{sec:eval_password_change}
@@ -611,12 +667,30 @@ $L = 16$, our system sends $360$ messages, with a failure probability of
  $3.287 \times 10^{-8}$. If we increase the leafset size $L$ to $32$, the amount of
 messages goes up to $1192$ with a failure probability of $4.118 \times 10^{-14}$.
 
-\begin{figure}[!htb]
-\centering
-\includegraphics[width=14cm]{../plots/password_change_messages}\\
-\caption{Message overhead of the password change protocol with various sizes of L}
-\label{fig:password_change_messages}
-\end{figure}
+%\begin{figure}[!htb]
+%\centering
+%\includegraphics[width=14cm]{../plots/password_change_messages}\\
+%\caption{Message overhead of the password change protocol with various sizes of L}
+%\label{fig:password_change_messages}
+%\end{figure}
+
+\begin{table}
+  \centering
+  \footnotesize
+  \begin{tabular}{|c|c|}
+    \hline
+     \textbf{Leafset size L} & \textbf{Message overhead}\\
+    \hline
+      $L = 8$ & $136$\\
+    \hline
+      $L = 16$ & $360$\\
+    \hline
+      $L = 32$ & $1192$\\
+    \hline
+  \end{tabular}
+  \caption{Message overhead of the password change protocol with various sizes of L}
+  \label{tab:password_change_messages}
+\end{table}
 
 %We suppose in the following that the underlying
 %reputation system makes an error $p = \varepsilon$ when classifying a
@@ -768,9 +842,29 @@ $L = 16$, our system sends $105$ messages, with a failure probability of
  $3.287 \times 10^{-8}$. If we increase the leafset size $L$ to $32$, the amount of
 messages goes up to $169$ with a failure probability of $4.118 \times 10^{-14}$.
 
-\begin{figure}[!htb]
-\centering
-\includegraphics[width=14cm]{../plots/private_key_recovery_a_messages}\\
-\caption{Message overhead of the private key recovery protocol A with various sizes of L}
-\label{fig:private_key_recovery_a_messages}
-\end{figure}
+%\begin{figure}[!htb]
+%\centering
+%\includegraphics[width=14cm]{../plots/private_key_recovery_a_messages}\\
+%\caption{Message overhead of the private key recovery protocol A with various sizes of L}
+%\label{fig:private_key_recovery_a_messages}
+%\end{figure}
+
+
+\begin{table}
+  \centering
+  \footnotesize
+  \begin{tabular}{|c|c|}
+    \hline
+     \textbf{Leafset size L} & \textbf{Message overhead}\\
+    \hline
+      $L = 8$ & $73$\\
+    \hline
+      $L = 16$ & $105$\\
+    \hline
+      $L = 32$ & $169$\\
+    \hline
+  \end{tabular}
+  \caption{Message overhead of the private key recovery protocol A with various sizes of L}
+  \label{tab:private_key_recovery_a_messages}
+\end{table}
+

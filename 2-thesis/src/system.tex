@@ -317,7 +317,7 @@ every node in the identification service of set
 %The user's information consists of the user's public keys and salt. This has to be done on every node in the identification service of set
 $I$, with $card(I) = L+1$, being $L+1$ the size of the $I_{root}$ node leafset.
 
- This algorithm converges quickly, but each times it uses $O((L+1)^2)$ messages
+ This algorithm converges quickly, but each times it uses $O(log_{2b}(N))L + (L+1)^2$ messages
 for a quasi-identification authority of $L+1$ nodes.
 %% What does pastry do?
 Pastry uses a more complex variant of active maintenance that is
