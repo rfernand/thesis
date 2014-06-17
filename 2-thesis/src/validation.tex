@@ -16,21 +16,22 @@ not accountable for their decisions and therefore cannot be trusted.\\
 Because of this, as other P2P systems, a 100\% secure implementation cannot be achieved
 (section~\ref{sec:pseudo-secure}).
 %  Is the system valid?  fue demostrada la hipotesis?
-Having that in account, The goal of our approach was to drastically reduce the probability of a
+Taking that into account, the goal of our approach was to drastically reduce the probability of a
 malicious node impersonating another user who is using the identification
 system. This was done using of a reputation system and trusted node management
 to mitigate the effectivity of malicious nodes on identity usurpation attacks.
 
 %% Then... the hypotesis was valid or not?
 % cual es la peor probabilidad del sistema?
-Our analysis shows that the highest probability of a protocol failing is of
-with $L=8$, without using trusted nodes $0.188$, and using trusted nodes $6.64
-\times 10^{-5}$. With $L=32$ the probabilities seems better, but without the use
-of a trustset the probabilities remain too high being $0.016$. That means that
-in a system with $1000000$ users, $16000$ of the users will have problems with
+Our analysis shows that the highest probability of a protocol failing without using trusted nodes is 
+with $L=8$, $p = 0.188$, and that the highest probability of a protocol failing
+using trusted nodes is with $L=8$, $p = 6.64 \times 10^{-5}$. With $L=32$ the probabilities seems better, but without the use
+of a trustset the probabilities remain at $p = 0.016$, too high to be usable in
+reality. That is because in a system with $1000000$ users, with the probability
+of a protocol failure being $p = 0.016$,  $16000$ of the users will have problems with
 the protocols of the system. Then, a solution without the use of trusted nodes
-is not acceptable. In comparison, using
-only trusted nodes with $L=32$ we obtain a probability of $8.24 \times
+is not acceptable with values of $L <= 32$. In comparison, using
+only trusted nodes with $L=32$ we obtain a probability of $p =8.24 \times
 10^{-14}$, meaning that in a system with $1000000$ users,
 only $0.00000000824$ would fail.
 % es aceptable o no? 
@@ -68,11 +69,10 @@ maintains a cost scalable when the size of nodes $N$ of the DHT
 increases. In terms of communications overhead, there is a trade off between its
 cost and the security provided by the protocols. Using values of
 $L = 16$ reduces the message overhead in the system and still provides a decent
-probability of error of order $10^-8$, which in systems with a low presence of
-malicious node can be acceptable. But if the users of the system
-will have long user sessions, and the high message cost of the identification
-protocols should are not an issue in comparison with the traffic of the others
-system's transactions, a value of $L = 32$ is highly recommended. 
+probability of error of order $10^{-8}$, which in systems with a low presence of
+malicious node can be acceptable. Then, if priority of the system is its
+security and the message cost of the protocols is not
+an issue for the system that will use it, a value of $L = 32$ is highly recommended. 
 
 
 \section{Portability}

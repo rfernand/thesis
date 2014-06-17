@@ -22,7 +22,7 @@ So, if the first query to secure the leafset nodes fails, redundancy is needed.
 Our solution  for mitigating this issue is to obtain and compare the leafsets
 of at least 3 nodes within the leafset of node $K_{ROOT}$.
 To obtain the leafsets of a node we use the Diversity routing algorithm
-proposed in~\cite{castro2002secure}. Diversity routing sends copies of the message
+proposed by Castro et al.~\cite{castro2002secure}. Diversity routing sends copies of the message
 along diverse routes to the destination nodes, using different
 neighbours of the source nodes. To avoid attacks based on locality, it uses a
 constrained routing table, allowing only the logically closest nodes to be inserted
@@ -105,7 +105,7 @@ the filtered list.
 %the node $K_{ROOT}$ making a query to each one for the key $K$.
 %%%
 
-An example of this method is shown in~\ref{fig:secure_routing}. The node $X$
+An example of this method is shown in figure~\ref{fig:secure_routing}. The node $X$
 sends a message of the type get\_leafset\_root which reaches the node $K_{-2}$.
 Using a value of $L = 4$, the node $K_{-2}$ checks its leafset for the root
 node $K$ by doing $K_{-4} \le K \le K_{ROOT}$, and after validating that $K_{ROOT}$
@@ -116,11 +116,11 @@ continues to request for the leafset of the node $K_{-1}$. Finally, the node $X$
 requests the leafset of the node $K_{1}$ and completes the leafset of the node
 $K_{ROOT}$. The worst case is when the $K_{ROOT}$ node is malicious and the
 get\_leafset\_root request reaches the farthest node in its leafset. In that
-case, the filtering function returns only $L/2$nodes. Is all $L/2$ nodes in the
+case, the filtering function returns only $L/2$ nodes. If all $L/2$ nodes in the
 leafset are malicious, the node $X$ fails to recover the leafset. Still, having $L/2$
 malicious nodes, with $p$ being the probability of a node being malicious, is
 $p^{\frac{L}{2}}$, which is very low for modest values of $L$. Further
-analysis of the algorithm probability of failure can be found in~\ref{sec:eval_leafset}.
+analysis of the algorithm can be found in section~\ref{sec:eval_leafset}.
 
 
 \begin{figure}[!htb]
@@ -154,7 +154,7 @@ If $A$ receives at least $\frac{L}{2} + 1$ answers from the nodes in $S$, then
 $A$ considers that the transaction will proceed. Since $S$ is composed of
 common nodes from the DHT, it is possible for some of these nodes to be
 malicious. However, as explained in our evaluation of the quasi-identification
-protocol~\ref{sec:evaluation}, a situation where $S$ contains more than
+protocol (section~\ref{sec:evaluation}), a situation where $S$ contains more than
 $\frac{L}{2}$ malicious nodes is highly improbable.
 
 A combination of network failures and/or malicious nodes that choose to remain
@@ -165,9 +165,9 @@ Therefore, the probability of $\frac{L}{2} + 1 $ simultaneous IP
 routing failures or node failures, that is, the probability for more than
 $\frac{L}{2}$ answers to not reach $A$, is very close to zero. To account for
 this type of situation, $A$ aborts the transaction if it has not received a
-sufficient amount of identical answers after a timeout $\delta t$. This is a
+sufficient amount of identical answers after a timeout $\Delta t$. This is a
 very rare and highly improbable case, as shown by our evaluation
-in~\ref{sec:evaluation}.
+in section~\ref{sec:evaluation}.
 
 
 \subsection{Challenges and computational puzzles}
@@ -223,7 +223,7 @@ transaction and make them costly enough to discourage an attacker.
 criteria for a computational puzzle, so any puzzle that fits can be chosen for
 that purpose.
 
-In~\ref{fig:challenge} we show an example of a challenge being issued by a
+In figure~\ref{fig:challenge} we show an example of a challenge being issued by a
 service $S$ to a node $A$.
 
 \begin{figure}[!htb]
@@ -324,7 +324,7 @@ Pastry uses a more complex variant of active maintenance that is
 bandwidth efficient.
 Active maintenance runs the risk of creating a positive feedback cycle as
 follows: Consider the case whereby a node's access link to the network is
-sufficiently connected, which causes timeouts for the node to believe that one
+sufficiently congested, which causes timeouts for the node to believe that one
 of its leafset nodes has failed (or left the system). If the peer is recovering
 in an active mode, maintenance operations will begin. This operation will add
 even more packets to its existing congested network link, which will increase
@@ -564,7 +564,7 @@ protocols.
 
 
 \section{System Protocols}
-We now describe our protocols based on the system model. 
+In the following section we describe our protocols based on the system model. 
 %Figure 2 shows the information objects and
 %their storage locations, with arrows for the abstract flow of the
 %sign in procedure, Table I lists the terms used in the algorithms.
@@ -672,7 +672,9 @@ Upon reception of the $E^{secret_i}_{U^{priv}}$ message from client $A$, every n
 starts looking for the set of nodes $I$ that will constitute the
 quasi-identification authority. As seen in user identification
 service~\ref{sec:identifiers}, to determine which nodes belong to set $I$, $S$ computes
-its key $K$ such that $K = SHA(U^{username})$~\ref{fig:sign_in_2}.
+its key $K$ such that $K = SHA(U^{username})$. In figure~\ref{fig:sign_in_2} we
+show an example of the requests for the user's public key made by the nodes in $S$ to the
+identifiers nodes of the user $U$.
 
 \begin{figure}[!htb]
 \centering
@@ -692,7 +694,8 @@ user $U$.
 Lastly, each node in $S$ agrees to the generation of the session key for 
 node $A$, which is then sent to client $A$ by every node $S_i \in S$ using
 the user public key to encrypt it. Session keys are stored in the
-nodes that belong to $S$~\ref{fig:sign_in_3}.
+nodes that belong to $S$. In figure~\ref{fig:sign_in_3} we show an example of
+the sessions keys generation process.
 
 \begin{figure}[!htb]
 \centering
@@ -713,7 +716,7 @@ to ask for a new session key with the service.
 \subsection{Password Change}
 
 First, the node $A$ needs to recover its actual private key using the process
-in~\ref{sec:private_key_recovery}. Then node $A$ generates a new private/public
+seen in section~\ref{sec:private_key_recovery}. Then node $A$ generates a new private/public
 key pair using the new password.  With this, node $A$ requests a
 password change for every node $I_i$ in set $I$. The request is signed with the
 actual user private key, and includes the new user public key $U^{pub}_{new}$.
@@ -748,11 +751,11 @@ encrypted salt $E_{U^{salt}}$ under the node $T$.
 %\paragraph{Protocol A}
 This protocol use indirection to hide the user's
 \textit{salt} and obscure their whereabouts in the storage service.
-The main idea is to put the user's \textit{salt} used to generate his private keys in a
-path only known for him. To do this, the user will store \textit{salt} using
-$SHA(U^{username})+SHA(U^{password})$ as its key.  The \textit{salt} its stored encrypted
+The main idea is to put the user's \textit{salt} that was used to generate his private keys in a
+path only known for him. To do this, the user's \textit{salt} is stored encrypted
 by a symmetric encryption algorithm like 3DES by doing $Cypt(salt,
-SHA(password)) = E_{U^{salt}}$
+SHA(password)) = E_{U^{salt}}$. The encrypted \textit{salt} ($E_{U^{salt}}$) is
+then stored using $SHA(U^{username})+SHA(U^{password})$ as its key.
 
 The storage maintains a high availability of the encrypted \textit{salt} by
 replicating the file in the leafset of the node $T$.

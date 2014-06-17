@@ -66,7 +66,7 @@ Eigentrust~\cite{kamvar2003eigentrust} and
 PowerTrust~\cite{rahbar2007powertrust}.
 
 Reputation systems deal with malicious nodes that:
-do not participate, collude with other malicious nodes, and
+do not participate, collude with other malicious nodes, and/or
 emit false recommendations. Nevertheless, to our knowledge,
 none of the existing solutions to promote trust in P2P can be
 $100\%$ effective in detecting and blocking these attacks.
@@ -230,7 +230,7 @@ Normal nodes does not register when they enter the trustset. It is the
 responsibility of the new trusted node to notify each node in its leafset about
 the new trustset.
 
-Each $\delta T$, the manager's nodes, checks its trusted node's reputation. If
+Each $\Delta T$, the manager's nodes, checks its trusted node's reputation. If
 the reputation of a trusted node changes to $R(X) \in [\rho -\alpha, 1]$, then
 a REMOVE\_MESSAGE is sent to the followers of $X$. $\alpha$ is a parameter
 representing the tolerance of the system. It prevents a yo-yo effect, where the nodes keeps entering and

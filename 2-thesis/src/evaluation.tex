@@ -10,9 +10,9 @@ The former corresponds to the limit above which our relaxed version of the
 byzantine agreement collapses, and is the value most
 commonly found in the literature about malicious attacks in P2P
 systems~\cite{p2p_certification}. The latter corresponds to the probability of
-classification error in CORPS (when a malicious node is classified as a trusted node).
-The latter corresponds to the probability of the reputation system making an error $p = \varepsilon$ when classifying a
-node $X$ with a reputation $R(x)$. The last  value that is evaluated is the
+classification error in CORPS, that is when the reputation system makes an error when classifying a
+node $X$ with a reputation $R(x)$ (when a malicious node is classified as a trusted
+node). The last  value that is evaluated is the
 size of the leafset and size of the trustset in CORPS being used ($L$).
 
 
@@ -242,7 +242,7 @@ constant, and $O(log(N))$. In the best case,
       n_{total} = O(log_{2b}(N)) + 2L^2 + 8L + 6
     $$
 
-    We show in~\ref{fig:registration_messages} the number of messages sent at
+    We show in table~\ref{tab:registration_messages} the number of messages sent at
     the account registration protocol with different values of $L$. In a DHT with
     $L = 16$, our system sends $671$ messages, with a failure probability of
     order $3.287 \times 10^{-8}$. If we increase the leafset size $L$ to $32$, the amount of
@@ -440,7 +440,7 @@ constant, and $O(log(N))$. In the best case,
     Therefore, the cost of a user sign in operation remains
 scalable when the size $N$ of the DHT increases.
 
-    We show in~\ref{fig:sign_in_messages} the number of messages sent at
+    We show in table~\ref{tab:sign_in_messages} the number of messages sent at
 the sign in protocol with different values of $L$. In a DHT with
 $L = 16$, our system sends $1890$ messages, with a failure probability of
  $6.57 \times 10^{-8}$. If we increase the leafset size $L$ to $32$, the amount of
@@ -551,7 +551,7 @@ constant, and $O(log(N))$. In the best case,
     $$
     Therefore, the cost of a user logout operation remains scalable when the size $N$ of the DHT increases.
 
-    We show in~\ref{fig:logout_messages} the number of messages sent at
+    We show in table~\ref{tab:logout_messages} the number of messages sent at
 the logout protocol with different values of $L$. In a DHT with
 $L = 16$, our system sends $105$ messages, with a failure probability of
  $3.287 \times 10^{-8}$. If we increase the leafset size $L$ to $32$, the amount of
@@ -621,7 +621,7 @@ $n$ is given by the equation~\ref{eq:p_k_malicious_nodes}.\\
 information recovery request is
 
     \begin{align}
-      P_{AI} &= P_{\ge L/2} \\
+      P_{AI} &= P_{\ge L/2}
     \end{align}
 
 
@@ -661,7 +661,7 @@ constant, and $O(log(N))$. In the best case,
     Therefore, the cost of a password change operation remains
 scalable when the size $N$ of the DHT increases.
 
-    We show in~\ref{fig:password_change_messages} the number of messages sent at
+    We show in table~\ref{tab:password_change_messages} the number of messages sent at
 the password change protocol with different values of $L$. In a DHT with
 $L = 16$, our system sends $360$ messages, with a failure probability of
  $3.287 \times 10^{-8}$. If we increase the leafset size $L$ to $32$, the amount of
@@ -814,6 +814,26 @@ protocol~\ref{sec:eval_password_change} seen before.
 
     
   \subsection{Message complexity}
+
+
+\begin{table}
+  \centering
+  \footnotesize
+  \begin{tabular}{|c|c|}
+    \hline
+     \textbf{Leafset size L} & \textbf{Message overhead}\\
+    \hline
+      $L = 8$ & $73$\\
+    \hline
+      $L = 16$ & $105$\\
+    \hline
+      $L = 32$ & $169$\\
+    \hline
+  \end{tabular}
+  \caption{Message overhead of the private key recovery protocol A with various sizes of L}
+  \label{tab:private_key_recovery_a_messages}
+\end{table}
+
     First, $A$ must get the leafset of $T$. The associated cost is $5
 \times O(log_{2b}(N)) + Q + 4$ (as seen in section~\ref{sec:eval_leafset}).
     The number $n$ of message inherent to the transaction itself is given by
@@ -836,7 +856,7 @@ constant, and $O(log(N))$. In the best case,
     Therefore, the cost of recovering a user private key remains
 scalable when the size $N$ of the DHT increases.
 
-    We show in~\ref{fig:private_key_recovery_a_messages} the number of messages sent at
+    We show in table~\ref{tab:private_key_recovery_a_messages} the number of messages sent at
 the private key recovery protocol with different values of $L$. In a DHT with
 $L = 16$, our system sends $105$ messages, with a failure probability of
  $3.287 \times 10^{-8}$. If we increase the leafset size $L$ to $32$, the amount of
@@ -848,23 +868,3 @@ messages goes up to $169$ with a failure probability of $4.118 \times 10^{-14}$.
 %\caption{Message overhead of the private key recovery protocol A with various sizes of L}
 %\label{fig:private_key_recovery_a_messages}
 %\end{figure}
-
-
-\begin{table}
-  \centering
-  \footnotesize
-  \begin{tabular}{|c|c|}
-    \hline
-     \textbf{Leafset size L} & \textbf{Message overhead}\\
-    \hline
-      $L = 8$ & $73$\\
-    \hline
-      $L = 16$ & $105$\\
-    \hline
-      $L = 32$ & $169$\\
-    \hline
-  \end{tabular}
-  \caption{Message overhead of the private key recovery protocol A with various sizes of L}
-  \label{tab:private_key_recovery_a_messages}
-\end{table}
-

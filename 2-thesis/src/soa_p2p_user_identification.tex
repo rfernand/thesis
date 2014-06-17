@@ -1,6 +1,8 @@
 \section{P2P identification schemes}
 
 %% INTRO
+Traditionally, P2P networks identified the different nodes that compose the
+system, but not the user behind each one of them as a different being.
  As P2P systems grow in complexity, a way to identify individual users among the
 network nodes is needed. To attain this, additional protocols are needed to
 ensure that the identity of a node corresponds truthfully to the user it
@@ -8,9 +10,6 @@ proclaims to be. A basic way to identify a registered user is by the use of
 a private/public encryption scheme. While this can work in simple environments
 with a few known users, to allow registration over the network a way to store
 the user keys and verify their authenticity is needed.
-Next we are going to detail an identification scheme that allows user
-registration and identification using the user's username and password.
-
 %% END INTRO
 
 % TODO for revision
@@ -22,14 +21,9 @@ assignment, or avoiding Sybil attacks~\cite{the_sybil_attack}. Authentication of
 node is done via a signature key, automatically generated and
 stored on the node.
 
-Traditionally, P2P networks identified the different nodes that compose the
-system, but not the user behind each one of them as a different being.
-As P2P systems grew in complexity, the need to identify users inside the
-network arose.
 
 % TODO for revision
-Some P2P storage systems also use techniques which are
-related to ours. For example, the DHT-based systems GNUnet
+The DHT-based systems GNUnet
 and Freenet use keyword strings to derive a public-private key
 pair. The private key is used to sign data and the hash of
 the public key to identify the data in storage. Both of
@@ -44,11 +38,15 @@ P2P scenario has been studied by Vu et al.~\cite{5380695} who proposed
 a combination of threshold-based secret sharing with delegate
 selection, and encrypting shares with passwords.
 Frykholm and Juels~\cite{Frykholm:2001:EPR:501983.501985} proposed a password-recovery
-mechanism based on security questions very similar to our
-protocol for the same task. They offer better information-theoretic security properties, something not applicable to our
+mechanism based on security questions very similar to the Peerson protocol for
+the same task. They offer better information-theoretic security properties, something not applicable to our
 scenario. We address the subject of password change, which is not applicable to
 their scenario, although their proposal could be extended to support password
 change using our techniques.
+
+Next we are going to detail existing identification schemes that allows user
+registration and identification in P2P networks.
+
 
 \subsection{Using centralized authorities for the user identification}
 
@@ -392,7 +390,7 @@ $A_i$, and used it to encrypt the share,
  turn can decrypt $k$ shares $qS_i$.
  When $K_{LI}$ changes (e.g., due to a regular password
  change), the program updates the recovery information %as in~\ref{sec:}
- for the new key $K_{LI}^{new}$ and a a new set of shares is created.
+ for the new key $K_{LI}^{new}$ and a new set of shares is created.
  Next, the keys $qK_i$ are decrypted and used to encrypt the new
  shares. Neither the keys $qK_i$ nor the salts $salt_i$ change, so
  the user can still use the same answers for recovery. Finally,
@@ -405,7 +403,7 @@ $A_i$, and used it to encrypt the share,
  containing some information, typically a link with a token, by
  which they can reset their password. This link is sent to an e-mail
  address they has registered with her account.
- We adapt this scheme by randomly choosing a number of
+ This scheme is adapted by randomly choosing a number of
  peers, that collaboratively provide this functionality to the user.
  
 
