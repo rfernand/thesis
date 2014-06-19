@@ -4,17 +4,43 @@ networks using secure routing and building of trust between nodes.
 With that in mind, we presented a quasi-identification service built on top of a DHT. It
 replicates the user information needed to maintain the identification system
 over multiple peers and retains identical results from a qualified majority to
-certify that user public information corresponds to the correct registered user.
-As in other P2P
-systems, a 100\% secure implementation cannot be achieved
+certify that user public information corresponds to the correct registered
+user. Also, being implemented over a DHT makes the system portable for the most
+commonly used P2P networks.\\
+As in other P2P systems, a 100\% secure implementation cannot be achieved
 (section~\ref{sec:pseudo-secure}). Still, as seen in the
 protocols evaluation (section~\ref{sec:evaluation}), an acceptable probability of error on the order
-of $10^{-14}$ can be achieved with a leafset size of $L = 32$. Also, the system
+of $10^{-14}$ can be achieved with a leafset size of $L = 32$. This means that
+for each $100,000$ billion transactions being made, only one would fail. Also, the system
 maintains a scalable cost when the size of nodes $N$ in the DHT increases.
+With this we have proven that our proposed solution is a viable solution to the user
+identification problem.
 This was possible thanks to the use of a reputation system and trusted
 nodes management, which mitigated the effectiveness of malicious node attacks in
-the network.
-An over DHT implementation makes the system portable for the most commonly used P2P networks.\\
+the network. A reputation system can also efficiently mitigate the effect of
+collusion attacks.\\
+To secure the system from Sybil attacks, we assume that the generation of the nodeIDs can
+be verified by any node in the network, for instance the bootstrapping node or
+the node with the closest nodeID. That way, a node can easily verify the correctness of the nodeID
+of each node that wants to join the network, and if they do not match, the join procedure can be prevented.
+We also use computational challenges to mitigate the problem of a
+node registering multiple users with the system. We also mention the use of
+additional challenges during user registration, like
+CAPTCHA~\cite{von2003captcha}, to further increase resilience against Sybil
+attacks.\\
+%One weakness of the system security is the passwords itself. 
+While our system uses a username-password scheme for the user identification,
+we know that passwords presents serious security problems as the average user tends
+to use simple keywords and/or the same password in more than one service.
+A definitive solution to this problem has not
+been found yet. While a strict password creation policy can mitigate this
+problem, at the same time, it can also increase cases of forgotten passwords.
+Our proposed system does not implement password recovery mechanisms to reduce the
+risks to the security of the system~\ref{sec:risks_password_recovery}.
+
+
+%- el sistema no cuenta con formas de recuperar la contraseña en caso de pérdida u olvido.
+%- 
 
 
 %We are currently working on developing an identification service that
@@ -26,18 +52,25 @@ An over DHT implementation makes the system portable for the most commonly used 
 \section{Future work}
 
 
-User identifications systems in P2P networks are a very interesting problem.
+User identification systems in P2P networks are a very interesting problem.
 %To obtain similar functionalities to the well-know identification systems used
 %over the internet, more work will be needed. 
 While the proposed system is resilient to many of the most common attacks
 and issues related to badly chosen user passwords, the danger to the system can
 be further reduced by enforcing a strict password creation policy, though there are still problems related to the use of
 passwords in identification systems. 
-Also, more work will be needed to research about new functionalities and address the
-problem with forgotten passwords and offline guessing attacks.
+Also, more research will be needed on new functionalities and addressing the
+problem of forgotten passwords and offline guessing attacks.
 We have provided an initial discussion of the security properties of our
 protocols here, and future work should include a thorough security analysis of
 the proposed solutions.
+
+Another issue that was not addressed is the bootstrapping of the P2P system.
+When the P2P system starts building up, there are no real trusted
+nodes and the services rely on just the few nodes that comprise the
+system. During that time there is a higher probability of failure of the protocols, and the system is
+more vulnerable to byzantine node attacks. Further research is still needed on
+that matter.
 
 %La identificación de usarios es un tema muy interesante cuando se aplica a
 %redes P2P. Son pocos los trabajos que toman este tema para desarrollar
