@@ -19,16 +19,46 @@
 \titlegraphic{\includegraphics[height=1cm]{img/logo}}
 \date{\today}
 
+
+%- Problema
+%- Porque el problema es importante
+%  - Redes p2p solo identifican nodos-ip
+%  - Explicar redes estructuradas para ello
+%  - Necesario si es que uno quiere construir aplicaciones que requieran permisos a nivel de usuario
+% \frametitle{Goals} ?
+%- soluciones actuales
+%  - PKI
+%  - problemas de las mismas: alta probabilidad de falla. Riesgos ante
+%    recuperacion de contraseñas
+%- solucion
+%  - building blocks
+%   - acuerdo bizantino
+%   - sistemas de reputacion: sistema que asigna un valor de reputacion a cada
+%     nodo segun recomendaciones emitidas despues de cada transaccion.
+%   - anillos de confianza: se requiere tambien un sistema que permita armar
+%     sub-redes (anillos) con los nodos que posean una reputacion > delta, de tal
+%     forma de generar una anillo de confianza. La solucion propuesta trabajara sobre
+%     este anillo de confianza. Ej: CORPS
+%  - protocolos
+%  - justificacion del uso de los sistemas de confianza (comparacion del sistema
+%    que no use esto)
+%- conclusion: se comprueba la hipotesis gracias a los datos obtenidos
+%  (grafico/tabla)
+%- trabajo futuro
+% - sistemas de recuperacion de contrasenas
+% - ..
+
+
+
 \begin{document}
 \bibliographystyle{plain}
   \frame{\titlepage}
   \frame{\tableofcontents}
-	\section{}
+  \section{The problem and objectives of the research}
   \input{src/1-goals}
-  \section{Objectives of the research}
   \label{sec:goals}
-  \input{src/2-soa}
   \section{Theoretical framework}
+  \input{src/2-soa}
   \label{sec:soa}
   \input{src/3-methodology}
   \section{Findings}

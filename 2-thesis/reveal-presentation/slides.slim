@@ -1,0 +1,337 @@
+/ presentacion
+section#title
+  h2 User identification with username and password in structured P2P networks
+  p
+    small
+      a[href="http://github.com/rfernand"] Rodrigo Fernández
+      |  / 
+      a[href="rfernand@csrg.inf.utfsm.cl"] rfernand@csrg.inf.utfsm.cl
+  aside.notes 
+    ul
+      li Problema
+        li Redes p2p solo identifican nodos-ip
+        li Explicar redes estructuradas para ello
+      li Porque el problema es importante
+        li Necesario si es que uno quiere construir aplicaciones que requieran permisos a nivel de usuario
+      li soluciones actuales
+        li PKI
+        li problemas de las mismas: alta probabilidad de falla. Riesgos ante recuperacion de contraseñas
+      li solucion
+        li building blocks
+          li acuerdo bizantino
+          li sistemas de reputacion: sistema que asigna un valor de reputacion a cada nodo segun recomendaciones emitidas despues de cada transaccion.
+          li anillos de confianza: se requiere tambien un sistema que permita armar sub-redes (anillos) con los nodos que posean una reputacion > delta, de tal forma de generar una anillo de confianza.
+          li La solucion propuesta trabajara sobre este anillo de confianza. Ej: CORPS
+        li protocolos
+        li justificacion del uso de los sistemas de confianza (comparacion del sistema que no use esto)
+      li conclusion: se comprueba la hipotesis gracias a los datos obtenidos
+      li grafico/tabla
+      li trabajo futuro
+        li sistemas de recuperacion de contrasenas
+
+/ problema
+section[data-background="#FF5C33"]
+  section#p2p
+    h2 Redes P2P
+    p Cada participante (nodo) se le asigna un node ID basado en su IP
+    ul
+      li Cada nodo actúa como cliente y servidor dentro de la red
+      li Escalable
+      li Descentralizada
+      li Auto mantenida
+      li y robusta
+  section#structured_p2p[data-background="img/p2p-structured.png"]
+    h2 Redes P2P Estructuradas
+    / TODO
+  section#problem
+    h2 Problema
+    / TODO
+    aside.notes
+      ul
+        li Las redes P2P sólo identifican a los nodos por su IP
+
+/ Porque el problema es importante
+section[data-background="#D5E2E8"]
+  section#why
+    h2 ¿Por qué identificación de usuarios?
+    ul
+      li Necesario si es que uno quiere construir aplicaciones que requieran permisos a nivel de usuario
+
+/li soluciones actuales
+  li PKI
+  li problemas de las mismas: alta probabilidad de falla. Riesgos ante recuperacion de contraseñas
+section[data-background="#F1F7B0"]
+  section#current_solutiosn
+    h2 Soluciones actuales
+    ul
+      li Registro de usuarios centralizado
+      li PKI sobre P2P
+      li Propuesta de PeerSoN
+  section#pki
+    h2 PKI
+    / TODO
+  section#peerson
+    h2 Peerson
+    p Propuesta de protocolos para identificación de usuarios con usuario/contraseña
+    ul
+      li No considera nodos maliciosos en el sistema
+      li Problemas de seguridad con sus protocolos de recuperación de contraseñas
+
+
+/solucion
+ li building blocks
+   li acuerdo bizantino
+   li sistemas de reputacion: sistema que asigna un valor de reputacion a cada nodo segun recomendaciones emitidas despues de cada transaccion.
+   li anillos de confianza: se requiere tambien un sistema que permita armar sub-redes (anillos) con los nodos que posean una reputacion > delta, de tal forma de generar una anillo de confianza.
+     li La solucion propuesta trabajara sobre este anillo de confianza. Ej: CORPS
+section[data-background="#B2F7B0"]
+  section#building_blocks
+    /h2 Solución propuesta
+    h2 Building blocks
+    ul
+      li DHT
+      li Public/Private keys
+      li Acuerdo bizantino
+      /li Bizantine agreement
+      li Sistemas de reputacion
+      li Accountability systems
+      li Anillos de confianza
+      li One time challenges
+    aside.notes
+      p Servicios son implementados haciendo uso de los nodos participantes de la red.
+      p Por lo mismo, la fiabilidad de los servicios dependen de que tan correctos se comporten los nodos que son parte de ella.
+      p To secure the system from Sybil attacks, we assume that the generation of the nodeIDs can be verified by any node in the network, for instance the bootstrapping node or the node with the closest nodeID.
+  section#dht
+    h2 DHT
+    / TODO
+  section#public_private_keys
+    h2 Public/Private keys
+    / TODO
+  section#bizantine_agreement
+    h2 Acuerdo bizantino
+    p Se le llama nodo bizantino a todo nodo que no se comporta según lo esperado (ej: con fallas, malicioso o infectado)
+    / TODO
+  section#reputation_systems
+    h2 Sistemas de reputación
+    / TODO
+    /p Assess the past history of a peer by gathering feedback from nodes with previous interactions with this peer.
+    p Sistema que asigna un valor de reputación a cada nodo segun recomendaciones emitidas despues de cada transacción
+  section#accountability
+    h2 Accountability systems
+    p Detects and exposes faulty nodes by creating non-repudiable records of every node’s actions.
+    / TODO
+  section#trusted_rings
+    h2 Anillos de confianza
+    p Se requiere tambien un sistema que permita armar sub-redes (anillos) con los nodos que posean una reputacion > delta, de tal forma de generar una anillo de confianza.
+  section#one_time_challenges
+    h2 One time challenges
+    / TODO
+
+section
+  section#protocols
+    h2 Protocolos
+    ul
+      li Securing the nodes of a leafset
+      li Account registration
+      li User sign in
+      li Logout
+      li Password Change
+      li User private key recovery
+  section#securing_nodes[data-background="img/secure_routing.png" data-background-size="600px"]
+    h2 Securing the nodes of a leafset
+    / TODO 
+  section#sign_up[data-background="img/sign_up.png" data-background-size="800px"]
+    h2 Account registration
+    / TODO 
+  section#sign_in[data-background="img/sign_in.png" data-background-size="600px"]
+    h2 User sign in (start)
+    / TODO 
+  section#sign_in_2[data-background="img/sign_in_2.png" data-background-size="600px"]
+    h2 User sign in (Retrieve of public key)
+  section#sign_in_3[data-background="img/sign_in_3.png" data-background-size="600px"]
+    h2 User sign in (Generation of session keys)
+
+  section#more_protocols
+    h2 Logout
+    / TODO 
+    h2 Password Change
+    / TODO 
+    h2 User private key recovery
+    / TODO 
+
+section
+  section#params
+    aside.notes Justificacion del uso de los sistemas de confianza (comparacion del sistema que no use esto)
+    h2 Parámetros utilizados para la evaluación del sistema
+    / TODO
+    table
+      tr
+        th Parametro
+        th Descripción
+        th Valor
+      tr
+        td &rho;
+        td Probabilidad de que un nodo sea malicioso
+        td 0.3
+      tr
+        td &epsilon;
+        td CORPS classification error
+        td 0.05
+      tr
+        td L
+        td Leafset/trustset size
+        td 8, 16, 32
+      tr
+        td N
+        td Number of nodes in the DHT
+        td 100000
+  section#error_p
+    h2 Probabilidad de error
+    table
+      tr
+        th Caso
+        th Sin nodos confiables
+        th Con nodos confiables
+      tr
+        td
+          | Peor caso
+          math
+            |  (L = 8)
+        td 0.188
+        td
+          math
+            | 0.0000664
+      tr
+        td
+          | Mejor caso
+          math
+            |  (L = 32)
+        td 0.016
+        td
+          math
+            | 8.24 &times; 10
+            sup
+              | -14
+  section#results
+    h2 Resultados
+    ul
+      li
+        | Sin nodos confiables,
+        |  con p = 0.016,
+        |  cada 1 millón de transacciones, 
+        b  16000
+        |  presentarían problemas.
+      li
+        | Con nodos confiables, 
+        |  con p = 
+        math
+          |  8.24 &times; 10
+          sup
+            | -14
+
+        |  cada 1 millón de transacciones, 
+        b  0.00000000824
+        |  presentarían problemas.
+
+section
+  section#conclusions
+    aside.notes se comprueba la hipotesis gracias a los datos obtenidos (grafico/tabla)
+    h2 Conclusiones
+    ul
+      li While a 100\% secure implementation cannot be achieved, a viable solution exists.
+      li Probability of error on the order of $10^{-14}$ can be achieved with a leafset size of $l = 32$.
+      li The system remains scalable.
+      li The use of a reputation system and trusted nodes management mitigated the effectiveness of malicious node attacks in the network.
+      li A reputation system can also efficiently mitigate the effect of collusion attacks.
+      li Computational challenges mitigate the problem of a node registering multiple users with the system.
+  section#future_work
+    aside.notes sistemas de recuperacion de contrasenas
+    h2 Trabajo futuro
+    ul
+      li Sistemas de recuperación de contraseñas
+    
+/section[data-markdown]
+  script[type="text/template"]
+    |  ## Markdown support For those of you who like that sort of thing. Instructions and a bit more info available [here](https://github.com/hakimel/reveal.js#markdown). 
+/section[data-state="customevent"]
+  h2
+    | Custom Events
+  p
+    |  Additionally custom events can be triggered on a per slide basis by binding to the 
+    code
+      | data-state
+    |  name. 
+  pre
+    code[data-trim contenteditable style="font-size: 18px; margin-top: 20px;"]
+      |  Reveal.addEventListener( 'customevent', function() { console.log( '"customevent" has fired' ); } ); 
+/section
+  h2
+    | Clever Quotes
+  p
+    |  These guys come in two forms, inline: 
+    q[cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations"]
+      |  “The nice thing about standards is that there are so many to choose from”
+    |  and block: 
+  blockquote[cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations"]
+    |  “For years there has been a theory that millions of monkeys typing at random on millions of typewriters would reproduce the entire works of Shakespeare. The Internet has proven this theory to be untrue.” 
+/section
+  h2
+    | Pretty Code
+  pre
+    code[data-trim contenteditable]
+      |  function linkify( selector ) { if( supports3DTransforms ) { var nodes = document.querySelectorAll( selector ); for( var i = 0, len = nodes.length; i < len; i++ ) { var node = nodes[i]; if( !node.className ) { node.className += ' roll'; } } } } 
+  p
+    | Courtesy of 
+    a[href="http://softwaremaniacs.org/soft/highlight/en/description/"]
+      | highlight.js
+    | .
+/section
+  section#fragments
+    h2
+      | Fragmented Views
+    p
+      | Hit the next arrow...
+    p.fragment
+      | ... to step through ...
+    ol
+      li.fragment
+        code
+          | any type
+      li.fragment
+        em
+          | of view
+      li.fragment
+        strong
+          | fragments
+    aside.notes
+      |  This slide has fragments which are also stepped through in the notes window. 
+  section
+    h2
+      | Fragment Styles
+    p
+      | There's a few styles of fragments, like:
+    p.fragment.grow
+      | grow
+    p.fragment.shrink
+      | shrink
+    p.fragment.roll-in
+      | roll-in
+    p.fragment.fade-out
+      | fade-out
+    p.fragment.highlight-red
+      | highlight-red
+    p.fragment.highlight-green
+      | highlight-green
+    p.fragment.highlight-blue
+      | highlight-blue
+    p.fragment.current-visible
+      | current-visible
+    p.fragment.highlight-current-blue
+      | highlight-current-blue
+/section
+  h2
+    | Spectacular image!
+  a.image[href="http://lab.hakim.se/meny/" target="_blank"]
+    img[width="320" height="299" src="http://s3.amazonaws.com/hakim-static/portfolio/images/meny.png" alt="Meny"]
+section#end
+  h1 ¿Preguntas?

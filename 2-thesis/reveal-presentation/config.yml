@@ -1,0 +1,9 @@
+theme:      "light"
+transition: "default"
+author:     "Rodrigo Fernández"
+title:      "User identification with username and password in structured P2P networks"
+revealjs_config:
+  slideNumber: true
+  history: true
+  loop: true
+  #controls:    false

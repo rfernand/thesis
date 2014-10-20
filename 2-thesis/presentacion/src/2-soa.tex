@@ -1,67 +1,60 @@
+
+
 \begin{frame}
-\frametitle{P2P Networks}
-\framesubtitle{Characteristics}
+\frametitle{Trust in P2P networks}
 \begin{table}
 \begin{tabular}{p{7cm}p{3cm}}
-\begin{itemize}
-  \item Scalable
-  \item Decentralized
-  \item Self-maintained
-  \item Robust
-\end{itemize}
+\begin{enumerate}
+    \item To deliver a valuable service in P2P applications, it
+is important to trust that the participants will act as requested.
+    \item We need to be sure that other peers will forward
+messages, and that the designated peers will indeed save the information
+correctly so that operations can be successful.
+\end{enumerate}
 &
 \vspace{1.5cm}
-\includegraphics[width=4cm]{img/p2p-unstructured}\\
+\includegraphics[width=4cm]{img/malicious}\\
 \end{tabular}
 \end{table}
 \end{frame}
 
 \begin{frame}
-\frametitle{P2P Networks}
-\framesubtitle{Overlay structure}
+\frametitle{Trust in P2P networks}
+\framesubtitle{Building Trust}
+%Consequently, the quality of service of applications may
+%be deteriorated due to message overhead or data loss.
 \begin{table}
 \begin{tabular}{p{7cm}p{3cm}}
-\begin{itemize}
-    \item Structured networks (CAN, CHORD)
-    \item Unstructured networks (Gnutella, Bittorrent)
-\end{itemize}
+\begin{enumerate}
+    \item Complex since a P2P network includes untrusted nodes from an open environment.
+    \item Untrusted nodes may be faulty, malicious, and act together to attack the network.
+\end{enumerate}
 &
 \vspace{1.5cm}
-\includegraphics[width=4cm]{img/p2p-structured}\\
+\includegraphics[width=4cm]{img/malicious}\\
 \end{tabular}
 \end{table}
 \end{frame}
 
+
 \begin{frame}
 \frametitle{P2P Networks}
-\framesubtitle{Overlay structure}
+\framesubtitle{Problems}
 \begin{table}
 \begin{tabular}{p{7cm}p{3cm}}
 \begin{itemize}
-    \item Images of structured/unstructures networks
-    \item Differences
+  \item Servicios son implementados haciendo uso de los nodos participantes de la red.
+  \item Por lo mismo, la fiabilidad de los servicios dependen de que tan correctos se comporten los nodos que son parte de ella.
+  \item Las formas existentes para tratar el problema de nodos maliciosos o bizantinos son:
+    \item Reputation systems
+    \item Accountability systems
+    \item Bizantine agreement
+    \item Public/Private keys
+    \item One time challenges
 \end{itemize}
 &
 \vspace{1.5cm}
 \includegraphics[width=4cm]{img/example}\\
-\end{tabular}
-\end{table}
-\end{frame}
-
-\begin{frame}
-\frametitle{Username / password identification}
-\framesubtitle{Why?}
-\begin{table}
-\begin{tabular}{p{7cm}p{3cm}}
-\begin{itemize}
-  \item Many \textbf{complex systems} require authenticated users to work.
-  \item Most of the users has \textbf{more than one device}, so identification through
-    multiple devices is needed.
-  \item \textbf{User are accostumed} to username/password solutions.
-\end{itemize}
-&
-\vspace{1.5cm}
-\includegraphics[width=4cm]{img/users}\\
 \end{tabular}
 \end{table}
 \end{frame}
@@ -124,42 +117,6 @@ Poor scaling, single point of failure, heavy administration overhead.
 &
 \vspace{1.5cm}
 \includegraphics[width=4cm]{img/keyboard_key}\\
-\end{tabular}
-\end{table}
-\end{frame}
-
-\begin{frame}
-\frametitle{Trust in P2P networks}
-\begin{table}
-\begin{tabular}{p{7cm}p{3cm}}
-\begin{enumerate}
-    \item To deliver a valuable service in P2P applications, it
-is important to trust that the participants will act as requested.
-    \item We need to be sure that other peers will forward
-messages, and that the designated peers will indeed save the information
-correctly so that operations can be successful.
-\end{enumerate}
-&
-\vspace{1.5cm}
-\includegraphics[width=4cm]{img/malicious}\\
-\end{tabular}
-\end{table}
-\end{frame}
-
-\begin{frame}
-\frametitle{Trust in P2P networks}
-\framesubtitle{Building Trust}
-%Consequently, the quality of service of applications may
-%be deteriorated due to message overhead or data loss.
-\begin{table}
-\begin{tabular}{p{7cm}p{3cm}}
-\begin{enumerate}
-    \item Complex since a P2P network includes untrusted nodes from an open environment.
-    \item Untrusted nodes may be faulty, malicious, and act together to attack the network.
-\end{enumerate}
-&
-\vspace{1.5cm}
-\includegraphics[width=4cm]{img/malicious}\\
 \end{tabular}
 \end{table}
 \end{frame}
