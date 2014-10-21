@@ -753,7 +753,7 @@ This protocol use indirection to hide the user's
 \textit{salt} and obscure their whereabouts in the storage service.
 The main idea is to put the user's \textit{salt} that was used to generate his private keys in a
 path only known for him. To do this, the user's \textit{salt} is stored encrypted
-by a symmetric encryption algorithm like 3DES by doing $Cypt(salt,
+by a symmetric encryption algorithm like 3DES by doing $Crypt(salt,
 SHA(password)) = E_{U^{salt}}$. The encrypted \textit{salt} ($E_{U^{salt}}$) is
 then stored using $SHA(U^{username})+SHA(U^{password})$ as its key.
 
