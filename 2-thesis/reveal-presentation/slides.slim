@@ -30,7 +30,8 @@ section#title
         li sistemas de recuperación de contraseñas
 
 / problema
-section[data-background="#FF5C33"]
+/section[data-background="#FF5C33"]
+section
   section#p2p
     h2 Redes P2P
     p Cada participante (nodo) se le asigna un node ID basado en su IP
@@ -39,9 +40,16 @@ section[data-background="#FF5C33"]
       li Escalable
       li Descentralizada
       li Auto mantenida
-      li y robusta
-  section#structured_p2p[data-background="img/p2p-structured.png"]
+      li Robusta
+    img[src="img/p2p_img.png" height="200"]
+  section#structured_p2p 
+    /[data-background="img/p2p-structured.png"]
     h2 Redes P2P Estructuradas
+    ul
+      li La búsqueda de información no sufre de falsos negativos
+      li La mayoría son basados en tablas de hash distribuido (DHT)
+      li CHORD, Pastry, OpenDHT, etc.
+    img[src="img/p2p-structured.png" height="200"]
     / TODO
   section#problem
     h2 Problema
@@ -52,6 +60,7 @@ section[data-background="#FF5C33"]
     aside.notes
       ul
         li Las redes P2P sólo identifican a los nodos por su IP
+    img[src="img/password.jpg" height="200"]
 
 / Porque el problema es importante
 section[data-background="#D5E2E8"]
@@ -59,6 +68,7 @@ section[data-background="#D5E2E8"]
     h2 ¿Por qué identificación de usuarios?
     ul
       li Necesario si es que uno quiere construir aplicaciones que requieran permisos a nivel de usuario
+    img[src="img/users_connect.jpg" height="200"]
 
 /li soluciones actuales
   li PKI
@@ -68,27 +78,28 @@ section[data-background="#F1F7B0"]
     h2 Soluciones actuales
     ul
       li Registro de usuarios centralizado
-      li PKI sobre P2P
+      li PGP sobre P2P
       li Propuesta de PeerSoN
   section#pki
     aside.notes
       ul
-        li Sistemas PKI sobre red requieren de que el usuario se preocupe de la mantención y seguridad de las llaves privadas de cada usuario
-    h2 PKI
+        li Sistemas PGP sobre red requieren de que el usuario se preocupe de la mantención y seguridad de las llaves privadas de cada usuario
+    h2 PGP
+    img[src="img/PGP_diagram.png" height="600"]
+    
     / TODO
   section#peerson
     aside.notes
       ul
         li propuesta de protocolos para identificación de usuarios
         / TODO
+        li No considera nodos maliciosos en el sistema
+        li Problemas de seguridad con sus protocolos de recuperación de contraseñas
         /li considerando alrededor de un 30% de nodos maliciosos en el sistema...
       
     h2 Peerson
     p Propuesta de protocolos para identificación de usuarios con usuario/contraseña
-    ul
-      li No considera nodos maliciosos en el sistema
-      li Problemas de seguridad con sus protocolos de recuperación de contraseñas
-
+    img[src="img/p2p_password_peerson.png" height="500"]
 
 /solución
  li building blocks
@@ -102,13 +113,13 @@ section[data-background="#B2F7B0"]
     h2 Building blocks
     ul
       li DHT
-      li Public/Private keys
-      li Acuerdo bizantino
+      li Public-key cryptography / PGP
+      li Byzantine fault tolerance
       /li Bizantine agreement
       li Sistemas de reputación
       /li Accountability systems
       li Anillos de confianza
-      li One time challenges
+      li Desafíos o puzzles computacionales
     aside.notes
       p Servicios son implementados haciendo uso de los nodos participantes de la red.
       p Por lo mismo, la fiabilidad de los servicios dependen de que tan correctos se comporten los nodos que son parte de ella.
@@ -117,33 +128,44 @@ section[data-background="#B2F7B0"]
     h2 DHT
     aside.notes
       ul
-        li Distributed Hash Table
-        li Mapea llaves dentro de los nodos de la red
-        li Permite encontrar un nodo dentro de la red. No sufre de falsos negativos
-        li Se puede utilizar como sistema simple de almacenamiento, almacenando archivos según su nombre
-    p ejemplo (imagen)?
-    ul
-      li CHORD
-      li Pastry
-    / TODO
+        li Consultas solo requieren O(log n) saltos
+        li Almacenamiento distribuido de cosas con nombre conocido.
+        li Muy escalables pues automáticamente distribuyen la carga a los nuevos nodos que se unen a la red.
+        li Robustez contra fallos de nodos, los datos automáticamente migran fuera de los nodos que fallan.
+        li Son auto organizadas, no necesitan de un servidor central.
+        li malos con búsquedas; consecuencia del algoritmo hash pues "abc" y "abcd" corresponden a nodos totalmente diferentes (aunque el valor buscado es muy similar)
+        li Problemas de seguridad; es complicado verificar la integridad de los datos almacenados
+    p Ej: Chord, Pastry, CAN y Tapestry 
+    img[src="img/DHT_en.svg" height="400"]
   section#public_private_keys
     aside.notes
       ul
         li Sólo el que posea la llave privada puede descifrar lo que la llave pública cifre, y vice-versa
         li Usado para identificar a los usuarios
-    h2 Public/Private keys
-    p ejemplo (imagen)?
-    / TODO
+    h2 Public-key cryptography / PGP
+    ul
+      li Llaves basadas en un archivo Salt y la contraseña del usuario
+    img[src="img/Public-key-crypto-1.svg" height="400"]
   section#bizantine_agreement
     aside.notes
       ul
         li Dentro de las redes p2p las responsabilidades son compartidas dentro de un grupo de nodos
         li Para evitar problemas con nodos maliciosos, las respuestas son dadas por un conjunto de nodos que deben llegar a un acuerdo
         li El sistema falla si más de 1/3 de nodos son maliciosos
-    h2 Acuerdo bizantino
-    p Se le llama nodo bizantino a todo nodo que no se comporta según lo esperado (ej: con fallas, malicioso o infectado)
-    p ejemplo (imagen)?
-    / TODO
+    h2 Byzantine fault tolerance
+    p Una falla Byzantina es una falla arbitraria ocurrida durante la ejecución de un algoritmo dentro de un sistema distribuído.
+    ul
+      li 
+        |Sólo hay solución cuando se cumple que:
+      br
+    h3
+      | n > 3t
+    br
+    ul
+      li
+        | n = nodos honestos
+      li
+        | t = nodos bizantinos (o traidores)
   section#reputation_systems
     aside.notes
       ul
@@ -153,6 +175,7 @@ section[data-background="#B2F7B0"]
     / TODO
     /p Assess the past history of a peer by gathering feedback from nodes with previous interactions with this peer.
     p Sistema que asigna un valor de reputación a cada nodo según recomendaciones emitidas después de cada transacción
+    img[src="img/reputation_recommendation.png" height="400"]
   section#trusted_rings
     aside.notes
       ul
@@ -161,32 +184,19 @@ section[data-background="#B2F7B0"]
         li Disminuye la probabilidad de falla de los protocolos en la red
     h2 Anillos de confianza
     p Se requiere también un sistema que permita armar sub-redes (anillos) con los nodos que posean una reputación > delta, de tal forma de generar una anillo de confianza.
-    / TODO
-    p ejemplo (imagen)?
+    img[src="img/pring.png" height="400"]
     ul
-      li CORPS
-  section#one_time_challenges
+      li Ej: CORPS
+  section#challenges
     aside.notes
       ul
         li aumentan el tiempo de procesamiento requerido para llevar a cabo una transacción específica
         li desincentivan ataques de fuerza bruta 
-    h2 One time challenges
+    h2 Desafíos o puzzles computacionales
+    h3
+      | (Proof-of-work system)
     / TODO
-    p ejemplo?
-  section
-    aside.notes Explicar a grandes rasgos como funcionan todos los bloques en conjunto
-    h2 Esquema del sistema
-    ul
-      li
-        | Nodo A
-      li
-        | Servicio S = 
-        |  Conjunto de nodos S
-      li
-        | Servicio Identificador del usuario = 
-        |  Conjunto de nodos I
-      li Cada usuario posee un par de llaves públicas y privadas
-      li Se usa el anillo de nodos confiables para realizar las transacciones necesarias para los protocolos del sistema de identificación de usuario
+    img[src="img/Proof_of_Work_challenge_response.svg" height="300"]
 
 section
   section#protocols
@@ -201,6 +211,20 @@ section
   /section#securing_nodes[data-background="img/secure_routing.png" data-background-size="600px"]
     h2 Securing the nodes of a leafset
     / TODO 
+  section
+    aside.notes Explicar a grandes rasgos como funcionan todos los bloques en conjunto
+    h2 Nomenclatura
+    ul
+      li
+        | Nodo A
+      li
+        | Servicio S = 
+        |  Conjunto de nodos S
+      li
+        | Servicio Identificador del usuario = 
+        |  Conjunto de nodos I
+      li Cada usuario posee un par de llaves públicas y privadas
+      li Se usa el anillo de nodos confiables para realizar las transacciones necesarias para los protocolos del sistema de identificación de usuario
   section#sign_up
     aside.notes
       ul
@@ -239,7 +263,7 @@ section
         |  de registro del usuario
       br
       li
-        b One time challenge
+        b Proof of work
       br
       li 
         b Registro del usuario
@@ -247,7 +271,7 @@ section
       br
       li 
         b Respuesta confirmación
-        | de registro
+        |  de registro
       br
       li 
         b Respaldo
@@ -264,7 +288,7 @@ section
     h2 User sign in
     ol
       li
-        b One time challenge
+        b Desafío (Proof of work)
         |  de parte del
         b  servicio S
         |  que quiere comprobar la identidad del
@@ -274,10 +298,10 @@ section
         | El
         b  nodo A
         |  responde el
-        b  challenge
+        b  desafío
         |  cifrando la solución con la 
         b  llave privada
-        | del usuario 
+        |  del usuario 
       br
       li
         | El servicio
@@ -367,7 +391,8 @@ section
         li Justificación del uso de los sistemas de confianza
     h2 Parámetros utilizados para la evaluación del sistema
     / TODO
-    table
+    img[src="img/parameters.png"]
+    /table
       tr
         th Parámetro
         th Descripción
@@ -459,7 +484,9 @@ section
     aside.notes sistemas de recuperación de contraseñas
     h2 Trabajo futuro
     ul
+      li Políticas de creación de contraseñas
       li Sistemas de recuperación de contraseñas
+      li Bootstrapping del sistema (Cómo armar los primeros anillos de nodos confiables)
     
 /section[data-markdown]
   script[type="text/template"]
@@ -546,3 +573,45 @@ section
     img[width="320" height="299" src="http://s3.amazonaws.com/hakim-static/portfolio/images/meny.png" alt="Meny"]
 section#end
   h1 ¿Preguntas?
+section
+  section
+    h1 Securing leafset
+  section
+    img[src="img/p_securing_leafset.png"]
+  section
+    img[src="img/m_securing_leafset.png"]
+section
+  section
+    h1 Account registration
+  section
+    img[src="img/p_register_account.png"]
+  section
+    img[src="img/m_register_account.png"]
+section
+  section
+    h1 User sign in
+  section
+    img[src="img/p_sign_in.png"]
+  section
+    img[src="img/m_sign_in.png"]
+section
+  section
+    h1 Logout
+  section
+    img[src="img/p_logout.png"]
+  section
+    img[src="img/m_logout.png"]
+section
+  section
+    h1 Password Change
+  section
+    img[src="img/p_change_password.png"]
+  section
+    img[src="img/m_change_password.png"]
+section
+  section
+    h1 User private key recovery
+  section
+    img[src="img/p_key_recovery.png"]
+  section
+    img[src="img/m_key_recovery.png"]
