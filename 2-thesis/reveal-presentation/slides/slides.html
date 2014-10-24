@@ -3,7 +3,7 @@
     User identification with username and password in structured P2P networks
   </h2>
   <p>
-    <small><a href="http://github.com/rfernand">Rodrigo Fernández</a> / <a href="rfernand@csrg.inf.utfsm.cl">rfernand@csrg.inf.utfsm.cl</a></small>
+    <a href="http://github.com/rfernand">Rodrigo Fernández</a> / <a href="rfernand@csrg.inf.utfsm.cl">rfernand@csrg.inf.utfsm.cl</a>
   </p>
   <aside class="notes">
     <ul>
@@ -44,29 +44,26 @@
     </ul>
   </aside>
 </section>
-<section>
+<section data-background="#D5E2E8">
   <section id="p2p">
     <h2>
       Redes P2P
     </h2>
     <p>
-      Cada participante (nodo) se le asigna un node ID basado en su IP
+      Cada nodo actúa como cliente y servidor dentro de la red
     </p>
     <ul>
       <li>
-        Cada nodo actúa como cliente y servidor dentro de la red
+        Escalables
       </li>
       <li>
-        Escalable
+        Descentralizada, no poseen un único punto de falla
       </li>
       <li>
-        Descentralizada
+        Auto organizadas
       </li>
       <li>
-        Auto mantenida
-      </li>
-      <li>
-        Robusta
+        Robustas, si un nodo falla otros pasan reemplazarlo
       </li>
     </ul>
     <img height="200" src="img/p2p_img.png">
@@ -74,20 +71,110 @@
   <section id="structured_p2p">
     <!--[data-background="img/p2p-structured.png"]><![endif]-->
     <h2>
-      Redes P2P Estructuradas
+      Redes P2P no estructuradas y estructuradas
     </h2>
+    <img height="300" src="img/Unstructured_peer-to-peer_network_diagram.png"><img height="300" src="img/p2p-structured.png">
+  </section>
+  <section id="dht">
+    <h2>
+      DHT
+    </h2>
+    <p>
+      Cada participante (nodo) se le asigna un node ID basado en su IP
+    </p>
     <ul>
       <li>
-        La búsqueda de información no sufre de falsos negativos
-      </li>
-      <li>
-        La mayoría son basados en tablas de hash distribuido (DHT)
-      </li>
-      <li>
-        CHORD, Pastry, OpenDHT, etc.
+        La asignación de node IDs es aleatoria e uniforme, de tal forma que nodos de node ID adjacente se encuentran lejos geográficamente
       </li>
     </ul>
-    <img height="200" src="img/p2p-structured.png">
+    <aside class="notes">
+      <ul>
+        <li>
+          La búsqueda de información no sufre de falsos negativos
+        </li>
+        <li>
+          malos con búsquedas de rango
+        </li>
+        <li>
+          Problemas de seguridad; es complicado verificar la integridad de los datos almacenados
+        </li>
+      </ul>
+    </aside>
+    <p>
+      Ej: Chord, Pastry, CAN y Tapestry 
+    </p>
+    <img height="400" src="img/DHT_en.svg">
+  </section>
+  <section id="pastry">
+    <h2>
+      Pastry
+    </h2>
+    <p>
+      Cada participante (nodo) se le asigna un node ID basado en su IP
+    </p>
+    <ul>
+      <li>
+        Consultas solo requieren O(log n) saltos
+      </li>
+      <li>
+        Los node IDs son 128-bit unsigned integers
+      </li>
+      <li>
+        Cada nodo guarda información sobre:
+      </li>
+      <ul>
+        <li>
+          Leaf nodes
+        </li>
+        <li>
+          Neighborhood list
+        </li>
+        <li>
+          Routing table
+        </li>
+      </ul>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>
+          Leaf nodes (Los L/2 nodos más cercanos en ambas direcciones)
+        </li>
+        <li>
+          Routing table se divide en dígitos con b digitos de largo
+        </li>
+        <li>
+          Routing table 2^b - 1 contacts per level
+        </li>
+        <li>
+          b≈4,L≈2^b and M≈2^b 
+        </li>
+      </ul>
+    </aside>
+  </section>
+  <section id="pastry_2">
+    <h2>
+      Pastry
+    </h2>
+    <h4>
+      Routing table
+    </h4>
+    <aside class="notes">
+      <ul>
+        <li>
+          Leaf nodes (Los L/2 nodos más cercanos en ambas direcciones)
+        </li>
+        <li>
+          Routing table se divide en dígitos con b digitos de largo
+        </li>
+        <li>
+          Routing table 2^b - 1 contacts per level
+        </li>
+        <li>
+          b≈4,L≈2^b and M≈2^b 
+        </li>
+      </ul>
+    </aside>
+    <img height="400" src="img/pastry-routing-table.png">
   </section>
   <section id="problem">
     <h2>
@@ -110,8 +197,6 @@
     </aside>
     <img height="200" src="img/password.jpg">
   </section>
-</section>
-<section data-background="#D5E2E8">
   <section id="why">
     <h2>
       ¿Por qué identificación de usuarios?
@@ -134,12 +219,33 @@
         Registro de usuarios centralizado
       </li>
       <li>
-        PGP sobre P2P
+        Web of trust
       </li>
       <li>
         Propuesta de PeerSoN
       </li>
     </ul>
+  </section>
+  <section id="public_private_keys">
+    <aside class="notes">
+      <ul>
+        <li>
+          Sólo el que posea la llave privada puede descifrar lo que la llave pública cifre, y vice-versa
+        </li>
+        <li>
+          Usado para identificar a los usuarios
+        </li>
+      </ul>
+    </aside>
+    <h2>
+      Public-key cryptography 
+    </h2>
+    <ul>
+      <li>
+        Llaves basadas en un archivo Salt y la contraseña del usuario
+      </li>
+    </ul>
+    <img height="400" src="img/Public-key-crypto-1.svg">
   </section>
   <section id="pki">
     <aside class="notes">
@@ -150,8 +256,13 @@
       </ul>
     </aside>
     <h2>
-      PGP
+      Web of trust
     </h2>
+    <ul>
+      <li>
+        Misma idea de PGP (Pretty Good Privacy)
+      </li>
+    </ul>
     <img height="600" src="img/PGP_diagram.png">
   </section>
   <section id="peerson">
@@ -190,7 +301,7 @@
         Public-key cryptography / PGP
       </li>
       <li>
-        Byzantine fault tolerance
+        Consenso o votación
       </li>
       <li>
         Sistemas de reputación
@@ -214,102 +325,48 @@
       </p>
     </aside>
   </section>
-  <section id="dht">
-    <h2>
-      DHT
-    </h2>
-    <aside class="notes">
-      <ul>
-        <li>
-          Consultas solo requieren O(log n) saltos
-        </li>
-        <li>
-          Almacenamiento distribuido de cosas con nombre conocido.
-        </li>
-        <li>
-          Muy escalables pues automáticamente distribuyen la carga a los nuevos nodos que se unen a la red.
-        </li>
-        <li>
-          Robustez contra fallos de nodos, los datos automáticamente migran fuera de los nodos que fallan.
-        </li>
-        <li>
-          Son auto organizadas, no necesitan de un servidor central.
-        </li>
-        <li>
-          malos con búsquedas; consecuencia del algoritmo hash pues "abc" y "abcd" corresponden a nodos totalmente diferentes (aunque el valor buscado es muy similar)
-        </li>
-        <li>
-          Problemas de seguridad; es complicado verificar la integridad de los datos almacenados
-        </li>
-      </ul>
-    </aside>
-    <p>
-      Ej: Chord, Pastry, CAN y Tapestry 
-    </p>
-    <img height="400" src="img/DHT_en.svg">
-  </section>
-  <section id="public_private_keys">
-    <aside class="notes">
-      <ul>
-        <li>
-          Sólo el que posea la llave privada puede descifrar lo que la llave pública cifre, y vice-versa
-        </li>
-        <li>
-          Usado para identificar a los usuarios
-        </li>
-      </ul>
-    </aside>
-    <h2>
-      Public-key cryptography / PGP
-    </h2>
-    <ul>
-      <li>
-        Llaves basadas en un archivo Salt y la contraseña del usuario
-      </li>
-    </ul>
-    <img height="400" src="img/Public-key-crypto-1.svg">
-  </section>
-  <section id="bizantine_agreement">
+  <section id="consenso">
     <aside class="notes">
       <ul>
         <li>
           Dentro de las redes p2p las responsabilidades son compartidas dentro de un grupo de nodos
         </li>
-        <li>
-          Para evitar problemas con nodos maliciosos, las respuestas son dadas por un conjunto de nodos que deben llegar a un acuerdo
-        </li>
-        <li>
-          El sistema falla si más de 1/3 de nodos son maliciosos
-        </li>
       </ul>
     </aside>
     <h2>
-      Byzantine fault tolerance
+      Consenso o votación 
     </h2>
-    <p>
-      Una falla Byzantina es una falla arbitraria ocurrida durante la ejecución de un algoritmo dentro de un sistema distribuído.
-    </p>
     <ul>
       <li>
-        Sólo hay solución cuando se cumple que:
+        La votación debe asegurar la menor probabilidad de falla posible ante la mayor cantidad de nodos maliciosos que tolere la operación.
       </li>
-      <br>
+      <li>
+        Para evitar problemas con nodos maliciosos, las respuestas son consideradas como válidas después de pasar por una votación o consenso
+      </li>
     </ul>
-    <h3>
-      n &gt; 3t
-    </h3>
-    <br>
+  </section>
+  <section id="consenso_2">
+    <h2>
+      Consenso o votación (2)
+    </h2>
     <ul>
       <li>
-        n = nodos honestos
+        Considerando que la probabilidad de tener<b> k</b> nodos maliciosos en <b> L+1</b> nodos es:
+      </li>
+      <img src="img/p_n_nodos_maliciosos.png">
+      <li>
+        La probabilidad de falla es más baja mientras más grande sea<b> k</b>
       </li>
       <li>
-        t = nodos bizantinos (o traidores)
+        El máximo valor posible de<b> k</b> para obtener mayoría en una votación corresponde a<b> L/2</b>
       </li>
     </ul>
   </section>
   <section id="reputation_systems">
     <aside class="notes">
+      <p>
+        Ej: WRT.
+      </p>
       <ul>
         <li>
           Asignan un valor a cada nodo dentro de la red tomando en cuenta las transacciones realizadas por cada uno
@@ -331,28 +388,28 @@
     <aside class="notes">
       <ul>
         <li>
-          Gracias a los sistemas de reputación, se pueden armar anillos de nodos confiables
-        </li>
-        <li>
-          Estos anillos son un subset de los nodos participantes de la red P2P
+          Ej: CORPS
         </li>
         <li>
           Disminuye la probabilidad de falla de los protocolos en la red
+        </li>
+        <li>
+          Aún así, el sistema no logra llegar a acuerdos si más de 1/3 de sus nodos son maliciosos
         </li>
       </ul>
     </aside>
     <h2>
       Anillos de confianza
     </h2>
-    <p>
-      Se requiere también un sistema que permita armar sub-redes (anillos) con los nodos que posean una reputación &gt; delta, de tal forma de generar una anillo de confianza.
-    </p>
-    <img height="400" src="img/pring.png">
     <ul>
       <li>
-        Ej: CORPS
+        Gracias a los sistemas de reputación, se pueden armar anillos de nodos confiables
+      </li>
+      <li>
+        Estos anillos son un subset de los nodos participantes de la red P2P
       </li>
     </ul>
+    <img height="400" src="img/pring.png">
   </section>
   <section id="challenges">
     <aside class="notes">
@@ -384,6 +441,9 @@
         Account registration
       </li>
       <li>
+        User private key recovery
+      </li>
+      <li>
         User sign in
       </li>
       <li>
@@ -392,146 +452,234 @@
       <li>
         Password Change
       </li>
-      <li>
-        User private key recovery
-      </li>
     </ul>
   </section>
   <section>
     <aside class="notes">
-      Explicar a grandes rasgos como funcionan todos los bloques en conjunto
+      <ul>
+        <li>
+          Explicar a grandes rasgos como funcionan todos los bloques en conjunto
+        </li>
+        <li>
+          Cada usuario posee un par de llaves públicas y privadas
+        </li>
+        <li>
+          Se usa el anillo de nodos confiables para realizar las transacciones necesarias para los protocolos del sistema de identificación de usuario
+        </li>
+      </ul>
     </aside>
     <h2>
       Nomenclatura
     </h2>
     <ul>
       <li>
-        Nodo A
+        Nodo<b> A</b>
       </li>
       <li>
-        Servicio S =  Conjunto de nodos S
+        Servicio<b> S</b>
       </li>
       <li>
-        Servicio Identificador del usuario =  Conjunto de nodos I
-      </li>
-      <li>
-        Cada usuario posee un par de llaves públicas y privadas
-      </li>
-      <li>
-        Se usa el anillo de nodos confiables para realizar las transacciones necesarias para los protocolos del sistema de identificación de usuario
+        Servicio Identificador del usuario <b> I</b>
       </li>
     </ul>
   </section>
   <section id="sign_up">
     <aside class="notes">
+      <p>
+        Creación de llaves
+      </p>
+    </aside>
+    <h2>
+      Account registration (1)
+    </h2>
+    <ul>
+      <li>
+        Elegir nombre de <b> usuario</b> y <b> contraseña </b>
+      </li>
+      <li>
+        <b>Derivar par de llaves</b> usando un archivo<b> salt </b> y la contraseña
+      </li>
+    </ul>
+    <img height="400" src="img/Public-key-crypto-1.svg">
+  </section>
+  <section id="sign_up_2">
+    <aside class="notes">
       <ul>
         <li>
-          leafset = servicio relacionado
-        </li>
-        <li>
-          cifrado de salt: $Crypt(salt, SHA(password)) = E_{U^{salt}}$
-        </li>
-        <li>
-          salt key = K = SHA(U^{username})+SHA(U^{password})$
-        </li>
-        <li>
-          Nodo T guarda la salt cifrada
-        </li>
-        <li>
-          Uso de replicación en el almacenamiento de archivos
+          ruteo
         </li>
       </ul>
     </aside>
     <h2>
-      Account registration
+      Account registration (2)
     </h2>
-    <ol>
-      <li>
-        Elegir nombre de <b> usuario</b> y <b> contraseña </b>
-      </li>
-      <br>
-      <li>
-        <b>Derivar par de llaves</b> usando un archivo<b> salt </b> y la contraseña
-      </li>
-      <br>
+    <ul>
       <li>
         Obtener<b> nodos I</b> encargados del registro del<b> usuario A</b>
       </li>
-      <br>
+    </ul>
+    <img height="500" src="img/secure_routing.png">
+  </section>
+  <section id="sign_up_3">
+    <aside class="notes">
+      <ul>
+        <li>
+          peticion de registro
+        </li>
+      </ul>
+    </aside>
+    <h2>
+      Account registration (3)
+    </h2>
+    <ul>
       <li>
         <b>Petición</b> de registro del usuario
       </li>
-      <br>
       <li>
         <b>Proof of work</b>
       </li>
-      <br>
       <li>
         <b>Registro del usuario</b> en los nodos I
       </li>
-      <br>
+    </ul>
+    <img height="500" src="img/sign_up.png">
+  </section>
+  <section id="sign_up_4">
+    <aside class="notes">
+      <ul>
+        <li>
+          Guardar salt
+        </li>
+      </ul>
+    </aside>
+    <h2>
+      Account registration (4)
+    </h2>
+    <ul>
       <li>
         <b>Respuesta confirmación</b> de registro
       </li>
-      <br>
       <li>
         <b>Respaldo</b> del archivo<b> salt</b> del usuario (cifrado)
       </li>
-    </ol>
+      <ul>
+        <li>
+          Cifrado de salt: Crypt(salt, SHA(password))
+        </li>
+        <li>
+          Se almacena usando como llave: SHA(username)+SHA(password)
+        </li>
+        <li>
+          El sistema de almacenamiento usa replicación para mantener una alta disponibilidad de los datos.
+        </li>
+      </ul>
+    </ul>
   </section>
-  <section id="sign_up_image">
-    <p>
-      Account registration
-    </p>
-    <img src="img/sign_up.png">
-  </section>
-  <section id="sign_in">
+  <section id="user_private_key_recovery">
+    <aside class="notes">
+      <ul>
+        <li>
+          El protocolo usa indirección para esconder la salt del usuario
+        </li>
+        <li>
+          No hay forma de recuperar las llaves del usuario si olvida su contraseña
+        </li>
+        <li>
+          Probablemente seria bueno hacer 
+          | K = SHA(SHA(username)+SHA(password))
+        </li>
+      </ul>
+    </aside>
     <h2>
-      User sign in
+      User private key recovery 
     </h2>
     <ol>
       <li>
-        <b>Desafío (Proof of work)</b> de parte del<b> servicio S</b> que quiere comprobar la identidad del<b> nodo A</b>
+        El nodo A busca los nodos responsables de almacenar la salt del usuario
       </li>
+      <li>
+        Para ello hace: K = SHA(username)+SHA(password)
+      </li>
+      <li>
+        El nodo A recibe el archivo salt cifrado (esperando al menos L/2 + 1 respuestas afirmativas)
+      </li>
+      <li>
+        El nodo A descifra el archivo salt y procede a derivar la llave privada correspondiente su usuario (usando el archivo salt y su contraseña)
+      </li>
+    </ol>
+    <ul>
       <br>
       <li>
-        El<b> nodo A</b> responde el<b> desafío</b> cifrando la solución con la <b> llave privada</b> del usuario 
+        No hay forma de recuperar las llaves del usuario en caso de olvido de contraseña
       </li>
-      <br>
+    </ul>
+  </section>
+  <section id="sign_in">
+    <h2>
+      User sign in (1)
+    </h2>
+    <h4>
+      (usuario ya tiene su llave privada)
+    </h4>
+    <p>
+      El servicio<b> S</b> desea comprobar la identidad del nodo<b> A</b>
+    </p>
+    <br>
+    <ul>
+      <li>
+        <b>Servicio S</b> envía un<b> desafío (Proof of work)</b> al<b> nodo A</b>
+      </li>
+      <li>
+        El<b> nodo A</b> responde cifrando la solución con la <b> llave privada</b> de su usuario 
+      </li>
+    </ul>
+    <img height="300" src="img/sign_in.png">
+  </section>
+  <section id="sign_in_2">
+    <h2>
+      User sign in (2)
+    </h2>
+    <ul>
       <li>
         El servicio<b> S consulta</b> por el conjunto de nodos a cargo de la identificación del usuario (<b>nodos I</b>) haciendo<b> K = SHA(username)</b>
       </li>
-      <br>
+    </ul>
+    <img height="500" src="img/secure_routing.png">
+  </section>
+  <section id="sign_in_3">
+    <aside class="notes">
+      <p>
+        User sign in (Retrieve of public key)
+      </p>
+    </aside>
+    <h2>
+      User sign in (3)
+    </h2>
+    <ul>
       <li>
         El servicio<b> S</b> pide la<b> llave pública</b> del usuario a los<b> nodos I</b>
       </li>
-      <br>
       <li>
         El <b> servicio S comprueba</b> la identidad del usuario con la llave pública recibida
       </li>
-      <br>
+    </ul>
+    <img height="400" src="img/sign_in_2.png">
+  </section>
+  <section id="sign_in_4">
+    <aside class="notes">
+      <p>
+        User sign in (Generation of session keys)
+      </p>
+    </aside>
+    <h2>
+      User sign in (4)
+    </h2>
+    <ul>
       <li>
         El <b> servicio S</b> genera y envía una <b> llave de sesión</b> para el nodo en caso de pasar la identificación como usuario 
       </li>
-    </ol>
-  </section>
-  <section id="sign_in_img">
-    <p>
-      User sign in (start)
-    </p>
-    <img src="img/sign_in.png">
-  </section>
-  <section id="sign_in_2">
-    <p>
-      User sign in (Retrieve of public key)
-    </p>
-    <img src="img/sign_in_2.png">
-  </section>
-  <section id="sign_in_3">
-    <p>
-      User sign in (Generation of session keys)
-    </p>
-    <img src="img/sign_in_3.png">
+    </ul>
+    <img height="400" src="img/sign_in_3.png">
   </section>
   <section id="logout">
     <h2>
@@ -568,54 +716,6 @@
       </li>
     </ul>
   </section>
-  <section id="user_private_key_recovery">
-    <aside class="notes">
-      <ul>
-        <li>
-          El protocolo usa indirección para esconder la salt del usuario
-        </li>
-        <li>
-          Crypt(salt, SHA(password))
-        </li>
-        <li>
-          K = SHA(username)+SHA(password)
-        </li>
-        <li>
-          El sistema de almacenamiento utiliza replicación para mantener una alta disponibilidad de los datos
-        </li>
-        <li>
-          No hay forma de recuperar las llaves del usuario si olvida su contraseña
-        </li>
-        <li>
-          Probablemente seria bueno hacer 
-          | K = SHA(SHA(username)+SHA(password))
-        </li>
-      </ul>
-    </aside>
-    <h2>
-      User private key recovery 
-    </h2>
-    <ol>
-      <li>
-        El nodo A busca los nodos responsables de almacenar la salt del usuario
-      </li>
-      <li>
-        Para ello hace: K = SHA(username)+SHA(password)
-      </li>
-      <li>
-        El nodo A recibe el archivo salt cifrado (esperando al menos L/2 + 1 respuestas afirmativas)
-      </li>
-      <li>
-        El nodo A descifra el archivo salt y procede a derivar la llave privada correspondiente su usuario (usando el archivo salt y su contraseña)
-      </li>
-    </ol>
-    <ul>
-      <br>
-      <li>
-        No hay forma de recuperar las llaves del usuario en caso de olvido de contraseña
-      </li>
-    </ul>
-  </section>
 </section>
 <section>
   <section id="params">
@@ -640,12 +740,74 @@
     </h2>
     <img src="img/parameters.png">
   </section>
-  <section id="error_p">
+  <section>
+    <h3>
+      Account registration (Probabilidades)
+    </h3>
+    <img src="img/p_register_account.png">
+  </section>
+  <section>
+    <h3>
+      Account registration (Mensajes)
+    </h3>
+    <img src="img/m_register_account.png">
+  </section>
+  <section>
+    <h3>
+      User private key recovery (Probabilidades)
+    </h3>
+    <img src="img/p_key_recovery.png">
+  </section>
+  <section>
+    <h3>
+      User private key recovery (Mensajes)
+    </h3>
+    <img src="img/m_key_recovery.png">
+  </section>
+  <section>
+    <h3>
+      User sign in (Probabilidades)
+    </h3>
+    <img src="img/p_sign_in.png">
+  </section>
+  <section>
+    <h3>
+      User sign in (Mensajes)
+    </h3>
+    <img src="img/m_sign_in.png">
+  </section>
+  <section>
+    <h3>
+      Logout (Probabilidades)
+    </h3>
+    <img src="img/p_logout.png">
+  </section>
+  <section>
+    <h3>
+      Logout (Mensajes)
+    </h3>
+    <img src="img/m_logout.png">
+  </section>
+  <section>
+    <h3>
+      Password Change (Probabilidades)
+    </h3>
+    <img src="img/p_change_password.png">
+  </section>
+  <section>
+    <h3>
+      Password Change (Mensajes)
+    </h3>
+    <img src="img/m_change_password.png">
+  </section>
+</section>
+<section>
+  <section id="error_p_results">
     <aside class="notes">
       se usa de caso base con acuerdo bizantino...
     </aside>
     <h2>
-      Probabilidad de error
+      Resultados de la probabilidad de error
     </h2>
     <table>
       <tr>
@@ -682,11 +844,7 @@
         </td>
       </tr>
     </table>
-  </section>
-  <section id="results">
-    <h2>
-      Resultados
-    </h2>
+    <br>
     <ul>
       <li>
         Sin nodos confiables, con p = 0.016, cada 1 millón de transacciones, <b> 16000</b> presentarían problemas.
@@ -710,7 +868,7 @@
         No es 100% segura, pero viable.
       </li>
       <li>
-        La probabilidad de error es del orden de <math>10<sup></sup></math> con un leafset del tamaño de l = 32
+        La probabilidad de error es del orden de <math>10<sup>-14</sup></math> con un leafset del tamaño de L = 32
       </li>
       <li>
         El sistema se mantiene escalable
@@ -753,79 +911,15 @@
 </section>
 <section>
   <section>
-    <h1>
-      Securing leafset
-    </h1>
-  </section>
-  <section>
+    <h3>
+      Securing leafset (Probabilidades)
+    </h3>
     <img src="img/p_securing_leafset.png">
   </section>
   <section>
+    <h3>
+      Securing leafset (Mensajes)
+    </h3>
     <img src="img/m_securing_leafset.png">
-  </section>
-</section>
-<section>
-  <section>
-    <h1>
-      Account registration
-    </h1>
-  </section>
-  <section>
-    <img src="img/p_register_account.png">
-  </section>
-  <section>
-    <img src="img/m_register_account.png">
-  </section>
-</section>
-<section>
-  <section>
-    <h1>
-      User sign in
-    </h1>
-  </section>
-  <section>
-    <img src="img/p_sign_in.png">
-  </section>
-  <section>
-    <img src="img/m_sign_in.png">
-  </section>
-</section>
-<section>
-  <section>
-    <h1>
-      Logout
-    </h1>
-  </section>
-  <section>
-    <img src="img/p_logout.png">
-  </section>
-  <section>
-    <img src="img/m_logout.png">
-  </section>
-</section>
-<section>
-  <section>
-    <h1>
-      Password Change
-    </h1>
-  </section>
-  <section>
-    <img src="img/p_change_password.png">
-  </section>
-  <section>
-    <img src="img/m_change_password.png">
-  </section>
-</section>
-<section>
-  <section>
-    <h1>
-      User private key recovery
-    </h1>
-  </section>
-  <section>
-    <img src="img/p_key_recovery.png">
-  </section>
-  <section>
-    <img src="img/m_key_recovery.png">
   </section>
 </section>
