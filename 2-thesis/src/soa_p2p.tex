@@ -65,7 +65,7 @@ by simple graphs.
 %definition
 Unstructured systems do not have a strong structure topology. The nodes
 establish links in a semi-arbitrary way. Usually, they organize as a hierarchical or a
-plain graph.
+plain graph (figure~\ref{fig:p2p_unstructured}).
 
 %advantage
 Their main advantage is that they can achieve a certain level of node anonymity.
@@ -121,9 +121,8 @@ neighbours and forwards the message to the ones that were chosen. When a node
 with the required information is found, it responds with a QUERY\_RESPONSE
 message following the same path that the Random Walk used to reach it, back to
 the original node that started the search. The message cost of this search
-depends of the value of K, approaching:
+depends of the value of $K$, approaching:
 
-\numberwithin{equation}{subsection}
 \begin{equation}
 \label{eq:krandomwalk}
  C = 2 + TTL +
@@ -150,7 +149,7 @@ as they are distributed in it.
 %definition
 The structured networks have a strong topology structure. While most of them
 use ring structures, they may also use binary trees or other
-structures to organize.
+structures to organize (figure~\ref{fig:p2p_estructured}).
 
 %advantages
 The main advantage of this type of system lies in the way it searches for
@@ -196,7 +195,7 @@ Chord protocol itself.
 \label{sec:chord}
 \begin{figure}
 \center
-\includegraphics[width=0.5\textwidth]{img/chord-search}
+\includegraphics[width=0.8\textwidth]{img/chord-search}
 \caption{Chord Routing}
 \label{fig:p2p_estructured_chord_search}
 \end{figure}
@@ -216,7 +215,8 @@ distributed, giving the network a better resilience to errors.
 Key-value pairs are generated using a hash function over each participant of
 the network.  Each node has a routing table called a \textit{finger table}.
 In the \textit{finger table}, each node register its $i$ successor nodes, each
-one being the closest successor to $\theta + 2^{i-1}$. 
+one being the closest successor to $\theta +
+2^{i-1}$ (figure~\ref{fig:p2p_estructured_chord_search}). 
 In a search, the number of nodes that a query needs to reach is of order
 $O(log(N))$.
 The problem that Chord has is that it does not maintain a correlation

@@ -3,6 +3,7 @@
 \usepackage[centertags]{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{floatrow}
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{amsmath}
@@ -40,6 +41,8 @@
 \cfoot{} %Parte inferior central
 \rfoot{\bf \thepage} %Parte inferior derecha
 \renewcommand{\footrulewidth}{0.4pt} %Linea de separacion inferior
+
+\floatsetup[table]{capposition=top}
 
 \lstset{ %
 language=Octave,                % the language of the code
@@ -125,7 +128,7 @@ morekeywords={*,...}            % if you want to add more keywords to the set
 \chapter{Design of a username-password based identification system in structured P2P networks}
 \label{sec:formalization}
 \input{src/formalization}
-\chapter{Solution}
+%\chapter{Solution}
 \label{sec:system}
 \input{src/system}
 
@@ -148,7 +151,7 @@ morekeywords={*,...}            % if you want to add more keywords to the set
 \renewcommand{\listfigurename}{Index of Figures}
 \renewcommand{\appendixname}{Apendix}
 \renewcommand{\tablename}{Table}
-\renewcommand{\bibname}{Bibliography}
-\bibliographystyle{plain}
+\renewcommand{\bibname}{Bibliography and References}
+\bibliographystyle{ieeetr}
 \bibliography{../bib/article,../bib/paper,../bib/url}
 \end{document}
